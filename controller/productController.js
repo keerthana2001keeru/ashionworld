@@ -36,21 +36,12 @@ const adminProduct = async function (req, res) {
     console.log("prd",products)
   };
   
-  const showProduct = async function (req, res) {
-    const products = await productHandler.getAllProducts();
-   console.log("pp",products);
-  //  console.log("oo",products.image)
-      let isUser = true;
-      res.render("user/shop", { products: products, isUser });
-  
-      // res.render("user/products", { products: products });
-    
-  };
+ 
 
   const singleProduct = async function (req, res) {
     const productId = req.params.id;
     const product = await productHandler.getProduct(productId);
-   console.log("pro",product);
+   console.log("prooooo",product);
       let isUser = true;
      return res.render("user/detailProduct", { product, isUser });
   
@@ -117,7 +108,7 @@ const adminProduct = async function (req, res) {
     addProduct,
     getAddProduct,
     adminProduct,
-     showProduct,
+   
     singleProduct,
     searchProduct,
     editProduct,

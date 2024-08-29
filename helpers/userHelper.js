@@ -181,7 +181,7 @@ getCart: async function (userId) {
     if (!user) {
       logger.log({ message: "user not found" });
     }
-    const existingItemIndex = user.cart.findIndex(
+    const existingItemIndex = User.cart.findIndex(
       (cartItem) => cartItem.product_id.toString() == proId
     );
 
@@ -196,7 +196,7 @@ getCart: async function (userId) {
 
   addCartGuest: async function (userId, proId, quantity) {
     const user = await User.findOne({ _id: userId });
-    const existingItemIndex = user.cart.findIndex(
+    const existingItemIndex = User.cart.findIndex(
       (cartItem) => cartItem.product_id.toString() == proId
     );
     if (existingItemIndex !== -1) {
@@ -211,10 +211,10 @@ getCart: async function (userId) {
     try {
       const user = await User.findOne({ _id: userId });
       if (!user) {
-        logger.error({ message: "cart not found" });
+        //logger.error({ message: "cart not found" });
       }
 
-      const cartItem = await user.cart.find((item) => item.product_id == proId);
+      const cartItem = await User.cart.find((item) => item.product_id == proId);
       const currentQuantity = cartItem ? cartItem.quantity : 0;
       const updatedCount = Math.max(currentQuantity + count, 1);
       const updatedCart = await User.updateOne(
@@ -229,13 +229,13 @@ getCart: async function (userId) {
           { new: true }
         );
       } else {
-        logger.error("error deleting cart");
+        //logger.error("error deleting cart");
       }
 
       const updatedUserCart = await User.findOne({ _id: userId });
       return updatedUserCart;
     } catch (error) {
-      logger.error("cart updation failed");
+      //logger.error("cart updation failed");
     }
   },
   cartDelete: async function (userId, proId) {
@@ -249,7 +249,7 @@ getCart: async function (userId) {
         );
         return deletedCart;
       } else {
-        logger.log({ message: "cart not found" });
+       console.log({ message: "cart not found" });
       }
     } catch (error) {}
   },

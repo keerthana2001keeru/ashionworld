@@ -41,7 +41,9 @@ app.engine(
     defaultLayout:'userLayout',
     layoutsDir:path.join(__dirname,'views/layout'),
   partialsDir:path.join(__dirname,'views/partials'),
-  
+  helpers: {
+    multiply: (value1, value2) => value1 * value2
+  }
   //  helpers: {
   //   eq: (a, b) => a === b
   //  }

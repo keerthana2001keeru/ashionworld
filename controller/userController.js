@@ -7,6 +7,25 @@ const productHandler = require("../helpers/product-helpers");
 const bcrypt = require("bcrypt");
 const { generateToken, verifyToken } = require("../middlewares/token");
 
+const homePage = async function (req,res){
+  const products = await productHandler.getAllProducts();
+  let isUser = false;
+  let wishlistCount = 0;
+  let cartCount= 0;
+  if (req.session.user) {
+    let isUser = true;
+    wishlistCount = req.session.user.wishlist.length;
+    cartCount = req.session.user.cart.length;
+    console.log("user",req.session.user)
+    console.log("ooooo",products)
+    
+    res.render("index", {isUser, products, user:req.session.user, wishlistCount,cartCount });
+  } else {
+    res.render("index", { products });
+  }
+}
+
+
 const loginPage = function (req, res) {
   // res.setHeader("Cache-Control", "no-cache, no-store , must-revalidate");
   if (req.session.user) {
@@ -157,7 +176,24 @@ const verifyEmail = async function (req, res) {
     logger.error({ message: "invalid token" });
   }
 };
-
+const showProduct = async function (req, res) {
+  const products = await productHandler.getAllProducts();
+ console.log("pp",products);
+//  console.log("oo",products.image)
+    let isUser = true;
+    let wishlistCount = 0;
+    let cartCount= 0;
+    if (req.session.user) {
+      wishlistCount = req.session.user.wishlist.length;
+      cartCount = req.session.user.cart.length;
+   
+    res.render("user/shop", { products: products, isUser ,wishlistCount,cartCount});
+    }else{
+      res.render("user/shop", { products: products, isUser });
+    }
+    // res.render("user/products", { products: products });
+  
+};
 const userProfile = async function (req, res) {
   try {
     const email = req.session.email;
@@ -178,55 +214,61 @@ const userProfile = async function (req, res) {
 };
 
 const cart = async function (req, res) {
-    const userId = req.session.userid;
-    if (userId) {
-      let isUser = true;
-      const cart = await userHandler.getCart(userId);
-      if (cart) {
-        const newCart = cart.cart;
-        if (newCart.cart) {
-          const cartLength = newCart.cart.length;
-  console.log("ll",cartLength)
-          res.render("user/cart", {
-            isUser,
-            length: cartLength,
-            cart: newCart,
-            totalPrice: cart.totalPrice,
-          });
-          console.log(cart)
-
-        } else {
-          res.render("user/cart", {
-            
-            isUser,
-          });
-        }
-      }
-    } else {
-      const cart = req.session.cart;
-      if (cart) {
-        let cartItems = [];
-        let totalPrice = 0;
-        for (const item of cart) {
-          let items = await productHandler.getProduct(item.productId);
-          let quantity = item.quantity;
-          cartItems.push({ productId: items, quantity: quantity });
-          totalPrice += item.quantity * items.price;
-        }
-        const quantity = cart.quantity;
-        const cartLength = cartItems.length;
+  const userId = req.session.userid;
+  if (userId) {
+    let isUser = true;
+    const cart = await userHandler.getCart(userId);
+   
+    let wishlistCount = req.session.user.wishlist.length;
+  let cartCount = req.session.user.cart.length;
+    if (cart) {
+      const newCart = cart.cart;
+      if (newCart.cart) {
+        const cartLength = newCart.cart.length;
+console.log("ll",cartLength)
+console.log("cart",cart)
         res.render("user/cart", {
-        
+          isUser,
           length: cartLength,
-          cart: cartItems,
-  
-          totalPrice: totalPrice,
+          wishlistCount,
+          cartCount,
+          cart: newCart.cart,
+          totalPrice: cart.totalPrice,
         });
+      
+
       } else {
-        res.render("user/cart");
+        res.render("user/cart", {
+          
+          isUser,
+        });
       }
     }
-  };
+  } else {
+    const cart = req.session.cart;
+    if (cart) {
+      let cartItems = [];
+      let totalPrice = 0;
+      for (const item of cart) {
+        let items = await productHandler.getProduct(item.productId);
+        let quantity = item.quantity;
+        cartItems.push({ productId: items, quantity: quantity });
+        totalPrice += item.quantity * items.price;
+      }
+      const quantity = cart.quantity;
+      const cartLength = cartItems.length;
+      res.render("user/cart", {
+      
+        length: cartLength,
+        cart: cartItems,
+
+        totalPrice: totalPrice,
+      });
+    } else {
+      res.render("user/cart");
+    }
+  }
+};
   
   const addToCart = async function (req, res) {
     const userId = req.session.userid;
@@ -259,10 +301,10 @@ const cart = async function (req, res) {
       const userId = req.session.userid;
       if (userId) {
         const cart = await userHandler.addItemsToCart(userId, req.params.id);
-        console.log("cccccccccccc",cart)
+        
         if (cart) {
-          console.log("cccccccccccc",cart)
-          res.redirect("/cart");
+          
+          res.redirect("/wishlist");
         }
       } else {
         if (!req.session.cart) {
@@ -282,20 +324,22 @@ const cart = async function (req, res) {
         }
         const carts = req.session.cart;
   
-        res.redirect("/cart");
+        res.redirect("/wishlist");
       }
     } catch (err) {
-      logger.error({ message: err });
+     // logger.error({ message: err });
     }
   };
   
   const updateCart = async function (req, res) {
     try {
       let { proId, count } = req.body;
+      console.log("pro",proId,count)
       count = parseInt(count);
       const userId = req.session.userid;
       if (userId) {
         const updatedCart = await userHandler.updateCart(proId, count, userId);
+        console.log("upcart",updateCart)
         if (updatedCart) {
           const totalPrice = await userHandler.getCart(userId);
           res.json({ totalPrice: totalPrice.totalPrice, updatedCart });
@@ -304,14 +348,14 @@ const cart = async function (req, res) {
       }
     } catch (error) {
       console.log(error);
-      logger.error({ message: "update cart failed", error });
+      //logger.error({ message: "update cart failed", error });
     }
   };
   const deleteCart = async function (req, res) {
     try {
       const userId = req.session.userid;
       if (userId) {
-        const newDeletedCart = await userHelper.cartDelete(
+        const newDeletedCart = await userHandler.cartDelete(
           req.session.userid,
           req.params.id
         );
@@ -332,11 +376,14 @@ const cart = async function (req, res) {
     }
   };
   const wishlist = async function (req, res) {
+
+    let wishlistCount = req.session.user.wishlist.length;
+    let cartCount = req.session.user.cart.length;
     const userId = req.session.userid;
     const wishlistItems = await userHandler.getWishlist(userId);
     let isUser = true;
-    console.log(wishlistItems)
-    res.render("user/wishlist", { items: wishlistItems, isUser: isUser });
+   
+    res.render("user/wishlist", { items: wishlistItems, isUser: isUser ,wishlistCount ,cartCount});
   };
   
   const addWishlist = async function (req, res) {
@@ -383,5 +430,6 @@ const cart = async function (req, res) {
     verify,
     verifyEmail,
     userProfile,
-    
+    homePage,
+   showProduct
   }
