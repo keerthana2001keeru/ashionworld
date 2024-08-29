@@ -1,0 +1,178 @@
+<style>
+  body{
+background: #c9ccd1; 
+}
+.form-style input{
+	border:0;
+	height:50px;
+	border-radius:0;
+  color: #000000;
+border-bottom:1px solid #ebebeb;	
+}
+.form-style input:focus{
+border-bottom:1px solid #007bff;	
+box-shadow:none;
+outline:0;
+color: #000000;
+background-color:#ebebeb;	
+}
+.sideline {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+	color:#000000;
+}
+button{
+height:50px;	
+}
+.sideline:before,
+.sideline:after {
+    content: '';
+    border-top: 1px solid #ebebeb;
+    margin: 0 20px 0 0;
+    flex: 1 0 20px;
+}
+
+.sideline:after {
+    margin: 0 0 0 20px;
+}
+</style>
+
+
+ <script src="https://use.fontawesome.com/f59bcd8580.js"></script>
+
+  {{>userHeader}}
+<div class="container">
+  <div class="row m-5 no-gutters shadow-lg justify-content-center">
+    
+    <div class="col-lg-6 bg-white p-5">
+      <h2 class="pb-3 fw-bolder">Register</h2>
+      <h6 style="color: red;" id="errorMessage">{{errorMessage}}</h6> 
+      <div class="form-style">
+        <form  method="post" action="/registration">
+          <div class="form-group pb-3">
+            <input
+              type="text"
+              placeholder="Name"
+              name="fullName"
+              class="form-control"
+              id="name"
+              aria-describedby="emailHelp"
+            />
+          </div>
+          <div class="form-group pb-3">
+            <input
+              type="email"
+              placeholder="Email"
+              name="email"
+              class="form-control"
+              id="email"
+              aria-describedby="emailHelp"
+            />
+          </div>
+          <div class="form-group pb-3">
+            <input
+              type="tel"
+              name="phone" 
+              placeholder="Phone" 
+              id="phone"
+              class="form-control"
+              aria-describedby="emailHelp"
+            />
+          </div>
+          <div class="form-group pb-3">
+            <input
+              type="password"
+              name="password"
+              placeholder="Password"
+              class="form-control"
+              id="password"
+            />
+          </div>
+          <div class="pb-2">
+            <button
+              type="submit"
+              class="btn btn-dark w-100 font-weight-bold mt-2"
+            >Submit</button>
+          </div>
+        </form>
+        <div class="sideline">OR</div>
+        <div>
+          <a href="/auth/google">
+          <button
+            type="submit"
+            class="btn btn-primary w-100 font-weight-bold mt-2" style="background-color: #DB4437; border: none;"
+          ><i class="ti ti-brand-google"></i>
+            Login With Google</button>
+          </a>
+          <a href="/login/federated/facebook">
+          <button
+            type="submit"
+            class="btn btn-primary w-100 font-weight-bold mt-2" style="background-color: #316FF6;"
+          ><i class="ti ti-brand-meta"></i>
+            Login With Facebook</button>
+          </a>
+        </div>
+        <div class="pt-4 text-center text-dark">
+          Have an Account?
+          <a href="/login" style="color: blue;">Sign In</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+  $(document).ready(function() {
+    $("form").submit(function(event) {
+      var errorMessageElement = $("#errorMessage");
+      errorMessageElement.text(""); // Clear previous error messages
+
+      // Validate Name
+      var name = $("#name").val();
+      if (name.length < 4) {
+        errorMessageElement.text("Name should be more than 4 characters.");
+        event.preventDefault();
+        return;
+      }
+
+      // Validate Email
+      var email = $("#email").val();
+      if (email.length < 5 || email.length > 64) {
+        errorMessageElement.text("Email should be between 5 and 64 characters.");
+        event.preventDefault();
+        return;
+      }
+
+      // Validate Password
+      var password = $("#password").val();
+      if (password.length < 5) {
+        errorMessageElement.text("Password should be more than 4 characters.");
+        event.preventDefault();
+        return;
+      }
+
+      // Validate Phone Number
+      var phone = $("#phone").val();
+      console.log(phone)
+      if (phone.length != 10 || isNaN(phone)) {
+        errorMessageElement.text("Phone number should be 10 characters and only numeric.");
+        event.preventDefault();
+        return;
+      }
+    });
+
+    // Toggle Password Visibility
+    $("#togglePassword").click(function() {
+      var passwordInput = $("#reg-password");
+      var type = passwordInput.attr("type") === "password" ? "text" : "password";
+      passwordInput.attr("type", type);
+    });
+  });
+</script>
+
+
