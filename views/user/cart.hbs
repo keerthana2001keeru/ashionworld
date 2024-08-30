@@ -23,75 +23,42 @@
     <!-- Breadcrumb End -->
 
     <!-- Shop Cart Section Begin -->
-   <div class="u-s-p-b-60">
-
-    <!--====== Section Intro ======-->
-    <div class="section__intro u-s-m-b-6">
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-12">
-            <div class="section__text-wrap">
-              <h1 class="section__heading u-c-secondary">SHOPPING CART</h1>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!--====== End - Section Intro ======-->
-
-    <!--====== Section Content ======-->
-    <div class="section__content">
-      <div class="container">
-          {{#if length}}
-        <div class="row">
-          {{#if isUser}}
-          {{#each cart}}
-          <div class="col-lg-12 col-md-12 col-sm-12 u-s-m-b-30">
-            <div class="table-responsive">
-              <table class="table-p">
-                <tbody>
-                  <!--====== Row ======-->
-                  <tr>
-                    <td class="table-p__box">
-                      {{!-- <div class="table-p__box"> --}}
-                        <div class="table-p__img-wrap">
-
-                          <img
-                            class="u-img-fluid"
-                            src="{{this.product_id.image}}"
-                            alt=""
-                            style=" height: 140px;"
-                          /></div>
-                        <div class="table-p__info">
-
-                          <span class="table-p__name">
-
-                            <a href="">{{this.product_id.name}}</a></span>
-
-                          <span class="table-p__category">
-
-                            <a href="shop-side-version-2.html">{{this.product_id.category}}</a></span>
-                          <ul class="table-p__variant-list">
-                            <li>
-
-                              <span></span></li>
-                            <li>
-
-                              <span>Color: Red</span></li>
-                          </ul>
-                        </div>
-                      {{!-- </div> --}}
-                    </td>
-                    <td>
-                      <span class="table-p__price">₹{{this.product_id.price}}</span></td>
-                    <td>
-                      <div class="table-p__input-counter-wrap">
-
-                        <!--====== Input Counter ======-->
-                        <div class="input-counter">
-                          
-
-                          <button
+<section class="shop-cart spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                  {{#if length}}
+                    <div class="shop__cart__table">
+                      {{#if isUser}}
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Price</th>
+                                    <th>Quantity</th>
+                                    <th>Total</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                              {{#each cart}}
+                                <tr>
+                                    <td class="cart__product__item">
+                                        <img src="img/productImages/{{this.product_id.image.[2]}}" alt="">
+                                        <div class="cart__product__item__title">
+                                            <h6>{{this.product_id.name}}</h6>
+                                            <div class="rating">
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star"></i>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="cart__price">₹{{this.product_id.price}}</td>
+                                    <td class="cart__quantity">
+                                          <button
                             class="input-counter__minus fas fa-minus" onclick="updateQuantity( '{{this.product_id._id}}', -1)"
                           ></button>
                           
@@ -110,235 +77,59 @@
                             class="input-counter__plus fas fa-plus" onclick="updateQuantity( '{{this.product_id._id}}', 1)"
                           ></button>
                           
-                          </div>
-                        <!--====== End - Input Counter ======-->
-                      </div>
-                    </td>
-                    <td>
-                      <div class="table-p__del-wrap">
-
-                        <a
-                          class="far fa-trash-alt table-p__delete-link"
-                          href="/deleteCartProduct/{{this.product_id._id}}"
-                        ></a></div>
-                    </td>
-                  </tr>
-                  <!--====== End - Row ======-->
-                </tbody>
-              </table>
-            </div>
-          </div>
-            {{/each}}
-            {{else}}
-          {{#each cart}}
-
-            <div class="col-lg-12 col-md-12 col-sm-12 u-s-m-b-30">
-            <div class="table-responsive">
-              <table class="table-p">
-                <tbody>
-                  <!--====== Row ======-->
-                  <tr>
-                    <td class="table-p__box">
-                      {{!-- <div class="table-p__box"> --}}
-                        <div class="table-p__img-wrap">
-
-                          <img
-                            class="u-img-fluid"
-                            src="{{this.productId.image}}"
-                            alt=""
-                            style=" height: 140px;"
-                          /></div>
-                        <div class="table-p__info">
-
-                          <span class="table-p__name">
-
-                            <a href="">{{this.productId.name}}</a></span>
-
-                          <span class="table-p__category">
-
-                            <a href="/products">{{this.productId.category}}</a></span>
-                          <ul class="table-p__variant-list">
-                            <li>
-
-                              <span></span></li>
-                            <li>
-
-                              <span>Color: Red</span></li>
-                          </ul>
-                        </div>
-                      {{!-- </div> --}}
-                    </td>
-                    <td>
-                      <span class="table-p__price"><span class="mr-3">Price: </span> ₹{{this.productId.price}}</span></td>
-                    <td>
-                    <td>
-                      <span class="table-p__price"><span class="mr-3">Quantity: </span> {{this.quantity}}</span></td>
-                    <td>
-                      <div class="table-p__input-counter-wrap">
-
-                        <!--====== Input Counter ======-->
-                        {{!-- <div class="input-counter">
-                          
-
-                          <button
-                            class="input-counter__minus fas fa-minus" onclick="updateQuantity( '{{this.productId._id}}', -1)"
-                          ></button>
-                          
-
-                          <input
-                            class="input-counter__text input-counter--text-primary-style"
-                            type="text"
-                            value="{{this.quantity}}"
-                            id="inputField"
-                            data-min="1"
-                            data-max="1000"
-                          />
-                          
-
-                          <button
-                            class="input-counter__plus fas fa-plus" onclick="updateQuantity( '{{this.productId._id}}', 1)"
-                          ></button>
-                          
-                          </div> --}}
-                        <!--====== End - Input Counter ======-->
-                      </div>
-                    </td>
-                    <td>
-                      <div class="table-p__del-wrap">
-
-                        <a
-                          class="far fa-trash-alt table-p__delete-link"
-                          href="/deleteCartProduct/{{this.productId._id}}"
-                        ></a></div>
-                    </td>
-                  </tr>
-                  <!--====== End - Row ======-->
-                </tbody>
-              </table>
-            </div>
-          </div>
-            {{/each}}
-
-          {{/if}}
-          <div class="col-lg-12">
-            <div class="route-box">
-              <div class="route-box__g1">
-
-                <a class="route-box__link" href="/products"><i
-                    class="fas fa-long-arrow-alt-left"
-                  ></i>
-
-                  <span>CONTINUE SHOPPING</span></a></div>
-            </div>
-          </div>
-         
-        </div>
-      </div>
-    </div>
-    <!--====== End - Section Content ======-->
-  </div>
-  <!--====== End - Section 2 ======-->
-
-  <!--====== Section 3 ======-->
-  <div class="u-s-p-b-60">
-
-    <!--====== Section Content ======-->
-    <div class="section__content">
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-12 col-md-12 col-sm-12 u-s-m-b-30">
-            <form class="f-cart" method="post" , action="/postCart">
-              <div class="row">
-                <div class="col-lg-4 col-md-6 u-s-m-b-30">
-                  <div class="f-cart__pad-box">
-                    <div class="u-s-m-b-30">
-                      <table class="f-cart__table">
-                        <tbody>
-                          {{!-- <tr>
-                            <td>SHIPPING</td>
-                            <td>₹40</td>
-                          </tr> --}}
-                          <tr>
-                            <td>TAX</td>
-                            <td>₹1000</td>
-                          </tr>
-                          <tr>
-                            <td>DISCOUNT</td>
-                            <td>-₹1000</td>
-                          </tr>
-                          <tr>
-                            <td>SUBTOTAL</td>
-                            <td id="subTotal">₹{{totalPrice}}</td>
-                          </tr>
-                          <tr>
-                            <td>GRAND TOTAL</td>
-                            <td id="grandTotal">₹{{totalPrice}}</td>
-                          </tr>
-                        </tbody>
-                      </table>
+                                        {{!-- <div class="pro-qty">
+                                            <input type="text" value="{{this.quantity}}">
+                                        </div> --}}
+                                    </td>
+                                    <td class="cart__total">₹{{multiply this.product_id.price this.quantity}}</td>
+                                    <td class="cart__close"><span class="icon_close"></span></td>
+                                </tr>
+                               {{/each}}
+                            </tbody>
+                        </table>
                     </div>
-                    <div>
-
-                     <a href="/checkout" style="color: white;" class="btn btn--e-brand-b-2">
-                        PROCEED TO CHECKOUT</a></div>
-                  </div>
+                    
+                    {{/if}}
+                    {{else}}
+ <h1>cart is empty</h1>
+ {{/if}}
                 </div>
-              </div>
-               {{else}}
-          <h1>cart is empty</h1>
-          <div class="route-box__g1">
-
-                <a class="route-box__link" href="/products"><i
-                    class="fas fa-long-arrow-alt-left"
-                  ></i>
-
-                  <span>CONTINUE SHOPPING</span></a></div>
-          {{/if}}
-            </form>
-          </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                    <div class="cart__btn">
+                        <a href="#">Continue Shopping</a>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                    <div class="cart__btn update__btn">
+                        <a href="/"><span class="icon_loading"></span> Update cart</a>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="discount__content">
+                        <h6>Discount codes</h6>
+                        <form action="#">
+                            <input type="text" placeholder="Enter your coupon code">
+                            <button type="submit" class="site-btn">Apply</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-lg-4 offset-lg-2">
+                    <div class="cart__total__procced">
+                        <h6>Cart total</h6>
+                        <ul>
+                            <li>Subtotal <span>₹{{totalPrice}}</span></li>
+                            <li>Total <span>₹{{totalPrice}}</span></li>
+                        </ul>
+                        <a href="/checkout" class="primary-btn">Proceed to checkout</a>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-    <!--====== End - Section Content ======-->
-  </div>
-  <!--====== End - Section 3 ======-->
-</div>
-
-{{!-- {{> footer}}   --}}
-
-<script>
-  
-
-  function updateQuantity( proId, count){
-    
-    $.ajax({
-      url: "/updateCart",
-      data: {
-        
-        proId: proId,
-        count: count
-      },
-      method: 'post',
-      success: function(response){
-            console.log("Update success:", response);
-        if(response.updatedCart && response.updatedCart.length == 0){
-          
-          
-        }else{
-          console.log(response.totalPrice)
-        $('#subTotal').text('₹ '+response.totalPrice)
-        $('#grandTotal').text('₹ '+response.totalPrice)
-
-        }
-
-
-      }
-    })
-  }
-   error: function(err) {
-    console.error("Update failed:", err);
-  }
-</script>
+    </section>
     <!-- Shop Cart Section End -->
 
     <!-- Instagram Begin -->

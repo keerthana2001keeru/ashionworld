@@ -24,6 +24,8 @@ const {
   userProfile,
   showProduct,
   homePage,
+  add_address,
+  getAddress,
 
 } = require("../controller/userController");
 
@@ -49,7 +51,7 @@ router.get("/myaccount", userProfile);
 
 
 
-router.get("/checkout", checkout);
+//router.get("/checkout", checkout);
 router.get("/cart",cart);
 router.get("/shop", showProduct);
 router.get("/addToCart/:id", addToCart);
@@ -59,5 +61,7 @@ router.get("/deleteCartProduct/:id", deleteCart);
 router.get("/wishlist",checkAuth, wishlist);
 router.get("/addWishlist/:id",checkAuth, addWishlist);
 router.get("/deleteWishlistProduct/:id", deleteWishlist);
+router.get("/add_address", add_address);
+router.put("/user/getAddress", getAddress)
 router.get("/logout", logout);
 module.exports = router;

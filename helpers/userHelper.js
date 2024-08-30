@@ -4,17 +4,6 @@ const Token = require("../models/token");
 const { User } = require("../models/userSchema");
 
 
-async function findUserById(id) {
-  try {
-    return await User.findById(id).lean();
-  } catch (error) {
-    throw new Error("Error finding user by ID: " + error.message);
-  }
-}
-
-
-
-
 
 async function updateUserById(userId, updateData) {
   return await User.findByIdAndUpdate(
@@ -45,7 +34,7 @@ module.exports = {
   updateUserById,
   //countUsers,
  // findUsersWithPagination,
-  findUserById,
+
   searchUsers,
 };
 
@@ -61,7 +50,13 @@ module.exports = {
 
 
 module.exports={
-
+   findUserById :async function (id) {
+    try {
+      return await User.findById(id).lean();
+    } catch (error) {
+      throw new Error("Error finding user by ID: " + error.message);
+    }
+  },
   getAllUsers : async function() {
  
     const users = await User.find({ isDeleted: false }).lean();
@@ -181,7 +176,7 @@ getCart: async function (userId) {
     if (!user) {
       logger.log({ message: "user not found" });
     }
-    const existingItemIndex = User.cart.findIndex(
+    const existingItemIndex = user.cart.findIndex(
       (cartItem) => cartItem.product_id.toString() == proId
     );
 
@@ -196,7 +191,7 @@ getCart: async function (userId) {
 
   addCartGuest: async function (userId, proId, quantity) {
     const user = await User.findOne({ _id: userId });
-    const existingItemIndex = User.cart.findIndex(
+    const existingItemIndex = user.cart.findIndex(
       (cartItem) => cartItem.product_id.toString() == proId
     );
     if (existingItemIndex !== -1) {
@@ -211,7 +206,7 @@ getCart: async function (userId) {
     try {
       const user = await User.findOne({ _id: userId });
       if (!user) {
-        //logger.error({ message: "cart not found" });
+        logger.error({ message: "cart not found" });
       }
 
       const cartItem = await User.cart.find((item) => item.product_id == proId);

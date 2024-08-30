@@ -225,8 +225,8 @@ const cart = async function (req, res) {
       const newCart = cart.cart;
       if (newCart.cart) {
         const cartLength = newCart.cart.length;
-console.log("ll",cartLength)
-console.log("cart",cart)
+//console.log("ll",cartLength)
+//console.log("cart",cart)
         res.render("user/cart", {
           isUser,
           length: cartLength,
@@ -334,7 +334,7 @@ console.log("cart",cart)
   const updateCart = async function (req, res) {
     try {
       let { proId, count } = req.body;
-      console.log("pro",proId,count)
+    //  console.log("pro",proId,count)
       count = parseInt(count);
       const userId = req.session.userid;
       if (userId) {
@@ -404,13 +404,81 @@ console.log("cart",cart)
   };
  
   
- const checkout = async function (req,res,next){
-  return res.render("user/checkout");
- }
+//  const checkout = async function (req,res,next){
+//   return res.render("user/checkout");
+//  }
+ const getAddress = async function (req, res) {
+  try {
+    const userid = req.session.userid;
+    const addressess = await userHelper.getUserAddress(userid);
+    const user = await userHelper.findUserById(userid);
+    const username = user.name;
+    res.json({ addressess, username });
+  } catch (error) {
+    logger.error({ message: error });
+  }
+};
+const add_address = async function (req, res) {
+  try {
+    const email = req.session.email;
+    const user = await userHelper.findUser(email);
+    let isUser = true;
+    res.render("user/add-address", { user, isUser });
+  } catch (error) {
+    logger.error({ message: error });
+  }
+};
+
+const addAddress = async function (req, res) {
+  try {
+    const data = req.body;
+    const userId = req.session.userid;
+    const address = await userHelper.addAddress(data, userId);
+  } catch (error) {
+    logger.error({ message: err });
+  }
+};
+
+const edit_address = async function (req, res) {
+  try {
+    const userId = req.session.userid;
+    const addressId = req.params.id;
+    const data = await userHelper.getAddress(userId, addressId);
+    const address = data.address;
+    const user = data.user;
+    let isUser = true;
+    res.render("user/edit-address", { user, address, isUser });
+  } catch (err) {
+    logger.error({ message: `couldn't get the address ${err}` });
+  }
+};
+
+const editAddress = async function (req, res) {
+  try {
+    const userId = req.session.userid;
+    const addressId = req.params.id;
+    const address = req.body;
+    const updatedAddress = userHelper.editAddress(userId, addressId, address);
+  } catch (error) {
+    logger.error({ message: `couldn't get the address ${err}` });
+  }
+};
+
+const delete_address = async function (req, res) {
+  const userId = req.session.userid;
+  const adderssId = req.params.id;
+  const deleteAddress = userHelper.deleteAddress(userId, adderssId);
+  if (deleteAddress) {
+    res.redirect("/user/edit_profile");
+  } else {
+    logger.error({ message: `couldn't get the address ${err}` });
+  }
+};
   const logout = async function (req, res) {
     req.session.destroy();
     res.redirect("/");
   };
+
 
   module.exports={
     updateCart,
@@ -424,12 +492,18 @@ console.log("cart",cart)
     logout,
     loginPage,
     userLogin,
-    checkout,
+  
     userRegister,
     user_registration,
     verify,
     verifyEmail,
     userProfile,
     homePage,
-   showProduct
+   showProduct,
+   getAddress,
+   add_address,
+   addAddress,
+   edit_address,
+   editAddress,
+   delete_address,
   }

@@ -16,6 +16,7 @@ const clearCache = require('./middlewares/cache');
 const userRouter = require('./routes/user');
 const adminRouter = require('./routes/admin');
 const productRouter = require('./routes/product');
+const orderRouter = require('./routes/orders');
 //var fileUpload=require('express-fileupload')
 const port = process.env.PORT ||3000;
 const app = express();
@@ -59,6 +60,7 @@ app.use(express.static(path.join(__dirname,"public")));
 app.use(express.static(path.join(__dirname,"public/admin")));
 app.use('/product',express.static(path.join(__dirname,"public/")));
 app.use('/admin',express.static(path.join(__dirname,"public/")));
+app.use('/orders',express.static(path.join(__dirname,"public/")));
 
 //app.use(express.static(__dirname + "/public"));
 
@@ -67,6 +69,7 @@ app.use('/admin',express.static(path.join(__dirname,"public/")));
 app.use('/', userRouter);
 app.use('/admin', adminRouter);
 app.use('/',productRouter);
+app.use('/',orderRouter);
 // catch 404 and forward to error handler
 // app.use(function(req, res, next) {
 //   next(createError(404));

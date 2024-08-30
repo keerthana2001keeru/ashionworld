@@ -3,7 +3,7 @@ const router = express.Router();
 
 
 const productHandler = require("../helpers/product-helpers");
-const {addProduct,getAddProduct, singleProduct,searchProduct, adminProduct, editproduct, editProduct, deleteProduct}= require("../controller/productController");
+const {addProduct,getAddProduct, singleProduct,searchProduct, adminProduct, editproduct, editProduct, deleteProduct, getCheckout}= require("../controller/productController");
 
 
 router.get('/add-product', getAddProduct);
@@ -20,7 +20,7 @@ router.get("/deleteProduct/:id", deleteProduct);
 router.get("/product/:id", singleProduct) ; 
 router.post("/user/search", searchProduct) ;
      
-
+router.get("/checkout", getCheckout);
 
 
 
