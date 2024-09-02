@@ -15,8 +15,10 @@ module.exports = {
   /*****************************************************************ORDERS**************************************************************/
   getOrder: async function (userId) {
     const order = await Order.find({ userid: userId })
+
       .populate("products")
       .lean();
+      console.log("orderss",order)
     return order;
   },
 
@@ -26,6 +28,7 @@ module.exports = {
       if (order.userid && order.userid.name) {
       }
     });
+  console.log("getAllORDERS",orders);
     return orders;
   },
 

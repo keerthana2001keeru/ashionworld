@@ -428,3 +428,90 @@
     <script src="js/owl.carousel.min.js"></script>
     <script src="js/jquery.nicescroll.min.js"></script>
     <script src="js/main.js"></script>
+
+    <script>
+   document.getElementById('addToCartButton').addEventListener('click', function() {
+    // Show the toast
+    document.getElementById('myModal').style.display = 'block';
+
+    // Hide the toast after a certain duration (e.g., 3 seconds)
+    setTimeout(function() {
+      document.getElementById('myModal').style.display = 'none';
+    }, 3000);
+  });
+</script>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  $(document).ready(function() {
+  const addToCartButton = document.querySelectorAll('.addToCartButton');
+
+  addToCartButton.forEach(function(button) {
+    button.addEventListener("click", function(event) {
+      event.preventDefault();
+
+      const addToCartUrl = this.getAttribute('href');
+
+      $.ajax({
+        type: 'GET',
+        url: addToCartUrl,
+        success: function(response) {
+          Swal.fire({
+            position: "top-middle",
+            icon: "success",
+            title: "Item added to cart",
+            showConfirmButton: false,
+            timer: 1500
+          });
+        },
+        error: function(error) {
+          console.error('Error adding item to cart:', error);
+        }
+      });
+    });
+  });
+});
+
+$(document).ready(function(){
+  const addWishListButton = document.querySelectorAll('.addToWishlistButton');
+  addWishListButton.forEach(function(button){
+    button.addEventListener('click', function(event){
+      event.preventDefault();
+      const addToWishlistUrl = this.getAttribute('href');
+      const proId = this.getAttribute('data-coupon-id')
+      $.ajax({
+        type: 'GET',
+        url: addToWishlistUrl,
+        success: function(response){
+          const wishlist = response.addedWishlist.wishlist
+          let product = wishlist.filter((item)=> {
+            if(proId == item.product_id) {
+              return item.product_id
+            }
+          })
+          if(product.length < 1){
+
+          Swal.fire({
+            position: "top-middle",
+            icon: "success",
+            title: "Item removed from Wishlist",
+            showConfirmButton: false,
+            timer: 1500
+          });
+          }else{
+          Swal.fire({
+            position: "top-middle",
+            icon: "success",
+            title: "Item added to Wishlist",
+            showConfirmButton: false,
+            timer: 1500
+          });
+
+          }
+        }
+      })
+    })
+  })
+})
+
+</script>

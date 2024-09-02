@@ -82,7 +82,8 @@
                                         </div> --}}
                                     </td>
                                     <td class="cart__total">₹{{multiply this.product_id.price this.quantity}}</td>
-                                    <td class="cart__close"><span class="icon_close"></span></td>
+                                    <td class="cart__close">
+                                        <a href="/deleteCartProduct/{{this.product_id._id}}"<span class="icon_close"></span></td>
                                 </tr>
                                {{/each}}
                             </tbody>

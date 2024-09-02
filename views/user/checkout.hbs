@@ -20,91 +20,127 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
+                   {{#if coupon}}
+                  <div class="msg">
+
+                    <span class="msg__text">You are elegible to use a coupon
+                      <a class="gl-link" href="#have-coupon" data-toggle="collapse">Click Here to Apply</a>
+                    </span>
+                    <div class="collapse" id="have-coupon" data-parent="#checkout-msg-group">
+                      <div class="c-f u-s-m-b-16">
+                        {{#each coupon}}
+                        <div class="d-flex justify-content-between align-items-center">
+
+                          <span class="msg__text u-s-m-b-16">Get <span style="color: red;">₹{{this.discount}}</span> off
+                            now with <span style="color: red;" id="coupon-code">{{this.code}}</span>
+                            <span class="ml-3" style="color: green;" id="couponSpan{{this.code}}"></span></span>
+                          <div>
+
+                            <button type="button" class="btn btn-outline-primary btn-floating applyCouponBtn"
+                              style="height: 10px; padding-bottom: 33px; padding-top: 10px" id="appliedClass{{this.code}}" data-mdb-ripple-init>
+                              <span>Apply</span>
+                            </button>
+                          </div>
+                        </div>
+                        {{/each}}
+
+                        <div class="c-f__form">
+                          <div class="u-s-m-b-16">
+                            <div class="u-s-m-b-15">
+                              <label for="coupon"></label>
+                              <input class="input-text input-text--primary-style" type="text" id="couponInput" value="{{couponCode}}"
+                                placeholder="Enter Coupon Code">
+                            </div>
+                            <div class="u-s-m-b-15">
+                              <p id="wrongCode"></p>
+                              <a href="javascript:void(0);" id="removeCouponLink"
+                                class="btn btn--e-transparent-brand-b-2" type="button">Remove Coupon</a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  {{else}}
+                  <span class="msg__text">You are not elegible to use any coupon
+                  </span>
+                  {{/if}}
                     <h6 class="coupon__link"><span class="icon_tag_alt"></span> <a href="#">Have a coupon?</a> Click
                     here to enter your code.</h6>
                 </div>
             </div>
-            {{!-- <form action="#" class="checkout__form">
+             <form action=" " id="checkoutForm"class="checkout__form" method="post">
                 <div class="row">
                     <div class="col-lg-8">
                         <h5>Billing detail</h5>
                         <div class="row">
                             <div class="col-lg-6 col-md-6 col-sm-6">
                                 <div class="checkout__form__input">
-                                    <p>First Name <span>*</span></p>
-                                    <input type="text">
+                                    <p>Full Name <span>*</span></p>
+                                    <input type="text"
+                                     name="name" 
+                                     value="{{user.cart.name}}"
+                                     required>
                                 </div>
                             </div>
-                            <div class="col-lg-6 col-md-6 col-sm-6">
-                                <div class="checkout__form__input">
-                                    <p>Last Name <span>*</span></p>
-                                    <input type="text">
-                                </div>
-                            </div>
-                            <div class="col-lg-12">
-                                <div class="checkout__form__input">
-                                    <p>Country <span>*</span></p>
-                                    <input type="text">
-                                </div>
-                                <div class="checkout__form__input">
-                                    <p>Address <span>*</span></p>
-                                    <input type="text" placeholder="Street Address">
-                                    <input type="text" placeholder="Apartment. suite, unite ect ( optinal )">
-                                </div>
-                                <div class="checkout__form__input">
-                                    <p>Town/City <span>*</span></p>
-                                    <input type="text">
-                                </div>
-                                <div class="checkout__form__input">
-                                    <p>Country/State <span>*</span></p>
-                                    <input type="text">
-                                </div>
-                                <div class="checkout__form__input">
-                                    <p>Postcode/Zip <span>*</span></p>
-                                    <input type="text">
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-md-6 col-sm-6">
+                             <div class="col-lg-6 col-md-6 col-sm-6">
                                 <div class="checkout__form__input">
                                     <p>Phone <span>*</span></p>
-                                    <input type="text">
+                                    <input type="text"
+                                     name="phone" 
+                                     value="{{user.cart.phone}}"
+                                     required>
                                 </div>
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-6">
                                 <div class="checkout__form__input">
-                                    <p>Email <span>*</span></p>
-                                    <input type="text">
+                                    <p>House Name <span>*</span></p>
+                                    <input type="text"
+                                     name="houseName" 
+                                     required
+                                     {{!-- value="{{address.houseName}}" --}}
+                                     >
                                 </div>
                             </div>
-                            <div class="col-lg-12">
-                                <div class="checkout__form__checkbox">
-                                    <label for="acc">
-                                        Create an acount?
-                                        <input type="checkbox" id="acc">
-                                        <span class="checkmark"></span>
-                                    </label>
-                                    <p>Create am acount by entering the information below. If you are a returing
-                                        customer login at the <br />top of the page</p>
-                                    </div>
-                                    <div class="checkout__form__input">
-                                        <p>Account Password <span>*</span></p>
-                                        <input type="text">
-                                    </div>
-                                    <div class="checkout__form__checkbox">
-                                        <label for="note">
-                                            Note about your order, e.g, special noe for delivery
-                                            <input type="checkbox" id="note">
-                                            <span class="checkmark"></span>
-                                        </label>
-                                    </div>
-                                    <div class="checkout__form__input">
-                                        <p>Oder notes <span>*</span></p>
-                                        <input type="text"
-                                        placeholder="Note about your order, e.g, special noe for delivery">
-                                    </div>
+                             <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="checkout__form__input">
+                                    <p>Street <span>*</span></p>
+                                    <input type="text"
+                                     name="street" 
+                                     value="{{address.street}}"
+                                     required>
                                 </div>
                             </div>
-                        </div>
+
+  <div class="col-lg-6 col-md-6 col-sm-6">
+                               
+                                <div class="checkout__form__input">
+                                    <p>Town/City <span>*</span></p>
+                                    <input type="text"
+                                    name="city"
+                                    required>
+                                </div>
+                                </div>
+
+                                 <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="checkout__form__input">
+                                    <p>Postcode/Zip <span>*</span></p>
+                                    <input type="text"
+                                    name="pincode" 
+                                    required>
+                                </div>
+                                </div>
+                         
+                           
+                           
+                            </div>
+                            
+                           
+                           
+                          
+                           
+                            </div>
+                        
                         <div class="col-lg-4">
                             <div class="checkout__order">
                                 <h5>Your order</h5>
@@ -114,42 +150,96 @@
                                             <span class="top__text">Product</span>
                                             <span class="top__text__right">Total</span>
                                         </li>
-                                        <li>01. Chain buck bag <span>$ 300.0</span></li>
-                                        <li>02. Zip-pockets pebbled<br /> tote briefcase <span>$ 170.0</span></li>
-                                        <li>03. Black jean <span>$ 170.0</span></li>
-                                        <li>04. Cotton shirt <span>$ 110.0</span></li>
+                                        {{#each user.cart.cart}}
+                                        <li>{{this.product_id.name}} <span>{{this.product_id.price}}</span>
+                                         <a href="/deleteProductCheckout/{{this.product._id}}" class="delProduct"
+                          class="o-card__del far fa-trash-alt"></a></li>
+                                       {{/each}}
                                     </ul>
                                 </div>
                                 <div class="checkout__order__total">
                                     <ul>
-                                        <li>Subtotal <span>$ 750.0</span></li>
-                                        <li>Total <span>$ 750.0</span></li>
+                                        <li>Subtotal <span>{{subTotal}}</span></li>
+                                        <li>Discount <span>{{discount}}</span></li>
+                                        <li>Total <span>{{totalPrice}}</span></li>
                                     </ul>
                                 </div>
-                                <div class="checkout__order__widget">
-                                    <label for="o-acc">
-                                        Create an acount?
-                                        <input type="checkbox" id="o-acc">
-                                        <span class="checkmark"></span>
-                                    </label>
-                                    <p>Create am acount by entering the information below. If you are a returing customer
-                                    login at the top of the page.</p>
-                                    <label for="check-payment">
-                                        Cheque payment
-                                        <input type="checkbox" id="check-payment">
-                                        <span class="checkmark"></span>
-                                    </label>
-                                    <label for="paypal">
-                                        PayPal
-                                        <input type="checkbox" id="paypal">
-                                        <span class="checkmark"></span>
-                                    </label>
-                                </div>
-                                <button type="submit" class="site-btn">Place oder</button>
+                               <div class="route-box__g1">
+                    <p>{{message}}</p>
+                    {{#if message}}
+                    <a class="route-box__link" href="/products"><i class="fas fa-long-arrow-alt-left"></i>
+
+                      <span>CONTINUE SHOPPING</span></a>
+                  </div>
+                  {{else}}
+                </div>
+                <div class="o-summary__section u-s-m-b-30">
+                  <div class="o-summary__box">
+                    <h6 class="checkout-f__h1">PAYMENT INFORMATION</h6>
+                    {{!-- <form class="checkout-f__payment"> --}}
+                      <div class="u-s-m-b-10">
+
+                        <!--====== Radio Box ======-->
+                        <div class="radio-box">
+
+                          <input type="radio" id="cash-on-delivery" name="payment" value="COD" required />
+                          <div class="radio-box__state radio-box__state--primary">
+
+                            <label class="radio-box__label" for="cash-on-delivery">Cash on Delivery</label>
+                          </div>
+                        </div>
+                        <!--====== End - Radio Box ======-->
+
+                        <span class="gl-text u-s-m-t-6">Pay Upon Cash on
+                          delivery. (This service is only available for some
+                          countries)</span>
+                      </div>
+                      <div class="u-s-m-b-10">
+
+                        <!--====== Radio Box ======-->
+                        <div class="radio-box">
+
+                          <input type="radio" id="pay-pal" value="razorPay" name="payment" />
+                          <div class="radio-box__state radio-box__state--primary">
+
+                            <label class="radio-box__label" for="pay-pal">Online Payment</label>
+                          </div>
+                        </div>
+                        <!--====== End - Radio Box ======-->
+
+                        <span class="gl-text u-s-m-t-6">When you click "Place
+                          Order" below we'll take you to payment site to set up
+                          your billing information.</span>
+                      </div>
+                      <div class="u-s-m-b-15">
+
+                        <!--====== Check Box ======-->
+                        <div class="check-box">
+
+                          <input type="checkbox" id="term-and-condition" required />
+                          <div class="check-box__state check-box__state--primary">
+
+                            <label class="check-box__label" for="term-and-condition">I consent to the</label>
+                          </div>
+                        </div>
+                        <!--====== End - Check Box ======-->
+
+                        <a class="gl-link">Terms of Service.</a>
+                      </div>
+                     <div>
+  <br/>
+                        <button class="site-btn" type="submit">PLACE
+                          ORDER</button>
+                      </div> 
+                  </div>
+                </div>
+                {{/if}}
+              </div>
+                                {{!-- <button type="submit" class="site-btn">Place oder</button> --}}
                             </div>
                         </div>
                     </div>
-                </form> --}}
+                </form> 
             </div>
         </section>
 
@@ -177,61 +267,22 @@
                 </div>
                 <div class="u-s-m-b-30" id="addressForm">
                   <!--====== E-MAIL ======-->
-                  <div class="u-s-m-b-15">
-
-                    <label class="gl-label" for="billing-email">NAME *</label>
-
-                    <input class="input-text input-text--primary-style" type="text" name="name" id="billing-email"
-                      value="{{user.cart.name}}" data-bill="" />
-                  </div>
+                 
                   <!--====== End - E-MAIL ======-->
 
                   <!--====== PHONE ======-->
-                  <div class="u-s-m-b-15">
-
-                    <label class="gl-label" for="billing-phone">PHONE *</label>
-
-                    <input class="input-text input-text--primary-style" type="text" name="phone"
-                      value="{{user.cart.phone}}" id="billing-phone" data-bill="" />
-                  </div>
+                 
                   <!--====== End - PHONE ======-->
 
                   <!--====== Street Address ======-->
-                  <div class="u-s-m-b-15">
-
-                    <label class="gl-label" for="billing-street">HOUSE NAME
-                      *</label>
-
-                    <input class="input-text input-text--primary-style" type="text" name="houseName" required
-                      id="houseName" {{!-- value="{{address.houseName}}" --}} data-bill="" />
-                  </div>
-
-
+                 
                   <!--====== Town / City ======-->
-                  <div class="u-s-m-b-15">
-
-                    <label class="gl-label" for="billing-town-city">STREET*</label>
-
-                    <input class="input-text input-text--primary-style" type="text" required name="street" {{!--
-                      value="{{address.street}}" --}} id="street" data-bill="" />
-                  </div>
-                  <div class="u-s-m-b-15">
-
-                    <label class="gl-label" for="billing-town-city">TOWN/CITY *</label>
-
-                    <input class="input-text input-text--primary-style" type="text" required name="city" {{!--
-                      value="{{address.city}}" --}} id="city" data-bill="" />
-                  </div>
+                 
+                
                   <!--====== End - Town / City ======-->
 
                   <!--====== ZIP/POSTAL ======-->
-                  <div class="u-s-m-b-15">
 
-                    <label class="gl-label" for="billing-zip">ZIP/POSTAL CODE *</label>
-
-                    <input class="input-text input-text--primary-style" type="text" id="pincode" name="pincode" required
-                      {{!-- value="{{address.pincode}}" --}} data-bill="" />
-                  </div>
                   <!--====== End - ZIP/POSTAL ======-->
                    <div>
 

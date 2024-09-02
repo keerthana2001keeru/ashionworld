@@ -10,7 +10,8 @@ const userHandler = require("../helpers/userHelper");
 /*************************************************CART*************************************************************/
 
 const adminOrders = async function (req, res) {
-  const orders = await orderHelper.getAllOrder();
+  const orders = await orderHandler.getAllOrder();
+  console.log("oo",orders)
   res.render("admin/orders", { orders: orders });
 };
 
@@ -210,10 +211,12 @@ const failed = async function (req, res) {
 
 const couponGet = async function (req, res) {
   const userId = req.session.userid;
+  console.log("ddddddd",userId)
   const user = await userHandler.findUserById(userId);
   if (user.coupon) {
     const code = user.coupon.code;
-    res.json({ code });
+    console.log("code",code);
+    //res.json({ code });
   } else {
     const code = null;
     res.json({ code });

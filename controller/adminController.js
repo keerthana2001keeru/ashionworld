@@ -250,7 +250,6 @@ const deleteCoupon = async function (req, res) {
   }
 };
 
-
 module.exports = {
   adminPage,
   userDelete,
@@ -269,4 +268,5 @@ module.exports = {
   editCoupon,
   editcoupon,
   deleteCoupon,
+  
 };

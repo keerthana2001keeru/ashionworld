@@ -28,6 +28,7 @@ const {
   getAddress,
 
 } = require("../controller/userController");
+const { couponGet, postCoupon, removeCoupon } = require("../controller/ordersController");
 
 const router = express.Router();
 
@@ -63,5 +64,6 @@ router.get("/addWishlist/:id",checkAuth, addWishlist);
 router.get("/deleteWishlistProduct/:id", deleteWishlist);
 router.get("/add_address", add_address);
 router.put("/user/getAddress", getAddress)
+
 router.get("/logout", logout);
 module.exports = router;

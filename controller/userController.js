@@ -382,15 +382,15 @@ const cart = async function (req, res) {
     const userId = req.session.userid;
     const wishlistItems = await userHandler.getWishlist(userId);
     let isUser = true;
-   
+   console.log("wishlsititems",wishlistItems);
     res.render("user/wishlist", { items: wishlistItems, isUser: isUser ,wishlistCount ,cartCount});
   };
   
   const addWishlist = async function (req, res) {
-    console.log("ww",req.params)
+    //console.log("ww",req.params)
     const proId = req.params.id;
     const userId = req.session.userid;
-    console.log("userId",req.session.userid)
+   // console.log("userId",req.session.userid)
     const addedWishlist = await userHandler.wishlistAdd(userId, proId);
      return res.redirect("/shop" );
     // res.json({ addedWishlist });
