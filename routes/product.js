@@ -21,6 +21,7 @@ router.get("/product/:id", singleProduct) ;
 router.post("/user/search", searchProduct) ;
      
 router.get("/checkout", getCheckout);
+router.get('/search',searchProduct);
 
 
 

@@ -71,6 +71,31 @@
                                     <li><a href="/logout">Blog Details</a></li>
                                 </ul>
                             </li>
+                            <li>
+        {{!-- <form class="d-flex ms-auto" method="post" action="">
+        <div class="input-group pt-2">
+          <input type="text" class="form-control  bg-white" name="keyword" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
+          <button type="submit" class="btn btn-outline-light data-mdb-ripple-init">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+      </form> --}}
+      {{!-- <form class="d-flex ms-auto" id="searchForm">
+    <div class="input-group pt-2">
+        <input type="text" class="form-control bg-white" id="searchInput" name="keyword" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
+        <button type="submit" class="btn btn-outline-light data-mdb-ripple-init">
+            <i class="fas fa-search"></i>
+        </button>
+    </div>
+</form> --}}
+<form id="searchForm" action="/shop" method="GET">
+  <input type="text" id="searchInput" name="keyword" placeholder="Search products...">
+  <button type="submit">Search</button>
+</form>
+
+
+<div id="searchResults"></div> 
+                            </li>
                             {{!-- <li><a href="./blog.html">Blog</a></li>
                             <li><a href="./contact.html">Contact</a></li> --}}
                         </ul>
@@ -105,3 +130,27 @@
     </header>
     <!-- Header Section End -->
 </body> 
+<script>
+$(document).ready(function() {
+    $('#searchForm').submit(function(event) {
+        event.preventDefault();  // Prevent the form from submitting via the browser
+
+        let keyword = $('#searchInput').val();
+
+        $.ajax({
+            url: '/search',  // The backend route
+            method: 'GET',   // Use GET request
+            data: { keyword: keyword },  // Send the keyword as a query parameter
+            success: function(data) {
+                window.location.href='/shop?keyword=' + keyword;
+                // Clear previous results
+               // $('#searchResults').empty();
+            },
+
+          error: function(err) {
+        console.error("Error searching products:", err);
+      }
+    });
+  });
+});
+</script>

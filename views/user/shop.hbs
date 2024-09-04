@@ -238,6 +238,7 @@
                 </div>
                
                 <div class="col-lg-9 col-md-9">
+                    <div id="shopProducts">
                     <div class="row">
                         {{#each products}}
                         <div class="col-lg-4 col-md-6">
@@ -293,6 +294,7 @@
                                 <a href="#"><i class="fa fa-angle-right"></i></a>
                             </div>
                         </div>
+                    </div>
                     </div>
                 </div>
            
@@ -452,3 +454,16 @@
     <script src="js/owl.carousel.min.js"></script>
     <script src="js/jquery.nicescroll.min.js"></script>
     <script src="js/main.js"></script>
+{{!-- <div id="shopProducts">
+  <% if (products.length > 0) { %>
+    <% products.forEach(function(product) { %>
+      <div class="product-item">
+        <h3><%= product.name %></h3>
+        <p>Price: ₹<%= product.price %></p>
+        <img src="<%= product.image[0] %>" alt="<%= product.name %>">
+      </div>
+    <% }) %>
+  <% } else { %>
+    <p>No products found</p>
+  <% } %>
+</div> --}}

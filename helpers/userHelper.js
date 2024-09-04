@@ -260,12 +260,23 @@ getCart: async function (userId) {
       logger.error({ message: "error deleting cart" });
     }
   },
-  getWishlist: async function (userId) {
+  getWishlist: async function (userId, page, limit) {
+    const skip = (page -1)* limit;
     const wishlist = await User.findOne({ _id: userId })
-      .populate("wishlist.product_id")
+      .populate({
+        path:"wishlist.product_id",
+      options:{
+        skip:skip,
+        limit:limit
+      }
+      })
       .lean();
+const totalItems = wishlist.wishlist.length;
+    return{
 
-    return wishlist.wishlist;
+    items: wishlist.wishlist,
+    totalItems
+    };
   },
 
   wishlistAdd: async function (userId, proId) {

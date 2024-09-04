@@ -29,7 +29,43 @@
                 </div>
             </div>
             {{/each}}
-            {{else}}
+            <!-- Pagination Controls -->
+              <div class="pagination float-end">
+          {{#if previousPage}}
+          <a href="?page={{previousPage}}">Previous</a>
+          {{/if}}
+
+          {{#each (range totalPages)}}
+          <a href="?page={{this}}" class="{{#if (eq this ../currentPage)}}active{{/if}}">{{this}}</a>
+          {{/each}}
+
+          {{#if nextPage}}
+          <a href="?page={{previousPage}}">Next</a>
+          {{/if}}
+        </div>
+        {{else}}
+{{!-- <nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center">
+        {{#if previousPage}}
+        <li class="page-item">
+            <a class="page-link" href="?page={{previousPage}}" tabindex="-1">Previous</a>
+        </li>
+        {{/if}}
+
+        {{#each (range totalPages)}}
+        <li class="page-item {{#if (eq this ../currentPage)}}active{{/if}}">
+            <a class="page-link" href="?page={{this}}">{{this}}</a>
+        </li>
+        {{/each}}
+
+        {{#if nextPage}}
+        <li class="page-item">
+            <a class="page-link" href="?page={{nextPage}}">Next</a>
+        </li>
+        {{/if}}
+    </ul>
+</nav> --}}
+           
          <h1>Wishlist is empty</h1>
          <div class="route-box__g pt-5">
 

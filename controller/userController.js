@@ -176,24 +176,53 @@ const verifyEmail = async function (req, res) {
     logger.error({ message: "invalid token" });
   }
 };
+// const showProduct = async function (req, res) {
+//   const products = await productHandler.getAllProducts();
+//  console.log("pp",products);
+// //  console.log("oo",products.image)
+//     let isUser = true;
+//     let wishlistCount = 0;
+//     let cartCount= 0;
+//     if (req.session.user) {
+//       wishlistCount = req.session.user.wishlist.length;
+//       cartCount = req.session.user.cart.length;
+   
+//     res.render("user/shop", { products: products, isUser ,wishlistCount,cartCount});
+//     }else{
+//       res.render("user/shop", { products: products, isUser });
+//     }
+//     // res.render("user/products", { products: products });
+  
+// };
 const showProduct = async function (req, res) {
-  const products = await productHandler.getAllProducts();
- console.log("pp",products);
-//  console.log("oo",products.image)
+  try {
+    const keyword = req.query.keyword;
+    let products;
+
+    if (keyword) {
+      // Search for products if a keyword is provided
+      products = await productHandler.productSearch(keyword);
+    } else {
+      // Show all products if no keyword is provided
+      products = await productHandler.getAllProducts();
+    }
+
     let isUser = true;
     let wishlistCount = 0;
-    let cartCount= 0;
+    let cartCount = 0;
+
     if (req.session.user) {
       wishlistCount = req.session.user.wishlist.length;
       cartCount = req.session.user.cart.length;
-   
-    res.render("user/shop", { products: products, isUser ,wishlistCount,cartCount});
-    }else{
-      res.render("user/shop", { products: products, isUser });
     }
-    // res.render("user/products", { products: products });
-  
+
+    res.render("user/shop", { products: products, isUser, wishlistCount, cartCount });
+  } catch (error) {
+    console.error("Error displaying products:", error);
+    res.status(500).json({ message: "Error displaying products." });
+  }
 };
+
 const userProfile = async function (req, res) {
   try {
     const email = req.session.email;
@@ -376,15 +405,22 @@ const cart = async function (req, res) {
     }
   };
   const wishlist = async function (req, res) {
-
+const page = parseInt(req.query.page)||1;
+const limit=8;
+   
+    const userId = req.session.userid;
+    const wishlistData = await userHandler.getWishlist(userId,page,limit);
+    const wishlistItems = wishlistData.items;
+    const totalItems = wishlistData.totalItems;
     let wishlistCount = req.session.user.wishlist.length;
     let cartCount = req.session.user.cart.length;
-    const userId = req.session.userid;
-    const wishlistItems = await userHandler.getWishlist(userId);
     let isUser = true;
-   console.log("wishlsititems",wishlistItems);
-    res.render("user/wishlist", { items: wishlistItems, isUser: isUser ,wishlistCount ,cartCount});
-  };
+  const totalPages = Math.ceil(totalItems/limit);
+    res.render("user/wishlist", { items: wishlistItems, isUser: isUser ,
+      wishlistCount ,cartCount,
+    currentPage:page,
+  totalPages:totalPages});
+  }
   
   const addWishlist = async function (req, res) {
     //console.log("ww",req.params)

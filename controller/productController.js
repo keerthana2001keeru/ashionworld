@@ -26,7 +26,54 @@ console.log(req.files);
   });
 };
 
+// const searchProduct = async function (req, res) {
+//   try {
+//     // Get the search keyword from the query string (GET request)
+//     const keyword = req.query.keyword;
+//     let isUser=true;
+//     let wishlistCount = 0;
+// let cartCount = 0;
+//     if (!keyword) {
+//       const allProducts = await productHandler.getAllProducts();
+//      if(req.session.user){
+//       wishlistCount=req.session.user.wishlist.length;
+//       cartCount= req.session.user.cart.length;
+//      }
+//      return res.render("user/shop",{products:allProducts,isUser,wishlistCount,cartCount})
+//       // return res.json([]); // Return an empty array if no keyword is provided
+//     }
+   
+//     // Search products in the database that match the keyword
+//     const products = await productHandler.productSearch(keyword);
+//     if (req.session.user) {
+//       wishlistCount = req.session.user.wishlist.length;
+//       cartCount = req.session.user.cart.length;
+//     }
+//     // Return the matching products as JSON
+//      //res.json(products);
+//     res.render("user/shop",{products:products, isUser, wishlistCount,cartCount})
+//   } catch (error) {
+//     console.error("Error searching for products:", error);
+//     res.status(500).json({ message: "Error searching for products." });
+//   }
+// };
 
+const searchProduct = async function (req, res) {
+  try {
+    const keyword = req.query.keyword;
+    
+    if (!keyword) {
+      return res.json([]); // Return an empty array if no keyword is provided
+    }
+
+    const products = await productHandler.productSearch(keyword);
+
+    res.json(products);  // Send the JSON response back to the AJAX call
+  } catch (error) {
+    console.error("Error searching for products:", error);
+    res.status(500).json({ message: "Error searching for products." });
+  }
+};
 
 const adminProduct = async function (req, res) {
     const products = await productHandler.getAllProducts();
@@ -48,31 +95,31 @@ const adminProduct = async function (req, res) {
   
       // res.render("user/product", { product });
     }
-    const searchProduct = async function (req, res) {
-      try {
-        const data = req.body.search;
-        const products = await productHandler.productSearch(data)
-        if(products.length>=1){
+    // const searchProduct = async function (req, res) {
+    //   try {
+    //     const data = req.body.search;
+    //     const products = await productHandler.productSearch(data)
+    //     if(products.length>=1){
          
-            let isUser = true;
-            res.render("user/products", { products: products, isUser });
+    //         let isUser = true;
+    //         res.render("user/products", { products: products, isUser });
           
-            // res.render("user/products", { products: products });
-          }
-        else{
-          const noProduct = true
+    //         // res.render("user/products", { products: products });
+    //       }
+    //     else{
+    //       const noProduct = true
          
-            let isUser = true
-            res.render("user/products", { isUser, noProduct });
+    //         let isUser = true
+    //         res.render("user/products", { isUser, noProduct });
     
        
-            res.render("user/products", { noProduct });
-          }
-        }
-       catch (error) {
-        logger.error({ message: "error searching product" });
-      }
-    };
+    //         res.render("user/products", { noProduct });
+    //       }
+    //     }
+    //    catch (error) {
+    //     logger.error({ message: "error searching product" });
+    //   }
+    // };
     const editproduct = async function (req, res) {
       const proId = req.params.id;
       const product = await productHandler.getProduct(proId);
