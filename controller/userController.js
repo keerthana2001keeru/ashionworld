@@ -16,20 +16,15 @@ const homePage = async function (req,res){
     let isUser = true;
     wishlistCount = req.session.user.wishlist.length;
     cartCount = req.session.user.cart.length;
-    console.log("user",req.session.user)
-    console.log("ooooo",products)
-    
-    res.render("index", {isUser, products, user:req.session.user, wishlistCount,cartCount });
+    res.render("user/index", {isUser, products, user:req.session.user, wishlistCount,cartCount });
   } else {
-    res.render("index", { products });
+    res.render("user/index", { products });
   }
 }
 
-
 const loginPage = function (req, res) {
-  // res.setHeader("Cache-Control", "no-cache, no-store , must-revalidate");
+ res.setHeader("Cache-Control", "no-cache, no-store , must-revalidate");
   if (req.session.user) {
-    
     return res.redirect("/");
   } 
   else{
@@ -39,12 +34,12 @@ const loginPage = function (req, res) {
 const userLogin = async function (req, res, next) {
   try {
     const { email, password } = req.body;
-//console.log(req.body);
+
     const user = await userHandler.findUserByEmail(email);
-    //console.log("user",user);
+  
     const currentUser = user;
     if (currentUser) {
-      // Compare the plain text password with the hashed password using bcrypt
+   
       const passwordMatch = await bcrypt.compare(
         password,
         currentUser.password
@@ -101,7 +96,8 @@ const userRegister = function (req, res) {
   
 };
 
-const user_registration = async function (req, res) {
+const user_registration = async function (req, res,next) {
+  try{
   const { fullName, phone, email, password } = req.body;
 
  // const email = req.body.email;
@@ -133,6 +129,8 @@ const user_registration = async function (req, res) {
       logger.info("email sent");
       res.redirect("/verify");
     }); 
+  }} catch (err) {
+    next(err);
   }
 };
 const verify = function (req, res) {

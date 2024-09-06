@@ -1,4 +1,4 @@
-//const Razorpay = require("razorpay");
+const Razorpay = require("razorpay");
 const Order = require("../models/orderSchema");
 const userHandler = require("../helpers/userHelper");
 const User = require("../models/userSchema");
@@ -6,10 +6,10 @@ const Product = require("../models/productSchema");
 const Coupons = require("../models/couponSchema");
 const { logger } = require("../utils/logger");
 
-// var instance = new Razorpay({
-//   key_id: process.env.KEY_ID,
-//   key_secret: process.env.KEY_SECRET,
-// });
+ var instance = new Razorpay({
+   key_id: process.env.RAZORPAY_KEY_ID,
+   key_secret: process.env.RAZORPAY_KEY_SECRET,
+ });
 
 module.exports = {
   /*****************************************************************ORDERS**************************************************************/

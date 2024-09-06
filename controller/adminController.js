@@ -6,7 +6,7 @@ const { User } = require("../models/userSchema");
 const adminLoginpage = function (req, res,next) {
   try{
   if (req.session.admin) {
-    return res.render("admin/adminDashboard");
+    return res.redirect("/admin/adminDashboard");
   } else { 
     console.log("admin")
     return res.render("admin/adminLogin", {formData:{}});
@@ -28,7 +28,7 @@ async function adminLogin(req, res, next) {
         req.session.admin = admin;
         req.session.loggedIn = true;
         req.session.username = admin.fullName;
-        return res.render("admin/adminDashboard");
+        return res.redirect("/admin/adminDashboard");
       } else {
         return res.render("admin/adminLogin", { errorMessage: "Invalid password",formData:req.body });
       }
@@ -39,37 +39,48 @@ async function adminLogin(req, res, next) {
     next(err);
   }
 }
-async function adminPage(req, res, next) {
+async function adminDashboard(req, res, next) {
   res.setHeader("Cache-Control", "no-cache, no-store , must-revalidate");
-
   try {
-    if (req.session.admin) {
-      const page = parseInt(req.query.page) || 1;
-      const limit = parseInt(req.query.limit) || 5;
-      const skip = (page - 1) * limit;
-      const totalUsers = await userHandler.countUsers({ isDeleted: false });
-      const allUsers = await userHandler.findUsersWithPagination(
-        { isDeleted: false },
-        limit,
-        skip
-      );
-      const totalPages = Math.ceil(totalUsers / limit);
-
-      // const { users, totalPages, currentPage } = await userHandler.findAllUsers(page, limit);
-
-      return res.render("admin", {
-        user: allUsers,
-        totalPages: totalPages,
-        currentPage: page,
-        previousPage: page > 1 ? page - 1 : null,
-        nextPage: page < totalPages ? page + 1 : null,
-      });
-    }
+      if (req.session.admin) {
+        return res.render("admin/adminDashboard");
+      }
+       else {
+        return res.redirect("/admin/adminLogin",{formData:{}});
+      }
   } catch (err) {
     next(err);
   }
 }
+const adminBanner = async function (req, res) {
+  const products = await adminHandler.getAllProducts();
+  
+  // const images = products?.image[0]
+  // products.images = images
+  res.render("admin/view-banners", { products: products });
+ // console.log("prd",products)
+};
+const getAddBanner = function (req, res) {
+  res.render("admin/add-banner");
+};
+const addBanner = async function (req, res) {
+  //const { upload } = require("../middlewares/multer");
+  const uploadMiddleware = upload();
 
+  uploadMiddleware(req, res, async (err) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).send("Error uploading file.");
+    }
+console.log(req.body);
+console.log(req.files);
+    const fileNames = req.files.map(file=>file.filename);
+    const addedProduct = await productHandler.addProduct(req.body, fileNames);
+    if (addedProduct) {
+      res.redirect("/admin/add-banner");
+    }
+  });
+};
 async function userDelete(req, res, next) {
   try {
 
@@ -251,7 +262,7 @@ const deleteCoupon = async function (req, res) {
 };
 
 module.exports = {
-  adminPage,
+
   userDelete,
   deleteUser,
   searching,
@@ -268,5 +279,8 @@ module.exports = {
   editCoupon,
   editcoupon,
   deleteCoupon,
-  
+  adminDashboard,
+  getAddBanner,
+  addBanner,
+  adminBanner,
 };

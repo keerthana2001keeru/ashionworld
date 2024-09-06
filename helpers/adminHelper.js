@@ -2,7 +2,7 @@ const { addCoupon } = require("../controller/adminController");
 const Coupons = require("../models/couponSchema");
 const Admin = require("../models/adminSchema");
 const bcrypt = require("bcrypt");
-
+const products = require("../models/productSchema");
 async function findAdminByEmail(email) {
   try {
     return await Admin.findOne({ email: email });
@@ -11,7 +11,10 @@ async function findAdminByEmail(email) {
   }
  
 }
-
+async function getAllProducts(){
+  const allproducts= await products.find().lean();
+  return allproducts;
+}
  async function addCouponto(body) {
   console.log("body",body)
   const couponAdd = await Coupons.create({
@@ -52,4 +55,5 @@ module.exports = {
   editCoupon,
   getCoupon,
   deleteCoupon,
+  getAllProducts,
 };

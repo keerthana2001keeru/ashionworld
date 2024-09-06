@@ -7,7 +7,7 @@ const userHandler = require("../helpers/userHelper");
 
 // const deleteCart = require("../helpers/cart")
 
-/*************************************************CART*************************************************************/
+
 
 const adminOrders = async function (req, res) {
   const orders = await orderHandler.getAllOrder();
@@ -15,86 +15,7 @@ const adminOrders = async function (req, res) {
   res.render("admin/orders", { orders: orders });
 };
 
-///////////////////////////////////////////////////////////////CHECKOUT/////////////////////////////////////////////////////
 
-// const getCheckout = async function (req, res) {
-//   const userId = req.session.userid;
-//   let isUser = true;
-//   let user = await userHandler.getCart(userId);
-//   console.log("user",user)
-//   let coupon = await orderHandler.getCoupon(user.totalPrice);
-//   if (user.cart.coupon) {
-//     const eligibleCoupon = await orderHandler.showCoupon(user.cart.coupon.code);
-//     if(user.totalPrice < eligibleCoupon.totalPrice){
-//       user = await userHandler.couponRemove(userId)
-//       coupon = []
-//     }
-//   }
-//   console.log("tt",user.totalPrice)
-//   if (user.cart.cart) {
-//     let totalPrice;
-
-//     const address = user.cart.address[0];
-//     console.log("tt",user.totalPrice)
-//     if (coupon.length < 1) {
-//       totalPrice = user.totalPrice;
-//       console.log("tt",totalPrice)
-//       const subTotal = totalPrice;
-//       const discount = 0;
-//       if (totalPrice < 500) {
-//         res.render("user/checkout", {
-//           isUser,
-//           user: user,
-//           totalPrice,
-//           message: "cannot order below ₹500",
-//         });
-//       } else {
-//         res.render("user/checkout", {
-//           isUser,
-//           user: user,
-//           totalPrice,
-//           subTotal,
-//           address,
-//           discount,
-//         });
-//       }
-//     } else {
-//       //  coupon = coupon[0]
-//       if (user.cart.coupon) {
-//         totalPrice = user.totalPrice - user.cart.coupon.discount;
-//         const subTotal = user.totalPrice;
-//         const code = user.cart.coupon.code;
-//         const discount = user.cart.coupon.discount;
-//         // const discount = coupon[0].discount
-//         res.render("user/checkout", {
-//           isUser,
-//           user: user,
-//           totalPrice,
-//           subTotal,
-//           address,
-//           coupon,
-//           couponCode: code,
-//           discount,
-//         });
-//       } else {
-//         totalPrice = user.totalPrice;
-//         const subTotal = totalPrice;
-//         discount = 0;
-//         res.render("user/checkout", {
-//           isUser,
-//           user: user,
-//           totalPrice,
-//           subTotal,
-//           address,
-//           coupon,
-//           discount,
-//         });
-//       }
-//     }
-//   } else {
-//     res.redirect("/cart");
-//   }
-// };
 
 const deleteProductCheckout = async function (req, res) {
   cart.deleteCartProduct(req.session.userid, req.params.id).then(() => {
@@ -104,9 +25,11 @@ const deleteProductCheckout = async function (req, res) {
 
 const postCheckout = async function (req, res) {
   try {
+    console.log("checkout",req.body);
     const userId = req.session.userid;
     const user = await userHandler.getCart(userId);
     const cart = user.cart.cart;
+    console.log("ccc",cart);
     if (user) {
       // await userHelper.addAddress(req.body, userId);
       if (req.body.payment == "COD") {
@@ -140,6 +63,7 @@ const postCheckout = async function (req, res) {
           req.body,
           statuses
         );
+        console.log("object",order);
         if (order) {
           try {
             const orderInstance = await orderHandler.generateRazorPay(
@@ -155,7 +79,7 @@ const postCheckout = async function (req, res) {
     }
   } catch (error) {
     console.log(error);
-    // logger.error({ message: "error post checkout", error });
+     logger.error({ message: "error post checkout", error });
   }
 };
 
@@ -165,7 +89,7 @@ const verifyPayment = async function (req, res) {
   const orderId = req.body["payment[razorpay_order_id]"];
   const signature = req.body["payment[razorpay_signature]"];
 
-  let hmac = crypto.createHmac("sha256", process.env.KEY_SECRET);
+  let hmac = crypto.createHmac("sha256", process.env.RAZORPAY_KEY_SECRET);
   hmac.update(orderId + "|" + paymentId);
   const generatedSignature = hmac.digest("hex");
 
