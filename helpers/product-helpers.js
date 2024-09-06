@@ -4,7 +4,7 @@ const products = require("../models/productSchema");
 
 module.exports={
     addProduct: async function (body,fileNames) {
-        const { name, brand, category, price,description, countInStock,color } = body;
+        const { name, brand, category, price,description, countInStock,color,specification } = body;
         const productAdd = await products.create({
           name: name,
           brand: brand,
@@ -12,7 +12,7 @@ module.exports={
           description: description,
           price: price,
           color:color,
-          //specification:specification,
+          specification:specification,
           countInStock: countInStock,
           image: fileNames.map(fileName => fileName),
         });
@@ -22,6 +22,24 @@ module.exports={
       if (mongoose.Types.ObjectId.isValid(proId)) {
         const product=await products.findOne({_id: new mongoose.Types.ObjectId(proId) }).lean();
         return product;
+      }else{
+        throw new Error("Invalid Product ID");
+    }},
+    getRelatedProducts:async function (proId){
+      if (mongoose.Types.ObjectId.isValid(proId)) {
+        const currentProduct = await products.findOne({ _id: new mongoose.Types.ObjectId(proId) }).lean();
+        if (!currentProduct) {
+            throw new Error("Product not found");
+        }
+        const relatedProducts = await products.find({
+          _id: { $ne: new mongoose.Types.ObjectId(proId) }, // exclude the current product
+          $or: [
+              { category: currentProduct.category },
+              { brand: currentProduct.brand },
+              { color: currentProduct.color }
+          ]
+      }).limit(2);
+        return relatedProducts;
       }else{
         throw new Error("Invalid Product ID");
     }},

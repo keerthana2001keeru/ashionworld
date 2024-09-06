@@ -89,9 +89,10 @@ const adminProduct = async function (req, res) {
   const singleProduct = async function (req, res) {
     const productId = req.params.id;
     const product = await productHandler.getProduct(productId);
-  // console.log("prooooo",product);
+    const relatedProduct= await productHandler.getRelatedProducts(productId);
+   console.log("relprooooo",relatedProduct);
       let isUser = true;
-     return res.render("user/detailProduct", { product, isUser });
+     return res.render("user/detailProduct", { product, isUser,relatedProduct:relatedProduct });
   
       // res.render("user/product", { product });
     }

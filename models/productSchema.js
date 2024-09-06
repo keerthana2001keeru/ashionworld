@@ -28,10 +28,10 @@ const productSchema = mongoose.Schema({
       type: String,
       required: true,
     },
-    // specification: {
-    //   type: String,
+     specification: {
+       type: String,
      
-    // },
+    },
     description: {
       type: String,
     },

@@ -248,9 +248,11 @@
       <th scope="col">Image</th>
       <th scope="col">Name</th>
       <th scope="col">Brand</th>
+       <th scope="col">Color</th>
       <th scope="col">Category</th>
       <th scope="col">Stock</th>
       <th scope="col">Price</th>
+        <th scope="col">Specification</th>
        <th>Edit</th>
        <th> Delete </th>
                           </tr>
@@ -264,9 +266,11 @@
       {{!-- {{/each}} --}}
       <td>{{this.name}}</td>
       <td>{{this.brand}}</td>
+      <td>{{this.color}}</td>
       <td>{{this.category}}</td>
       <td>{{this.countInStock}}</td>
       <td>{{this.price}}</td>
+      <td>{{this.specification}}</td>
       <td><a href="/editProduct/{{this._id}}" class="fw-semibold mb-0 fs-4"><i
                                 class="far fa-pen-to-square"></i>
                                 </td>

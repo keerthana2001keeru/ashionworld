@@ -38,6 +38,10 @@ app.set("views", path.join(__dirname, "views"));
 app.set('view engine', 'hbs');
 app.engine(
   'hbs',exphbs.engine({
+    runtimeOptions: {
+      allowProtoPropertiesByDefault: true,
+      allowProtoMethodsByDefault: true
+  },
     extname:'.hbs',
     defaultLayout:'userLayout',
     layoutsDir:path.join(__dirname,'views/layout'),
