@@ -4,13 +4,15 @@ const products = require("../models/productSchema");
 
 module.exports={
     addProduct: async function (body,fileNames) {
-        const { name, brand, category, price,description, countInStock } = body;
+        const { name, brand, category, price,description, countInStock,color } = body;
         const productAdd = await products.create({
           name: name,
           brand: brand,
           category: category,
           description: description,
           price: price,
+          color:color,
+          //specification:specification,
           countInStock: countInStock,
           image: fileNames.map(fileName => fileName),
         });
@@ -27,10 +29,11 @@ module.exports={
         const allproducts= await products.find().lean();
         return allproducts;
     },
-    getHomeProducts:async function(){
-      const allproducts= await products.find().lean();
-      return allproducts;
+    getHomeProducts: async function(limit = 4) {
+      const latestProducts = await products.find().sort({ createdAt: -1 }).limit(limit).lean();
+      return latestProducts;
   },
+  
     editProduct: async function (proId, body) {
       if (mongoose.Types.ObjectId.isValid(proId)) {
         const editProduct = await products.findByIdAndUpdate(proId, body, {

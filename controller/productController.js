@@ -16,7 +16,7 @@ const addProduct = async function (req, res) {
       console.error(err);
       return res.status(500).send("Error uploading file.");
     }
-console.log(req.body);
+console.log("rr",req.body);
 console.log(req.files);
     const fileNames = req.files.map(file=>file.filename);
     const addedProduct = await productHandler.addProduct(req.body, fileNames);

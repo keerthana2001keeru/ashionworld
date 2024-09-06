@@ -8,7 +8,8 @@ const bcrypt = require("bcrypt");
 const { generateToken, verifyToken } = require("../middlewares/token");
 
 const homePage = async function (req,res){
-  const products = await productHandler.getAllProducts();
+  const products = await productHandler.getHomeProducts();
+  console.log("ppp",products);
   let isUser = false;
   let wishlistCount = 0;
   let cartCount= 0;

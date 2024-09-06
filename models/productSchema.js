@@ -14,8 +14,10 @@ const productSchema = mongoose.Schema({
     brand: {
       type: String,
       required: true,
-      
-      
+    },
+    color: {
+      type: String,
+      required: true,
     },
     price: {
       type: String,
@@ -26,6 +28,10 @@ const productSchema = mongoose.Schema({
       type: String,
       required: true,
     },
+    // specification: {
+    //   type: String,
+     
+    // },
     description: {
       type: String,
     },
