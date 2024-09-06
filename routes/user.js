@@ -1,8 +1,6 @@
 var express = require("express");
-const {
-  singleProduct,
-} = require("../controller/productController");
-
+const router = express.Router();
+const {singleProduct,} = require("../controller/productController");
 const { checkAuth } = require("../middlewares/auth");
 const {
   cart,
@@ -26,21 +24,18 @@ const {
   homePage,
   add_address,
   getAddress,
-
 } = require("../controller/userController");
 const { couponGet, postCoupon, removeCoupon } = require("../controller/ordersController");
+const { userRegisterValidation, validate } = require("../middlewares/validation");
 
-const router = express.Router();
+
 
 router.get("/", homePage);
-//   res.render("index", { title: "ecommerce" });
-// });
-
 router.get("/login", loginPage);
 router.post("/login", userLogin);
 
 router.get("/register", userRegister);
-router.post("/registration", user_registration);
+router.post("/registration",userRegisterValidation,validate, user_registration);
 
 router.get('/verify-email', verifyEmail);
 router.get('/verify', verify);
@@ -53,7 +48,7 @@ router.get("/myaccount", userProfile);
 
 
 //router.get("/checkout", checkout);
-router.get("/cart",cart);
+router.get("/cart",checkAuth,cart);
 router.get("/shop", showProduct);
 router.get("/addToCart/:id", addToCart);
 router.get("/addProductToCart/:id", addProductToCart);

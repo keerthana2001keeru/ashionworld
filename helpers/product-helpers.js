@@ -1,3 +1,4 @@
+const mongoose = require("mongoose");
 
 const products = require("../models/productSchema");
 
@@ -17,7 +18,7 @@ module.exports={
       },
     getProduct: async function(proId){
       if (mongoose.Types.ObjectId.isValid(proId)) {
-        const product=await products.findOne({_id: mongoose.Types.ObjectId(proId) }).lean();
+        const product=await products.findOne({_id: new mongoose.Types.ObjectId(proId) }).lean();
         return product;
       }else{
         throw new Error("Invalid Product ID");
@@ -26,6 +27,10 @@ module.exports={
         const allproducts= await products.find().lean();
         return allproducts;
     },
+    getHomeProducts:async function(){
+      const allproducts= await products.find().lean();
+      return allproducts;
+  },
     editProduct: async function (proId, body) {
       if (mongoose.Types.ObjectId.isValid(proId)) {
         const editProduct = await products.findByIdAndUpdate(proId, body, {

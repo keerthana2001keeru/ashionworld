@@ -4,14 +4,15 @@ const router = express.Router();
 
 const productHandler = require("../helpers/product-helpers");
 const {addProduct,getAddProduct, singleProduct,searchProduct, adminProduct, editproduct, editProduct, deleteProduct, getCheckout}= require("../controller/productController");
+const { checkAdmin } = require("../middlewares/auth");
 
 
-router.get('/add-product', getAddProduct);
+router.get('/add-product',checkAdmin, getAddProduct);
    
-router.post("/add-product",addProduct);
+router.post("/add-product",checkAdmin,addProduct);
 
-router.get("/view-products", adminProduct);
-router.get("/editProduct/:id", editproduct);
+router.get("/view-products",checkAdmin, adminProduct);
+router.get("/editProduct/:id",checkAdmin, editproduct);
 
 router.post("/edit_product/:id", editProduct);
 router.get("/deleteProduct/:id", deleteProduct);
@@ -21,6 +22,7 @@ router.get("/product/:id", singleProduct) ;
 router.post("/user/search", searchProduct) ;
      
 router.get("/checkout", getCheckout);
+
 router.get('/search',searchProduct);
 
 
