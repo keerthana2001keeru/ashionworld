@@ -20,6 +20,93 @@
     <!-- End layout styles -->
     <link rel="shortcut icon" href="../../assets/images/favicon.png" />
   </head>
+ <style>
+  .action-section {
+  position: relative;
+  display: inline-block;
+}
+
+.dropbtn {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 99999;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content a:hover {
+  background-color: #f1f1f1;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index:999991; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0, 0, 0); /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+  padding-top: 60px;
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 5% auto; /* 15% from the top and centered */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%; /* Could be more or less, depending on screen size */
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+#updateStatusBtn {
+  margin-top: 10px;
+  padding: 8px 16px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+#updateStatusBtn:hover {
+  background-color: #0056b3;
+}
+
+ </style>
   <body>
     <div class="container-scroller">
       <!-- partial:../../partials/_sidebar.html -->
@@ -240,44 +327,122 @@
                       <table class="table">
                         <thead>
                           <tr>
-                            <th>
-                              <div class="form-check form-check-muted m-0">
-                                <label class="form-check-label">
-                                  <input type="checkbox" class="form-check-input">
-                                </label>
-                              </div>
-                            </th>
-                            <th> Client Name </th>
-                            <th> Order No </th>
-                            <th> Product Cost </th>
-                          
+                            
+                            
+                            <th> Order ID </th>
+                            <th> Customer </th>
+                            <th> Products </th>
+                          <th>Total Amount</th>
                             <th> Payment Mode </th>
-                            <th> Start Date </th>
-                            <th> Payment Status </th>
+                            {{!-- <th> Start Date </th> --}}
+                            <th> Status </th>
+                            <th>Action</th>
                           </tr>
                         </thead>
                         {{#each orders}}
                         <tbody>
                           <tr>
-                            <td>
-                              <div class="form-check form-check-muted m-0">
-                                <label class="form-check-label">
-                                  <input type="checkbox" class="form-check-input">
-                                </label>
-                              </div>
-                            </td>
-                            <td>
-                              <img src="assets/images/faces/face1.jpg" alt="image" />
-                              <span class="pl-2">{{this.userid.fullName}}</span>
-                            </td>
-                            <td> 02312 </td>
+                            <td>{{this.orderid}}</td>
+                            <td> {{this.userid.fullName}} </td>
+                            <td>  <img src="img/productImages/{{this}}" alt="image" /> </td>
                             <td> {{this.totalPrice}}</td>
                           
                             <td> {{this.payment.paymentType}}</td>
-                            <td> 04 Dec 2019 </td>
+                            {{!-- <td> {{this.orderedDate}}</td> --}}
                             <td>
                               <div class="badge badge-outline-success">{{this.status}}</div>
                             </td>
+                            {{!-- <td><form action="/admin/order/{{this._id}}/status" method="POST">
+                    <select name="status" id="orderStatus">
+                       {{#each ../enumStatusValues}}
+          <option value="{{this}}" {{#if (eq this ../this.status)}}selected{{/if}}>
+            {{this}}
+          </option>
+          {{/each}}
+                    </select>
+                    <button type="submit">Update Status</button>
+                </form> </td> --}}
+                             <td>
+                              <div class="action-section">
+  <div class="dropdown">
+    <button class="dropbtn">
+      <i class="fa fa-ellipsis-v"></i> <!-- Three-dot icon -->
+    </button>
+    <div class="dropdown-content">
+            <a href="#" class="view-address" data-address="{{this.shippingAddress.houseName}}, {{this.shippingAddress.street}}, {{this.shippingAddress.city}}, {{this.shippingAddress.pincode}}">View<br/> Address</a>
+            <a href="#" class="change-status" data-orderid="{{this.orderid}}" data-currentstatus="{{this.status}}">Change<br/>Status</a>
+          </div>
+  </div>
+</div>
+
+<!-- Modal for Shipping Address -->
+<div id="addressModal" class="modal">
+    <div class="modal-dialog">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <h2>Shipping Address</h2>
+    <p>Order ID: {{this.orderid}}</p>
+   
+    <p id="shippingAddress"></p>
+  </div>
+  </div>
+</div>
+
+
+
+<!-- Modal for Changing Order Status -->
+<div id="statusModal" class="modal">
+      <div class="modal-dialog">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <h2>Change Order Status</h2>
+
+    <form action="/admin/order/{{this._id}}/status" method="POST">
+                    <select name="status" id="orderStatus">
+                       {{#each ../enumStatusValues}}
+          <option value="{{this}}" {{#if (eq this ../this.status)}}selected{{/if}}>
+            {{this}}
+          </option>
+          {{/each}}
+                    </select>
+                    <button type="submit">Update Status</button>
+                </form> 
+    {{!-- <select id="orderStatus">
+      <option value="packed">Packed</option>
+      <option value="outForDelivery">Out for Delivery</option>
+      <option value="delivered">Delivered</option>
+    </select> --}}
+    {{!-- <button id="updateStatusBtn">Update</button> --}}
+  </div>
+      </div>
+</div>
+
+                              {{!-- <div class="action-section">
+  <div class="dropdown">
+    <button class="dropbtn">
+      <i class="fa fa-ellipsis-v"></i> <!-- Three-dot icon -->
+    </button>
+    <div class="dropdown-content">
+      <a href="#" class="status-option" data-status="packed">Mark as Packed</a>
+      <a href="#" class="status-option" data-status="outForDelivery">Mark as Out for Delivery</a>
+      <a href="#" class="status-option" data-status="delivered">Mark as Delivered</a>
+        <button class="update-btn">Update</button>
+    </div>
+  </div>
+
+                              </div> --}}
+                {{!-- <form action="/admin/order/{{this._id}}/status" method="POST">
+                    <select name="status">
+                        <option value="Pending" {{#if (eq this.status 'Pending')}}selected{{/if}}>Pending</option>
+                         <option value="Placed" {{#if (eq this.status 'Placed')}}selected{{/if}}>Placed</option>
+                        <option value="Packed" {{#if (eq this.status 'Packed')}}selected{{/if}}>Packed</option>
+                        <option value="Out for Delivery" {{#if (eq this.status 'Out for Delivery')}}selected{{/if}}>Out for Delivery</option>
+                        <option value="Delivered" {{#if (eq this.status 'Delivered')}}selected{{/if}}>Delivered</option>
+                        <option value="Cancelled" {{#if (eq this.status 'Cancelled')}}selected{{/if}}>Cancelled</option>
+                    </select>
+                    <button type="submit">Update Status</button>
+                </form> --}}
+            </td>
                           </tr>
                          
                           
@@ -318,6 +483,54 @@
     <script src="../../assets/js/misc.js"></script>
     <script src="../../assets/js/settings.js"></script>
     <script src="../../assets/js/todolist.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+  // Handle "View Shipping Address" click
+  document.querySelectorAll('.view-address').forEach(function (button) {
+    button.addEventListener('click', function () {
+      const address = this.getAttribute('data-address');
+      document.getElementById('shippingAddress').innerText = address;
+      document.getElementById('addressModal').style.display = 'block';
+    });
+  });
+
+  // Handle "Change Order Status" click
+  document.querySelectorAll('.change-status').forEach(function (button) {
+    button.addEventListener('click', function () {
+      const orderId = this.getAttribute('data-orderid');
+      const currentStatus = this.getAttribute('data-currentstatus');
+      document.getElementById('orderStatus').value = currentStatus;
+      document.getElementById('statusModal').style.display = 'block';
+
+      // Update status on button click
+      document.getElementById('updateStatusBtn').onclick = function () {
+        const newStatus = document.getElementById('orderStatus').value;
+        fetch(`/admin/order/${orderId}/status`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ status: newStatus }),
+        })
+          .then(response => response.json())
+          .then(data => {
+            if (data.success) {
+              location.reload(); // Reload the page to reflect the new status
+            } else {
+              alert('Error updating status');
+            }
+          });
+      };
+    });
+  });
+
+  // Handle modal close
+  document.querySelectorAll('.modal .close').forEach(function (button) {
+    button.addEventListener('click', function () {
+      this.closest('.modal').style.display = 'none';
+    });
+  });
+});
+
+    </script>
     <!-- endinject -->
     <!-- Custom js for this page -->
     <!-- End custom js for this page -->

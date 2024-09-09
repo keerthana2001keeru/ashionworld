@@ -16,7 +16,7 @@ const addProduct = async function (req, res) {
       console.error(err);
       return res.status(500).send("Error uploading file.");
     }
-console.log("rr",req.body);
+//console.log("rr",req.body);
 console.log(req.files);
     const fileNames = req.files.map(file=>file.filename);
     const addedProduct = await productHandler.addProduct(req.body, fileNames);
@@ -90,7 +90,7 @@ const adminProduct = async function (req, res) {
     const productId = req.params.id;
     const product = await productHandler.getProduct(productId);
     const relatedProduct= await productHandler.getRelatedProducts(productId);
-   console.log("relprooooo",relatedProduct);
+   //console.log("relprooooo",relatedProduct);
       let isUser = true;
      return res.render("user/detailProduct", { product, isUser,relatedProduct:relatedProduct });
   
@@ -156,7 +156,7 @@ const adminProduct = async function (req, res) {
       const userId = req.session.userid;
       let isUser = true;
       let user = await userHandler.getCart(userId);
-      console.log("user",user)
+     // console.log("user",user)
       let coupon = await orderHandler.getCoupon(user.totalPrice);
       if (user.cart.coupon) {
         const eligibleCoupon = await orderHandler.showCoupon(user.cart.coupon.code);
@@ -173,7 +173,7 @@ const adminProduct = async function (req, res) {
     
         if (coupon.length < 1) {
           totalPrice = user.totalPrice;
-          console.log("tot",totalPrice)
+        //  console.log("tot",totalPrice)
           const subTotal = totalPrice;
           const discount = 0;
           if (totalPrice < 500) {

@@ -28,7 +28,7 @@ module.exports = {
       if (order.userid && order.userid.name) {
       }
     });
-  console.log("getAllORDERS",orders);
+  //console.log("getAllORDERS",orders);
     return orders;
   },
 

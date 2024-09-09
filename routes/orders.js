@@ -1,15 +1,16 @@
 const express = require("express");
 const { couponGet, postCoupon, removeCoupon, postCheckout, success, orders, singleOrder, adminOrders } = require("../controller/ordersController");
+const { checkAuth } = require("../middlewares/auth");
 const router = express.Router();
 
-router.put("/user/getCoupon", couponGet)
+router.put("/user/getCoupon",checkAuth, couponGet)
 
-router.post("/user/applyCoupon",  postCoupon);
-router.post("/user/removeCoupon", removeCoupon);
+router.post("/user/applyCoupon",checkAuth,  postCoupon);
+router.post("/user/removeCoupon",checkAuth, removeCoupon);
 router.post("/postCheckout", postCheckout);
-router.get("/user/success", success);
-router.get("/orders", orders);
-router.get("/orders/:id",  singleOrder);
+router.get("/user/success",checkAuth, success);
+router.get("/orders",checkAuth, orders);
+router.get("/orders/:id", checkAuth, singleOrder);
 
 
 module.exports = router;

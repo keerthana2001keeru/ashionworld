@@ -41,6 +41,7 @@ const productSchema = mongoose.Schema({
       min: [1, "Quantity must be above 1"],
       default: 0,
     },
+   // reviews: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Review' }]
   },
    { timestamps: true }
 );

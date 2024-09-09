@@ -1,5 +1,5 @@
 //const cart = require("../helpers/cart");
-const Order = require("../models/orderSchema");
+//const Order = require("../models/orderSchema");
 
 const { logger } = require("../utils/logger");
 const orderHandler = require("../helpers/orderHelper");
@@ -11,8 +11,9 @@ const userHandler = require("../helpers/userHelper");
 
 const adminOrders = async function (req, res) {
   const orders = await orderHandler.getAllOrder();
-  console.log("oo",orders)
-  res.render("admin/orders", { orders: orders });
+  const enumStatusValues = ['Pending', 'Placed', 'Packed', 'Out for Delivery', 'Delivered', 'Cancelled'];
+  res.render('admin/orders', { orders:orders, enumStatusValues });
+
 };
 
 
@@ -25,16 +26,16 @@ const deleteProductCheckout = async function (req, res) {
 
 const postCheckout = async function (req, res) {
   try {
-    console.log("checkout",req.body);
+    
     const userId = req.session.userid;
     const user = await userHandler.getCart(userId);
     const cart = user.cart.cart;
-    console.log("ccc",cart);
+ 
     if (user) {
       // await userHelper.addAddress(req.body, userId);
       if (req.body.payment == "COD") {
         const statuses = {
-          orderStatus: "placed",
+          orderStatus: "Placed",
           payStatus: "pending",
         };
         const newOrder = await orderHandler.createOrder(
@@ -63,7 +64,7 @@ const postCheckout = async function (req, res) {
           req.body,
           statuses
         );
-        console.log("object",order);
+       // console.log("object",order);
         if (order) {
           try {
             const orderInstance = await orderHandler.generateRazorPay(
@@ -102,16 +103,16 @@ const verifyPayment = async function (req, res) {
       //   { new: true }
       // );
       const statuses = {
-        orderStatus: "placed",
+        orderStatus: "Placed",
         payStatus: "success",
       };
-      const updatedOrder = await orderHelper.updateOrder(
+      const updatedOrder = await orderHandler.updateOrder(
         orderIdToUpdate,
         statuses,
         userId,
         orderId
       );
-      await userHelper.couponRemove(userId)
+      await userHandler.couponRemove(userId)
       return res.json({ status: true });
     } catch (err) {
       console.error(err);
@@ -135,11 +136,11 @@ const failed = async function (req, res) {
 
 const couponGet = async function (req, res) {
   const userId = req.session.userid;
-  console.log("ddddddd",userId)
+
   const user = await userHandler.findUserById(userId);
   if (user.coupon) {
     const code = user.coupon.code;
-    console.log("code",code);
+
     //res.json({ code });
   } else {
     const code = null;
@@ -189,7 +190,7 @@ const orders = async function (req, res) {
   let isUser = true;
   let orders = await orderHandler.getOrder(userId);
   orders = orders.reverse();
-  console.log("orders",orders);
+ // console.log("orders",orders);
   res.render("user/orders", { orders: orders, isUser });
 };
 
