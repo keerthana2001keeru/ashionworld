@@ -41,7 +41,17 @@ const productSchema = mongoose.Schema({
       min: [1, "Quantity must be above 1"],
       default: 0,
     },
-   // reviews: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Review' }]
+    reviews: [
+      {
+        user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+        name: String, // Reviewer name
+        rating: { type: Number, required: true },
+        comment: String,
+        date: { type: Date, default: Date.now },
+      },
+    ],
+    avgRating: { type: Number, default: 0 },
+    numReviews: { type: Number, default: 0 },   
   },
    { timestamps: true }
 );

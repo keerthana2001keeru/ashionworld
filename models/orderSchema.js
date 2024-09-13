@@ -36,6 +36,7 @@ const orderSchema = mongoose.Schema(
           ref: "Products",
         },
         quantity: { type: Number, required: true },
+        
       },
     ],
 
@@ -62,6 +63,10 @@ const orderSchema = mongoose.Schema(
       paymentId: String,
       paymentStatus: String,
     },
+    // placedDate: Date,
+    // packedDate: Date,
+    // outForDeliveryDate: Date,
+    // deliveredDate: Date,
     orderedDate: { type: Date, default: Date.now() },
   }
   // { timestamps: true }

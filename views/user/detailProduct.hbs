@@ -61,6 +61,20 @@
                             <i class="fa fa-star"></i>
                             <span>( 138 reviews )</span>
                         </div>
+                        <div class="product__rating">
+  <p>Average Rating: {{product.avgRating}} / 5</p>
+  <p>{{product.numReviews}} Reviews</p>
+
+  {{#each product.reviews}}
+  <div class="review">
+    <strong>{{this.name}}</strong>
+    <span>{{this.rating}} / 5</span>
+    <p>{{this.comment}}</p>
+    <small>{{this.date}}</small>
+  </div>
+  {{/each}}
+</div>
+
                         <div class="product__details__price">RS {{product.price}} <span>$ 83.0</span></div>
                         <p></p>
                         <div class="product__details__button">

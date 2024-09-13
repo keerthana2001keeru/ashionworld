@@ -1,4 +1,5 @@
 //const multer = require('multer');
+const products = require("../models/productSchema");
 const productHandler = require("../helpers/product-helpers");
 const {upload} = require("../middlewares/multer");
 const orderHandler = require("../helpers/orderHelper");
@@ -165,7 +166,7 @@ const adminProduct = async function (req, res) {
           coupon = []
         }
       }
-      console.log("tt",user.totalPrice)
+      //console.log("tt",user.totalPrice)
       if (user.cart.cart) {
         let totalPrice;
     
@@ -228,6 +229,37 @@ const adminProduct = async function (req, res) {
         }
       } else {
         res.redirect("/cart");
+      }
+    };
+    const submitReview = async (req, res) => {
+      const { productId, rating, comment } = req.body;
+   console.log("pr",productId)
+      try {
+        const product = await products.findById(productId);
+    console.log("uu",comment);
+        const review = {
+          user: req.session.user._id,
+          name: req.session.user.fullName,
+          rating: Number(rating),
+          comment: comment,
+        
+        };
+    console.log("review",review);
+        product.reviews.push(review);
+        product.numReviews = product.reviews.length;
+    
+        // Calculate average rating
+        product.avgRating =
+          product.reviews.reduce((acc, item) => item.rating + acc, 0) /
+          product.reviews.length;
+    
+        await product.save();
+        console.log("productId")
+        res.redirect('/orders')
+       // res.redirect(`/product/${productId}`);
+      } catch (error) {
+        console.error("Error submitting review:", error);
+        res.status(500).json({ message: "Error submitting review." });
       }
     };
     
@@ -305,6 +337,7 @@ const adminProduct = async function (req, res) {
     searchProduct,
     editProduct,
     editproduct,
-    deleteProduct
+    deleteProduct,
+    submitReview,
     
   }

@@ -1,5 +1,33 @@
-
 <style>
+    .star-rating {
+    display: flex;
+    direction: row-reverse;
+    justify-content: flex-start;
+  }
+
+  .star-rating input {
+    display: none;
+  }
+
+  .star-rating label {
+    font-size: 30px;
+    color: #ccc;
+    cursor: pointer;
+    transition: color 0.2s ease-in-out;
+  }
+
+  .star-rating input:checked ~ label {
+    color: #ffc107; /* Gold color for filled stars */
+  }
+
+  .star-rating input:hover ~ label {
+    color: #ffc107; /* Change to gold color on hover */
+  }
+
+  .star-rating input:hover ~ label:hover,
+  .star-rating label:hover ~ label {
+    color: #ffc107; /* Hover effect for all previous stars */
+  }
 .order-tracking {
   display: flex;
   justify-content: space-between;
@@ -42,67 +70,108 @@
   background: #4caf50;
 }
 </style>
+
 {{> userHeader}}
 
 <div class="container mt-3 mt-md-5" style="background-color: rgb(255, 240, 252);">
   <h2 class="text-charcoal hidden-sm-down">My Orders</h2>
-  {{!-- <h5 class="text-charcoal hidden-md-up">Your Orders</h5> --}}
   {{#if noOrder}}
-  <div>
-    <h1> Order Something</h1>
-  </div>
+    <div>
+      <h1> Order Something</h1>
+    </div>
   {{else}}
     {{#each orders}}
-   
     <div class="row">
-        <div class="col-12">
+      <div class="col-12">
         <div class="list-group mb-5">
-            <div class="list-group-item p-3 bg-snow" style="position: relative;">
+          <div class="list-group-item p-3 bg-snow" style="position: relative;">
             <div class="row w-100 no-gutters">
-                <div class="col-6 col-md">
+              <div class="col-6 col-md">
                 <h6 class="text-charcoal mb-0 w-100">Order Number</h6>
-                <a
-                    href=""
-                    class="text-pebble mb-0 w-100 mb-2 mb-md-0"
-                >{{this.orderid}}</a>
-                <img src="img/productImages/{{this.image.[0]}}">
-                <a href="img/productImages/{{this.image.[0]}}">img/productImages/{{this.products.[0].image.[0]}}</a>
-                </div>
-                <div class="col-6 col-md">
+                <a href="" class="text-pebble mb-0 w-100 mb-2 mb-md-0">{{this.orderid}}</a>
+              </div>
+              <div class="col-6 col-md">
                 <h6 class="text-charcoal mb-0 w-100">Date</h6>
                 <p class="text-pebble mb-0 w-100 mb-2 mb-md-0">{{this.orderedDate}}</p>
-                </div>
-                <div class="col-6 col-md">
+              </div>
+              <div class="col-6 col-md">
                 <h6 class="text-charcoal mb-0 w-100">Total</h6>
                 <p class="text-pebble mb-0 w-100 mb-2 mb-md-0">₹{{this.totalPrice}}</p>
-                </div>
-                <div class="col-6 col-md">
+              </div>
+              <div class="col-6 col-md">
                 <h6 class="text-charcoal mb-0 w-100">Order Status</h6>
                 <p class="text-pebble mb-0 w-100 mb-2 mb-md-0">{{this.status}}</p>
+              </div>
+              
+              {{!-- <div class="order-tracking col-12">
+                <ul class="tracking-steps">
+                  <li class="step {{#if (eq this.status 'Placed')}}active{{/if}}">Placed</li>
+                  <li class="step {{#if (eq this.status 'Packed')}}active{{/if}}">Packed</li>
+                  <li class="step {{#if (eq this.status 'Out for Delivery')}}active{{/if}}">Out for Delivery</li>
+                  <li class="step {{#if (eq this.status 'Delivered')}}active{{/if}}">Delivered</li>
+                </ul>
+              </div> --}}
+              
+              <div class="col-12">
+                <h6>Products in this Order</h6>
+                <div class="row">
+                  {{#each this.products}}
+                  <div class="col-12 col-md-6">
+                    <h6>Product ID: {{this.product_id}}</h6>
+                    <img src="/img/productImages/{{this.image.[0]}}" alt="Product Image" class="img-fluid mb-2">
+                    <p><strong>Product Name:</strong> {{this.name}}</p>
+                  </div>
+                  {{/each}}
                 </div>
-                <div class="order-tracking"></div>
-  <ul class="tracking-steps">
-    <li class="step {{#if (eq order.status 'Placed')}}active{{/if}}">Placed</li>
-    <li class="step {{#if (eq order.status 'Packed')}}active{{/if}}">Packed</li>
-    <li class="step {{#if (eq order.status 'Out for Delivery')}}active{{/if}}">Out for Delivery</li>
-    <li class="step {{#if (eq order.status 'Delivered')}}active{{/if}}">Delivered</li>
-  </ul>
-</div>
-                <div class="col-12 col-md-3">
+              </div>
+              
+              <div class="col-12 col-md-3">
                 <a href="/orders/{{this._id}}" class="btn btn-primary w-100">View Order</a>
-                </div>
-            </div>
+              </div>
+
+              {{#each this.products}}
+              <div class="col-12 mt-3">
+                <h6>Product Review</h6>
+                <form id="reviewForm" action="/submitReview" method="POST">
+                  <input type="hidden" name="productId" value="{{this.product_id}}" />
+                  <label for="rating">Rating (out of 5):</label>
+                  {{!-- <select name="rating" id="rating" required>
+                    <option value="5">5</option>
+                    <option value="4">4</option>
+                    <option value="3">3</option>
+                    <option value="2">2</option>
+                    <option value="1">1</option>
+                  </select> --}}
+                  <div class="star-rating">
+  <input type="radio" id="1-stars" name="rating" value="1" required />
+  <label for="1-stars" class="star">&#9733;</label>
+  
+  <input type="radio" id="2-stars" name="rating" value="2" required />
+  <label for="2-stars" class="star">&#9733;</label>
+  
+  <input type="radio" id="3-stars" name="rating" value="3" required />
+  <label for="3-stars" class="star">&#9733;</label>
+  
+  <input type="radio" id="4-stars" name="rating" value="4" required />
+  <label for="4-stars" class="star">&#9733;</label>
+  
+  <input type="radio" id="5-star" name="rating" value="5" required />
+  <label for="5-star" class="star">&#9733;</label>
+</div>
+                  <label for="comment">Review:</label>
+                  <textarea name="comment" id="comment" rows="4" required></textarea>
+                  <button type="submit" class="btn btn-success mt-2">Submit Review</button>
+                </form>
+              </div>
+              {{/each}}
 
             </div>
-            
+          </div>
         </div>
-        </div>
-
-    
-        
+      </div>
     </div>
     {{/each}}
-    {{/if}}
+  {{/if}}
 </div>
 
 <div class="p-3 hidden-md-up"></div>

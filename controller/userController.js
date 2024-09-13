@@ -196,6 +196,12 @@ const verifyEmail = async function (req, res) {
 const showProduct = async function (req, res) {
   try {
     const keyword = req.query.keyword;
+    const category = req.query.category;
+    const minPrice = req.query.minPrice;
+    const maxPrice = req.query.maxPrice;
+    const sizes = req.query.sizes; // Assuming sizes are passed as an array
+
+    let filter = {};
     let products;
 
     if (keyword) {
@@ -211,6 +217,7 @@ const showProduct = async function (req, res) {
     let cartCount = 0;
 
     if (req.session.user) {
+      isUser = true;
       wishlistCount = req.session.user.wishlist.length;
       cartCount = req.session.user.cart.length;
     }
