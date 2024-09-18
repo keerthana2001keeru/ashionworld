@@ -18,10 +18,10 @@ module.exports = {
 
       .populate("products")
       .lean();
-      console.log("orderss",order)
+    //  console.log("orderss",order)
       order.forEach(order => {
         order.products.forEach(product => {
-          console.log(product);  // Log each product details
+         // console.log(product);  // Log each product details
         });
       });
       

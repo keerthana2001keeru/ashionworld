@@ -102,7 +102,9 @@
                 <h6 class="text-charcoal mb-0 w-100">Order Status</h6>
                 <p class="text-pebble mb-0 w-100 mb-2 mb-md-0">{{this.status}}</p>
               </div>
-              
+               <div class="col-12 col-md-3"></div>
+                   <a href="/downloadInvoice/{{this._id}}" class="btn btn-secondary">Download Invoice</a>
+               </div>
               {{!-- <div class="order-tracking col-12">
                 <ul class="tracking-steps">
                   <li class="step {{#if (eq this.status 'Placed')}}active{{/if}}">Placed</li>
@@ -121,6 +123,7 @@
                     <img src="/img/productImages/{{this.image.[0]}}" alt="Product Image" class="img-fluid mb-2">
                     <p><strong>Product Name:</strong> {{this.name}}</p>
                   </div>
+                 
                   {{/each}}
                 </div>
               </div>
@@ -132,16 +135,10 @@
               {{#each this.products}}
               <div class="col-12 mt-3">
                 <h6>Product Review</h6>
-                <form id="reviewForm" action="/submitReview" method="POST">
+                <form class="reviewForm" action="/submitReview" method="post" enctype="multipart/form-data">
                   <input type="hidden" name="productId" value="{{this.product_id}}" />
                   <label for="rating">Rating (out of 5):</label>
-                  {{!-- <select name="rating" id="rating" required>
-                    <option value="5">5</option>
-                    <option value="4">4</option>
-                    <option value="3">3</option>
-                    <option value="2">2</option>
-                    <option value="1">1</option>
-                  </select> --}}
+                 
                   <div class="star-rating">
   <input type="radio" id="1-stars" name="rating" value="1" required />
   <label for="1-stars" class="star">&#9733;</label>
@@ -160,6 +157,18 @@
 </div>
                   <label for="comment">Review:</label>
                   <textarea name="comment" id="comment" rows="4" required></textarea>
+                  <div class="row col-lg-6">
+                   <label for="reviewImage">Upload Image:</label>
+      <input 
+         class="form-control"
+      type="file"
+       name="reviewImage"
+        id="reviewImage"
+         {{!-- accept="image/*"  --}}
+         placeholder="Image"
+        multiple
+         data-sb-validations="required"
+         /></div>
                   <button type="submit" class="btn btn-success mt-2">Submit Review</button>
                 </form>
               </div>

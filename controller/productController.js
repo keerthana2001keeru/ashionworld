@@ -1,7 +1,8 @@
-//const multer = require('multer');
+
 const products = require("../models/productSchema");
 const productHandler = require("../helpers/product-helpers");
 const {upload} = require("../middlewares/multer");
+const {uploadreview} = require("../middlewares/reviewMulter");
 const orderHandler = require("../helpers/orderHelper");
 const userHandler = require("../helpers/userHelper");
 const getAddProduct = function (req, res) {
@@ -9,7 +10,7 @@ const getAddProduct = function (req, res) {
 };
 
 const addProduct = async function (req, res) {
-  //const { upload } = require("../middlewares/multer");
+  
   const uploadMiddleware = upload();
 
   uploadMiddleware(req, res, async (err) => {
@@ -232,36 +233,53 @@ const adminProduct = async function (req, res) {
       }
     };
     const submitReview = async (req, res) => {
-      const { productId, rating, comment } = req.body;
-   console.log("pr",productId)
-      try {
-        const product = await products.findById(productId);
-    console.log("uu",comment);
+  
+        const uploadMiddleware = uploadreview();
+        uploadMiddleware(req, res, async (err) => {
+          if (err) {
+            console.error(err);
+            return res.status(500).send("Error uploading file.");
+          }
+          const { productId, rating, comment } = req.body;
+          console.log("pr",productId)
+      //console.log("rr",req.body);
+      try{
+      console.log("req",req.files);
+          
+          const product = await products.findById(productId);
+          console.log("ppid",productId);
+          console.log("pro",product)
+          if (!product) {
+            return res.status(404).json({ message: "Product not found" });
+          }
+          const fileNames =req.files ? req.files.map(file=>file.filename): [];
         const review = {
           user: req.session.user._id,
           name: req.session.user.fullName,
           rating: Number(rating),
           comment: comment,
-        
+          image: fileNames.length>0 ? fileNames : [],
         };
-    console.log("review",review);
+ 
         product.reviews.push(review);
         product.numReviews = product.reviews.length;
-    
         // Calculate average rating
         product.avgRating =
           product.reviews.reduce((acc, item) => item.rating + acc, 0) /
           product.reviews.length;
-    
         await product.save();
-        console.log("productId")
-        res.redirect('/orders')
-       // res.redirect(`/product/${productId}`);
-      } catch (error) {
+        console.log("success")
+        res.redirect('/')
+      } 
+      catch (error) {
         console.error("Error submitting review:", error);
         res.status(500).json({ message: "Error submitting review." });
       }
-    };
+     
+      })
+    }
+  
+    
     
     const deleteProductCheckout = async function (req, res) {
       cart.deleteCartProduct(req.session.userid, req.params.id).then(() => {
