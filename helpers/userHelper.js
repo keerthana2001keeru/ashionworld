@@ -1,4 +1,4 @@
-//const User= require("../models/userSchema");
+
 const bcrypt = require("bcrypt");
 const Token = require("../models/token");
 const { User } = require("../models/userSchema");
@@ -27,27 +27,9 @@ async function searchUsers(keyword) {
 }
 
 module.exports = {
-  //findUserByEmail,
- // createUser,
-  // findAllUsers,
- // deleteUserById,
   updateUserById,
-  //countUsers,
- // findUsersWithPagination,
-
   searchUsers,
 };
-
-
-
-
-
-
-
-
-
-
-
 
 module.exports={
    findUserById :async function (id) {

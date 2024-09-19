@@ -12,16 +12,16 @@ const { logger } = require("../utils/logger");
  });
 
 module.exports = {
-  /*****************************************************************ORDERS**************************************************************/
+ 
   getOrder: async function (userId) {
     const order = await Order.find({ userid: userId })
 
       .populate("products")
       .lean();
-    //  console.log("orderss",order)
+  
       order.forEach(order => {
         order.products.forEach(product => {
-         // console.log(product);  // Log each product details
+         
         });
       });
       
@@ -34,7 +34,7 @@ module.exports = {
       if (order.userid && order.userid.name) {
       }
     });
-  //console.log("getAllORDERS",orders);
+
     return orders;
   },
 
@@ -166,7 +166,7 @@ module.exports = {
     return updatedOrder;
   },
 
-  /*****************************************************************COUPONS**************************************************************/
+  
   getCoupon: async function (price) {
     const coupons = await Coupons.find().lean();
     const matchCoupon = coupons.filter((coupon) => {
