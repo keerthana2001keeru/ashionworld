@@ -28,49 +28,21 @@ console.log(req.files);
   });
 };
 
-// const searchProduct = async function (req, res) {
-//   try {
-//     // Get the search keyword from the query string (GET request)
-//     const keyword = req.query.keyword;
-//     let isUser=true;
-//     let wishlistCount = 0;
-// let cartCount = 0;
-//     if (!keyword) {
-//       const allProducts = await productHandler.getAllProducts();
-//      if(req.session.user){
-//       wishlistCount=req.session.user.wishlist.length;
-//       cartCount= req.session.user.cart.length;
-//      }
-//      return res.render("user/shop",{products:allProducts,isUser,wishlistCount,cartCount})
-//       // return res.json([]); // Return an empty array if no keyword is provided
-//     }
-   
-//     // Search products in the database that match the keyword
-//     const products = await productHandler.productSearch(keyword);
-//     if (req.session.user) {
-//       wishlistCount = req.session.user.wishlist.length;
-//       cartCount = req.session.user.cart.length;
-//     }
-//     // Return the matching products as JSON
-//      //res.json(products);
-//     res.render("user/shop",{products:products, isUser, wishlistCount,cartCount})
-//   } catch (error) {
-//     console.error("Error searching for products:", error);
-//     res.status(500).json({ message: "Error searching for products." });
-//   }
-// };
+
 
 const searchProduct = async function (req, res) {
   try {
     const keyword = req.query.keyword;
     
     if (!keyword) {
-      return res.json([]); // Return an empty array if no keyword is provided
+      return res.json([]); 
+      // Return an empty array if no keyword is provided
     }
 
     const products = await productHandler.productSearch(keyword);
 
-    res.json(products);  // Send the JSON response back to the AJAX call
+    res.json(products); 
+     // Send the JSON response back to the AJAX call
   } catch (error) {
     console.error("Error searching for products:", error);
     res.status(500).json({ message: "Error searching for products." });
@@ -83,7 +55,7 @@ const adminProduct = async function (req, res) {
     // const images = products?.image[0]
     // products.images = images
     res.render("admin/view-products", { products: products });
-   // console.log("prd",products)
+   
   };
   
  
@@ -92,37 +64,14 @@ const adminProduct = async function (req, res) {
     const productId = req.params.id;
     const product = await productHandler.getProduct(productId);
     const relatedProduct= await productHandler.getRelatedProducts(productId);
-   //console.log("relprooooo",relatedProduct);
+   
       let isUser = true;
      return res.render("user/detailProduct", { product, isUser,relatedProduct:relatedProduct });
   
-      // res.render("user/product", { product });
+      
     }
-    // const searchProduct = async function (req, res) {
-    //   try {
-    //     const data = req.body.search;
-    //     const products = await productHandler.productSearch(data)
-    //     if(products.length>=1){
-         
-    //         let isUser = true;
-    //         res.render("user/products", { products: products, isUser });
-          
-    //         // res.render("user/products", { products: products });
-    //       }
-    //     else{
-    //       const noProduct = true
-         
-    //         let isUser = true
-    //         res.render("user/products", { isUser, noProduct });
-    
-       
-    //         res.render("user/products", { noProduct });
-    //       }
-    //     }
-    //    catch (error) {
-    //     logger.error({ message: "error searching product" });
-    //   }
-    // };
+   
+ 
     const editproduct = async function (req, res) {
       const proId = req.params.id;
       const product = await productHandler.getProduct(proId);
@@ -167,7 +116,7 @@ const adminProduct = async function (req, res) {
           coupon = []
         }
       }
-      //console.log("tt",user.totalPrice)
+
       if (user.cart.cart) {
         let totalPrice;
     
@@ -175,7 +124,7 @@ const adminProduct = async function (req, res) {
     
         if (coupon.length < 1) {
           totalPrice = user.totalPrice;
-        //  console.log("tot",totalPrice)
+       
           const subTotal = totalPrice;
           const discount = 0;
           if (totalPrice < 500) {
@@ -241,14 +190,13 @@ const adminProduct = async function (req, res) {
             return res.status(500).send("Error uploading file.");
           }
           const { productId, rating, comment } = req.body;
-          console.log("pr",productId)
-      //console.log("rr",req.body);
+        
+    
       try{
-      console.log("req",req.files);
+      
           
           const product = await products.findById(productId);
-          console.log("ppid",productId);
-          console.log("pro",product)
+         
           if (!product) {
             return res.status(404).json({ message: "Product not found" });
           }
@@ -268,7 +216,7 @@ const adminProduct = async function (req, res) {
           product.reviews.reduce((acc, item) => item.rating + acc, 0) /
           product.reviews.length;
         await product.save();
-        console.log("success")
+   
         res.redirect('/')
       } 
       catch (error) {

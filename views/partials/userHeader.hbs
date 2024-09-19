@@ -21,6 +21,44 @@
     <link rel="stylesheet" href="css/slicknav.min.css" type="text/css">
     <link rel="stylesheet" href="css/style.css" type="text/css">
 </head>
+<style>
+    .search-box {
+  position: relative;
+}
+
+.search-box input[type="text"] {
+  width: 250px;
+  padding: 5px 10px;
+  border: 2px solid #ececec;
+  border-radius: 20px;
+  outline: none;
+  color: #333;
+}
+
+.search-box input[type="text"]::placeholder {
+  color: #999;
+}
+
+.search-box button {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 40px;
+   {{!-- background-color: #fff;  --}}
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.search-box button i {
+  color: #333;
+}
+
+.search-box button:hover {
+  background-color: #eeeded;
+}
+</style>
     <body>
 
      <!-- Offcanvas Menu Begin -->
@@ -59,18 +97,11 @@
                 <div class="col-xl-6 col-lg-7">
                     <nav class="header__menu">
                         <ul>
-                            <li class="active"><a href="/">Home</a></li>
+                            {{!-- <li class="active"><a href="/">Home</a></li> --}}
                             {{!-- <li><a href="logout">Women’s</a></li>
                             <li><a href="#">Men’s</a></li> --}}
                             <li><a href="/shop">Shop</a></li>
-                            <li><a href="#">Pages</a>
-                                <ul class="dropdown">
-                                    <li><a href="/product-details">Product Details</a></li>
-                                    <li><a href="/cart">Shop Cart</a></li>
-                                    <li><a href="/orders">Orders</a></li>
-                                    <li><a href="/logout">logout</a></li>
-                                </ul>
-                            </li>
+                           
                             <li>
         {{!-- <form class="d-flex ms-auto" method="post" action="">
         <div class="input-group pt-2">
@@ -88,13 +119,27 @@
         </button>
     </div>
 </form> --}}
-<form id="searchForm" action="/shop" method="GET">
+<form id="searchForm"class="search-box" action="/shop" method="GET">
   <input type="text" id="searchInput" name="keyword" placeholder="Search products...">
-  <button type="submit">Search</button>
+  <button type="submit"><span class="icon_search search-switch"></span></button>
 </form>
-
+ {{!-- <div class="search-box">
+    <button type="submit"><i class="fa fa-search"></i></button>
+      <input type="text" placeholder="Search for products..." />
+      
+    </div> --}}
 
 <div id="searchResults"></div> 
+                            </li>
+                             <li><a href="#">Account</a>
+                                <ul class="dropdown">
+                                     <li><a href="/">My Profile</a></li> 
+                                         <li><a href="/orders">Orders</a></li>
+                                    <li><a href="/wishlist">wishlist</a></li>
+                                
+                                    <li><a href="/coupons">Coupons</a></li>
+                                    <li><a href="/logout">logout</a></li>
+                                </ul>
                             </li>
                             {{!-- <li><a href="./blog.html">Blog</a></li>
                             <li><a href="./contact.html">Contact</a></li> --}}
@@ -108,7 +153,7 @@
                             <a href="/register">Register </a>
                         </div>
                         <ul class="header__right__widget">
-                            <li><span class="icon_search search-switch"></span></li>
+                         
                             <li><a href="/wishlist"><span class="icon_heart_alt"></span>
                             {{#if wishlistCount}}
                                 <div class="tip">{{wishlistCount}}</div>

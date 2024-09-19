@@ -1,22 +1,25 @@
 var express = require('express');
 var router = express.Router();
-
 const productHandler = require("../helpers/product-helpers");
 const {adminProduct, addProduct}= require("../controller/productController");
-const { adminLoginpage, adminLogin, getUsers, deleteUser, userDelete, getAddCoupon, addCoupons, viewCouponList, editcoupon, editCoupon, deleteCoupon, adminDashboard, getAddBanner, addBanner, adminBanner } = require('../controller/adminController');
+const { adminLoginpage, adminLogin, getUsers, deleteUser, userDelete, getAddCoupon, addCoupons, viewCouponList, editcoupon, editCoupon, deleteCoupon, adminDashboard, getAddBanner, addBanner, adminBanner, getUserNavbar, userNavbar } = require('../controller/adminController');
 const { adminOrders } = require('../controller/ordersController');
 const { checkAdmin } = require('../middlewares/auth');
 const Order = require('../models/orderSchema');
 const { updateUserStatus } = require('../helpers/userHelper');
 
 
+//admin login
 router.get("/adminLogin",adminLoginpage);
 router.post('/adminLogin',adminLogin);
-
+//admin dashboard
 router.get('/adminDashboard',checkAdmin,adminDashboard);
-
- router.get('/userOrders',adminOrders);
- router.get('/userCoupons',checkAdmin,viewCouponList);
+//user logo
+router.get('/userNavbar',checkAdmin,getUserNavbar);
+router.post('/userNavbar',checkAdmin,userNavbar)
+//user orders
+router.get('/userOrders',adminOrders);
+router.get('/userCoupons',checkAdmin,viewCouponList);
 router.get('/add-coupon',checkAdmin,getAddCoupon)
 router.post('/add-coupon',addCoupons);
 router.get('/edit-coupon/:id',checkAdmin,editcoupon);

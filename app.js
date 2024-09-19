@@ -4,6 +4,7 @@ var createError = require('http-errors');
 
 //const upload = require('./middlewares/multer');
 const path = require('path');
+const fileUpload = require('express-fileupload');
 const session = require('express-session');
 const multer = require("multer");
 const exphbs = require('express-handlebars');
@@ -26,6 +27,7 @@ const connectDb= require('./config/connection')
 // view engine setup
 // app.set('views', path.join(__dirname, 'views'));
 // app.set('view engine', 'hbs');
+app.use(fileUpload());
 app.use(clearCache)
 app.use(session({
   secret:process.env.SESSION_SECRET,

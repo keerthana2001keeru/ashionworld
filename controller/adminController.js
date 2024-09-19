@@ -2,7 +2,9 @@ const userHandler = require("../helpers/userHelper");
 const adminHandler = require("../helpers/adminHelper");
 const bcrypt = require("bcrypt");
 const { User } = require("../models/userSchema");
-
+const fs = require('fs');
+const path = require('path');
+const Logo = require('../models/navbarSchema');
 const adminLoginpage = function (req, res,next) {
   try{
   if (req.session.admin) {
@@ -81,6 +83,45 @@ console.log(req.files);
     }
   });
 };
+const getUserNavbar = function (req, res) {
+  res.render("admin/add-logo");
+};
+const userNavbar = async function (req, res) {
+  console.log(req.files)
+    try {
+      if (!req.files || !req.files.logo) {
+        return res.status(400).send('No file uploaded.');
+      }
+ 
+      const logo = req.files.logo;
+      const uploadPath = path.join(__dirname, '../public/img/', logo.name);
+  
+      // Move the file to the desired directory
+      logo.mv(uploadPath, async (err) => {
+        if (err) {
+          console.error(err);
+          return res.status(500).send('Error uploading file.');
+        }
+  
+        // Save the logo information to the database
+        const newLogo = new Logo({
+          filename: logo.name,
+          path: '/public/img/' + logo.name,
+        });
+  
+        await newLogo.save();
+  res.render('admin/add-logo')
+      
+      });
+    } catch (error) {
+      console.error("Error uploading logo:", error);
+      res.status(500).json({ message: "Error uploading logo." });
+    }
+  };
+  
+  
+  
+
 async function userDelete(req, res, next) {
   try {
 
@@ -283,4 +324,6 @@ module.exports = {
   getAddBanner,
   addBanner,
   adminBanner,
+  getUserNavbar,
+  userNavbar,
 };
