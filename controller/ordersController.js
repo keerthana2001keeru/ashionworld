@@ -236,7 +236,7 @@ const orders = async function (req, res) {
   let isUser = true;
   let orders = await orderHandler.getOrder(userId);
   orders = orders.reverse();
- // console.log("orders",orders);
+  console.log("orders",orders);
   res.render("user/orders", { orders: orders, isUser });
 };
 

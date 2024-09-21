@@ -16,7 +16,7 @@ async function getAllProducts(){
   return allproducts;
 }
  async function addCouponto(body) {
-  console.log("body",body)
+  //console.log("body",body)
   const couponAdd = await Coupons.create({
     coupon_name: body.coupon_name,
     coupon_code: body.coupon_code,

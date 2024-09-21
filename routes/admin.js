@@ -13,7 +13,7 @@ const { updateUserStatus } = require('../helpers/userHelper');
 router.get("/adminLogin",adminLoginpage);
 router.post('/adminLogin',adminLogin);
 //admin dashboard
-router.get('/adminDashboard',checkAdmin,adminDashboard);
+router.get('/adminDashboard',adminDashboard);
 //user logo
 router.get('/userNavbar',checkAdmin,getUserNavbar);
 router.post('/userNavbar',checkAdmin,userNavbar)

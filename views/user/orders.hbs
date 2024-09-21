@@ -1,4 +1,229 @@
 <style>
+
+
+.paadding{
+    padding-left: 132px;
+    padding-top: 10px;
+
+ }
+
+ @media  (max-width: 991px) {
+    .paadding{
+        padding:0px;
+    }
+   }
+
+ .image{
+    max-width: 120px;
+height: 150px;
+
+ }
+.page-listBackground {
+     background-color: #f5f5f5;
+    padding: 10px;
+    max-height: 900px;
+     // overflow: scroll;
+ }
+ .ItemList-itemView {
+     height: auto;
+     background: #fff;
+     padding: 0 3.37% 5px 3.33%;
+     margin-top: 12px;
+ }
+ .ItemList-itemStatus {
+     margin: 0 0 15px;
+     width: 100%;
+ }
+ .ItemStatus-itemStatus {
+     display: flex;
+     flex-direction: column;
+     padding-top: 16px;
+ }
+ .ItemStatus-details {
+     padding-right: 12px;
+     padding-left: 12px;
+ }
+ .Text-Text {
+     font-family: Assistant;
+    font-size: 14px;
+     line-height: 1;
+     color: #282c3f;
+ }
+ .returnStatusInfo-container {
+     font-size: 14px;
+     line-height: 1.5;
+     color: #696e79;
+ }
+.returnStatusInfo-amount {
+     font-weight: 700;
+     color: #282c3f;
+ }
+ .ItemStatus-detailsText {
+     font-family: Assistant;
+     font-size: 14px;
+     font-weight: 700;
+     color: #ff3f6c;
+     cursor: pointer;
+ }
+.returnStatusInfo-detailsText {
+     white-space: nowrap;
+ }
+ .ProductList-itemInfoForItemList {
+     width: 100%;
+     position: relative;
+     background-color: #f5f5f5;
+     padding: 12px;
+ }
+ .ProductList-imageAndDetails {
+     position: relative;
+      display: flex;
+}
+ .ProductList-thumbnail {
+     //border: 1px solid #edeeef;
+     position: relative;
+    
+     border-radius: 2px;
+ }
+ .image-imgResponsiveNew {
+     // display: block;
+     max-width: 60px;
+     height: 70px;
+   border-radius: 2px;
+ }
+ .ProductList-details {
+     padding-left: 4.455%;
+ }
+ .ProductList-bold, .ProductList-productName {
+     font-family: Assistant;
+    font-size: 14px;
+     line-height: 1;
+     color: #282c3f;
+ }
+ .ProductList-bold {
+     font-weight: 700;
+ }
+ .ProductList-productName {
+    // padding-top: 8px;
+   
+     overflow: hidden;
+    
+   
+ }
+.ProductList-size {
+    // padding-top: 6px;
+ }
+
+ .login,
+.login:focus{
+ padding:5px 5px;
+ margin-left: 20px;
+ margin-top: 10px;
+ border-radius: 0px;
+ // color: rgb(8, 8, 8);
+ margin-top: 10px;
+ font-size: 14px;
+ border:1px solid $button-color;
+ font-weight: 600;
+ text-align: center;
+}
+.login:hover{
+ color:black;
+
+}
+
+.submitButton{
+    background-color:black;
+    display: block;
+    //width: 100%;
+    text-align: center;
+    //  padding: 12px 250px 12px 20px;
+  text-decoration: none;
+  border-color:black;
+    //  font-weight: 700;
+    //  font-size: 14px;
+     line-height: 16px;
+ font-weight: 500;
+    font-size: 16px;
+    letter-spacing: 1px;
+    display: inline-block;
+   padding: 6px 2px 8px 2px;
+    //  border-radius: 50px;
+   transition: 0.5s;
+    margin: 0px 0 0 0;
+   color: #fff;
+
+}
+
+.verticalMenu {
+    ul {
+      list-style: none;
+  
+      li {
+        padding: 2rem 0;
+        line-height: 0;
+        &:first-child {
+          line-height: 0;
+        }
+        &:last-child {
+          padding-bottom: 0;
+          line-height: 0;
+          &::before {
+            height: 0;
+          }
+        }
+        font-size: 1.2rem;
+        position: relative;
+        &::before {
+          content: "";
+          position: absolute;
+          width: 5px;
+          height: 100%;
+          background-color: rgb(164, 164, 164);
+          left: -1rem;
+        }
+      }
+      li.active {
+        &::before {
+          content: "";
+          position: absolute;
+          width: 5px;
+          height: 100%;
+          background-color:black;
+          left: -1rem;
+        }
+      }
+      li > div {
+        position: relative;
+        &::after {
+          content: "";
+          position: absolute;
+          border: 2px solid rgb(97, 97, 97);
+          top: -7px;
+          left: calc(-1.7rem + 8px);
+          width: 11px;
+          height: 11px;
+          background: rgb(255, 255, 255);
+          border-radius: 50%;
+          z-index: 2;
+        }
+      }
+      li .active {
+        position: relative;
+        &::after {
+          content: "";
+          position: absolute;
+          border: 2px solid #f2ee9e;
+          top: -7px;
+          width: 11px;
+          height: 11px;
+          background: black;
+          border-radius: 50%;
+          z-index: 2;
+          box-shadow: 0px 0px 5px black;
+        }
+      }
+    }
+  }
     .star-rating {
     display: flex;
     direction: row-reverse;
@@ -74,13 +299,170 @@
 {{> userHeader}}
 
 <div class="container mt-3 mt-md-5" style="background-color: rgb(255, 240, 252);">
-  <h2 class="text-charcoal hidden-sm-down">My Orders</h2>
+  <h2 class="text-charcoal hidden-sm-down mb-2">My Orders</h2>
+
   {{#if noOrder}}
     <div>
       <h1> Order Something</h1>
     </div>
   {{else}}
     {{#each orders}}
+     <div class="page-listBackground" key={index}>
+                    <div class="ItemList-itemView">
+                        <div class="ItemList-itemStatus">
+                            <div class="ItemStatus-itemStatus">
+                                <div class="ItemStatus-itemDetailsContainer">
+                                    <div class="ItemStatus-circleBackgroundIconWithStatus">
+                                        <div class="CustomStatusIcon-circleBackgroundIconWithStatus">
+                                            
+                                            <span class="svgImages-svg svgImages-tick CustomStatusIcon-statusIcon">
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="ItemStatus-details">
+                                        <div class="ItemStatus-title">
+                                            <span class="Text-Text">{{this.status}}</span>
+                                        </div>
+                                        <div class="returnStatusInfo-container">
+                                            <span>
+                                                <span>Your payment of</span>
+                                                <span class="returnStatusInfo-amount"> ₹{{this.totalPrice}}
+                                                </span>
+                                                <span> for the   Order ID: {{this.orderid}} has been processed successfully on {{this.orderedDate}}.</span>
+                                            </span><span class="ItemStatus-detailsText returnStatusInfo-detailsText"> 
+                                           
+                                            </span>
+                                        </div></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ProductList-itemInfoForItemList container">
+                            <div role="link" tabIndex="0">
+                                <div class="ProductList-imageAndDetails">
+                                    <div class="ProductList-thumbnail" role="link" tabIndex="0">
+                                        <div>
+                                            <div class="LazyLoad is-visible">
+                                                <picture class="image-imgResponsiveNew"></picture>
+                                                <a href="/">
+                                                    <a>
+                                                        <img src="/" class="
+                                                     img-fluid" alt="" />
+                                                    </a>
+                                                </Link>
+                                              
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="ProductList-details ProductList-content_justify">
+                                        
+                                        <div class="ProductList-size">
+                                      
+                                            Order ID: {{this.orderid}}
+                                            <br/>
+                                           
+                                            Ordered Date :  {{this.orderedDate}}
+                                            <br/>
+                                            Delivery by:  {{this.orderedDate}}
+                                            <br/>
+                                            
+                                              <div class="col-12">
+                <h6>Products in this Order</h6>
+                <div class="row">
+                  {{#each this.products}}
+                  <div class="col-12 col-md-6">
+                    <h6>Product ID: {{this.product_id}}</h6>
+                    <img src="/img/productImages/{{this.image.[0]}}" alt="Product Image" class="img-fluid mb-2">
+                    <p><strong>Product Name:</strong> {{this.name}}</p>
+                  </div>
+                 
+                  {{/each}}
+                </div>
+              </div>
+              
+              <div class="col-12 col-md-3">
+                <a href="/orders/{{this._id}}" class="btn btn-primary w-100">View Order</a>
+              </div>
+
+              {{#each this.products}}
+              <div class="col-12 mt-3">
+                <h6>Product Review</h6>
+                <form class="reviewForm" action="/submitReview" method="post" enctype="multipart/form-data">
+                  <div class="row">
+                  <input type="hidden" name="productId" value="{{this.product_id}}" />
+                  <label for="rating">Rating (out of 5):</label>
+                 
+                  <div class="star-rating">
+  <input type="radio" id="1-stars" name="rating" value="1" required />
+  <label for="1-stars" class="star">&#9733;</label>
+  
+  <input type="radio" id="2-stars" name="rating" value="2" required />
+  <label for="2-stars" class="star">&#9733;</label>
+  
+  <input type="radio" id="3-stars" name="rating" value="3" required />
+  <label for="3-stars" class="star">&#9733;</label>
+  
+  <input type="radio" id="4-stars" name="rating" value="4" required />
+  <label for="4-stars" class="star">&#9733;</label>
+  
+  <input type="radio" id="5-star" name="rating" value="5" required />
+  <label for="5-star" class="star">&#9733;</label>
+</div>
+                  <label for="comment">Review:</label>
+                  <textarea name="comment" id="comment" rows="4" required></textarea>
+                  <div class="row col-lg-6">
+                   <label for="reviewImage">Upload Image:</label>
+      <input 
+         class="form-control"
+      type="file"
+       name="reviewImage"
+        id="reviewImage"
+         {{!-- accept="image/*"  --}}
+         placeholder="Image"
+        multiple
+         data-sb-validations="required"
+         /></div>
+                  <button type="submit" class="btn btn-success mt-2">Submit Review</button>
+                </form>
+              </div>
+              {{/each}}
+               <div class="col-12 col-md-3"></div>
+                   <a href="/downloadInvoice/{{this._id}}" class="btn btn-secondary">Download Invoice</a>
+               </div>
+                                        </div>
+
+                                       
+                       
+           
+                                      
+                                
+                         
+                          <div class="d-flex justify-content-center">
+                            
+                           
+                          </div>
+                     
+                                    </div>
+                                    <div class="ProductList-arrowIcon">
+                                        <span class="svgImages-svg svgImages-grayArrow">
+                                        </span></div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
+
+
+
+
+
+                       
+                    </div>
+                  
+
+
+                </div>
     <div class="row">
       <div class="col-12">
         <div class="list-group mb-5">
