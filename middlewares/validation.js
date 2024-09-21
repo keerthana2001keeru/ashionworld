@@ -83,7 +83,7 @@ const userUpdateValidate = [
 const validate = (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return res.status(400).render('register', { errorMessage: errors.array()[0].msg ,formData:req.body});
+    return res.status(400).render('user/register', { errorMessage: errors.array()[0].msg ,formData:req.body});
   }
   next();
 };

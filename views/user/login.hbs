@@ -1,7 +1,5 @@
 <style>
-  body{
-background: #c9ccd1; 
-}
+ 
 .form-style input{
 	border:0;
 	height:50px;
@@ -44,9 +42,9 @@ height:50px;
  {{>userHeader}}
 <div class="container">
   
-  <div class="row m-5 no-gutters shadow-lg justify-content-center">
+  <div class="row m-5 no-gutters justify-content-center">
    
-    <div class="col-lg-6 bg-white p-5">
+    <div class="col-lg-6 border border-light shadow-lg p-5">
       <h2 class="pb-3 fw-bolder">Login</h2>
       <div class="form-style">
         <form method="post" action="/login">
@@ -73,7 +71,7 @@ height:50px;
               id="exampleInputPassword1"
             />
           </div>
-          <p style="color: red;""> {{errorMessage}}</p>
+         
           <div class="pb-2">
             <button
               type="submit"
@@ -81,7 +79,7 @@ height:50px;
             >Submit</button>
           </div>
         </form>
-        <div class="sideline">OR</div>
+        {{!-- <div class="sideline">OR</div>
         <div>
           <a href="/auth/google">
           <button
@@ -97,7 +95,9 @@ height:50px;
           ><i class="ti ti-brand-meta"></i>
             Login With Facebook</button>
           </a>
-        </div>
+        </div> --}}
+
+        <div><a class="lost_pass" href="/forgot-password">forget password?</a></div>
         <div class="pt-4 text-center text-dark">
           New User?
           <a href="/register" style="color: blue;">Sign Up</a>

@@ -95,7 +95,7 @@ module.exports={
       email,
       password,
       isDeleted: false,
-      isVerified:false,
+      isVerified:true
     });
   },
   editUser: async function (userData, id) {

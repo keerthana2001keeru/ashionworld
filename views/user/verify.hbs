@@ -1,18 +1,132 @@
-<body>
-        <div class="vh-100 d-flex justify-content-center align-items-center">
-            <div class="card col-md-4 bg-white shadow-md p-5">
-                <div class="mb-4 text-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="text-success" width="75" height="75"
-                        fill="currentColor" class="bi bi-check-circle" viewBox="0 0 16 16">
-                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
-                        <path
-                            d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z" />
-                    </svg>
+
+
+
+<style>
+ 
+.form-style input{
+	border:0;
+	height:50px;
+	border-radius:0;
+  color: #000000;
+border-bottom:1px solid #ebebeb;	
+}
+.form-style input:focus{
+border-bottom:1px solid #007bff;	
+box-shadow:none;
+outline:0;
+color: #000000;
+background-color:#ebebeb;	
+}
+.sideline {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+	color:#000000;
+}
+button{
+height:50px;	
+}
+.sideline:before,
+.sideline:after {
+    content: '';
+    border-top: 1px solid #ebebeb;
+    margin: 0 20px 0 0;
+    flex: 1 0 20px;
+}
+
+.sideline:after {
+    margin: 0 0 0 20px;
+}
+</style>
+
+<script src="https://use.fontawesome.com/f59bcd8580.js"></script>
+ {{>userHeader}}
+<div class="container">
+  
+  <div class="row m-5 no-gutters justify-content-center">
+   
+    <div class="col-lg-6 border border-light shadow-lg p-5">
+      <h2 class="pb-3 fw-bolder"></h2>
+      <div class="form-style">
+        {{!-- <form method="post" action="/login">
+          <div class="form-group pb-3">
+            <input
+              type="email"
+              placeholder="Email"
+              name="email"
+              value="{{formData.email}}"
+              required
+              class="form-control"
+              id="exampleInputEmail1"
+              aria-describedby="emailHelp"
+            />
+          </div>
+          <div class="form-group pb-3">
+            <input
+              type="password"
+              name="password"
+              value="{{formData.password}}"
+              required
+              placeholder="Password"
+              class="form-control"
+              id="exampleInputPassword1"
+            />
+          </div>
+         
+          <div class="pb-2">
+            <button
+              type="submit"
+              class="btn btn-dark w-100 font-weight-bold mt-2"
+            >Submit</button>
+          </div>
+        </form> --}}
+       <section class="login_part section_padding ">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="">
+                    <div class="login_part_text text-center">
+                        <div class="login_part_text_iner">
+                            
+                            <p>An OTP has been send to you email address.<br>
+                                 Please check your email</p>
+                            <a href="/signup" class="btn_3">Back to signup page</a>
+                        </div>
+                    </div>
                 </div>
-                <div class="text-center">
-                    <h1>Email Sent !</h1>
-                    <p>We've send a link to your inbox. Kindly verify your email by clicking the link </p>
-                    <h3>Thank You</h3>
+              
+                <div class="">
+                    <div class="login_part_form">
+                        <div class="login_part_form_iner">
+                            
+                            <form class="row contact_form" method="post" action="/verify-otp">
+                                <div class="col-md-12 form-group p_star">
+                                    <input type="text" class="form-control" id="otpvalue" name="otpvalue" value=""
+                                        placeholder="Enter OTP">
+                                </div>
+                                <div class="col-md-12 form-group">
+                                    <span id="verifyotpspan"></span>
+                                    <button type="submit" value="submit" class="btn_3 btn btn-dark w-100 font-weight-bold mt-2">
+                                        Verify OTP
+                                    </button>
+                                    <a href="/resendOtp" class="btn_3 btn border-0">
+                                        Resend OTP
+                                    </a>
+                                    {{!--  --}}
+                                </div>
+                            </form>
+                            <div id="countdown" class="text-center"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
-    </body>
+        </div>
+    </section>
+      
+        
+      </div>
+
+    </div>
+  </div>
+</div>

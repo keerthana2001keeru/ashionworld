@@ -45,11 +45,11 @@ height:50px;
 
   {{>userHeader}}
 <div class="container">
-  <div class="row m-5 no-gutters shadow-lg justify-content-center">
+  <div class="row m-5 no-gutters  justify-content-center">
     
-    <div class="col-lg-6 bg-white p-5">
+    <div class="col-lg-6 shadow-lg p-5">
       <h2 class="pb-3 fw-bolder">Register</h2>
-      <h6 style="color: red;" id="errorMessage">{{errorMessage}}</h6> 
+      
       <div class="form-style">
         <form  method="post" action="/registration">
           <div class="form-group pb-3">
@@ -57,6 +57,7 @@ height:50px;
               type="text"
               placeholder="Name"
               name="fullName"
+              value="{{formData.fullName}}"
               class="form-control"
               id="name"
               aria-describedby="emailHelp"
@@ -67,6 +68,7 @@ height:50px;
               type="email"
               placeholder="Email"
               name="email"
+              value="{{formData.email}}"
               class="form-control"
               id="email"
               aria-describedby="emailHelp"
@@ -74,10 +76,11 @@ height:50px;
           </div>
           <div class="form-group pb-3">
             <input
-              type="tel"
+              type="text"
               name="phone" 
               placeholder="Phone" 
               id="phone"
+value="{{formData.phone}}"
               class="form-control"
               aria-describedby="emailHelp"
             />
@@ -88,6 +91,7 @@ height:50px;
               name="password"
               placeholder="Password"
               class="form-control"
+              value="{{formData.password}}"
               id="password"
             />
           </div>
@@ -98,7 +102,7 @@ height:50px;
             >Submit</button>
           </div>
         </form>
-        <div class="sideline">OR</div>
+        {{!-- <div class="sideline">OR</div>
         <div>
           <a href="/auth/google">
           <button
@@ -114,7 +118,7 @@ height:50px;
           ><i class="ti ti-brand-meta"></i>
             Login With Facebook</button>
           </a>
-        </div>
+        </div> --}}
         <div class="pt-4 text-center text-dark">
           Have an Account?
           <a href="/login" style="color: blue;">Sign In</a>
@@ -125,14 +129,14 @@ height:50px;
   </div>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+{{!-- <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script>
   $(document).ready(function() {
     $("form").submit(function(event) {
       var errorMessageElement = $("#errorMessage");
-      errorMessageElement.text(""); // Clear previous error messages
+      errorMessageElement.text(""); 
 
-      // Validate Name
+    
       var name = $("#name").val();
       if (name.length < 4) {
         errorMessageElement.text("Name should be more than 4 characters.");
@@ -140,7 +144,7 @@ height:50px;
         return;
       }
 
-      // Validate Email
+     
       var email = $("#email").val();
       if (email.length < 5 || email.length > 64) {
         errorMessageElement.text("Email should be between 5 and 64 characters.");
@@ -148,7 +152,7 @@ height:50px;
         return;
       }
 
-      // Validate Password
+      
       var password = $("#password").val();
       if (password.length < 5) {
         errorMessageElement.text("Password should be more than 4 characters.");
@@ -156,7 +160,7 @@ height:50px;
         return;
       }
 
-      // Validate Phone Number
+    
       var phone = $("#phone").val();
       console.log(phone)
       if (phone.length != 10 || isNaN(phone)) {
@@ -166,13 +170,13 @@ height:50px;
       }
     });
 
-    // Toggle Password Visibility
+   
     $("#togglePassword").click(function() {
       var passwordInput = $("#reg-password");
       var type = passwordInput.attr("type") === "password" ? "text" : "password";
       passwordInput.attr("type", type);
     });
   });
-</script>
+</script> --}}
 
 

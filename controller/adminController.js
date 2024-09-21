@@ -266,7 +266,7 @@ const addCoupons = async function (req, res) {
 const viewCouponList = async function (req, res) {
   const coupons = await adminHandler.getAllCoupons();
   res.render("admin/coupons", { coupons: coupons });
-  console.log("cou",coupons)
+
 };
 const editcoupon = async function (req, res) {
   const couId = req.params.id;
