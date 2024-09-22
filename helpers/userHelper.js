@@ -330,12 +330,15 @@ saveResetToken: async function (userId, resetToken, resetExpires) {
       resetPasswordToken: hashedToken,
       resetPasswordExpires: { $gt: Date.now() }, // Ensure token is not expired
     });
+   // console.log("rrr",user);
     return user;  // Returns user object if the token is valid and not expired
   } catch (err) {
     throw new Error('Error finding user by reset token');
   }
 },
 updatePassword : async function (userId, hashedPassword) {
+  console.log("hash",hashedPassword)
+  console.log("userid",userId)
   try {
     await User.findByIdAndUpdate(userId, {
       password: hashedPassword,

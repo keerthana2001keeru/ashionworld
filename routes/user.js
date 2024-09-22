@@ -50,6 +50,7 @@ router.get('/forgot-password',forgotpassword)
 router.post('/forgot-password',forgotPassword)
 router.post('/reset-password/:token',resetPassword);
 router.get('/reset-password/:token',resetpassword);
+
 router.get("/myaccount", userProfile);
 router.get('/mycoupons',myCoupons);
 //shop

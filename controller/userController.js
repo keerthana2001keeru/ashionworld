@@ -163,11 +163,9 @@ const resendOTP = async (req, res, next) => {
   }
 };
 const forgotpassword=function (req,res){
-  if (req.session.user) {
-    res.redirect("/");
-  } else {
+ 
     res.render("user/forgot-password");
-  }
+  
 }
 
 const forgotPassword = async (req, res, next) => {
@@ -195,6 +193,7 @@ console.log("yyy",user.id)
 };
 const resetpassword = async (req, res, next) => {
   const { token } = req.params;
+  console.log("object",token)
   try {
     // Find the user by reset token
     const user = await userHandler.findUserByResetToken(token);
@@ -212,8 +211,10 @@ const resetpassword = async (req, res, next) => {
 
 const resetPassword = async (req, res, next) => {
   const { token } = req.params;
+  console.log("reee",req.params.token)
   const { newPassword } = req.body;
-console.log("object",newPassword);
+console.log("object",newPassword)
+console.log("eer",token);
   try {
     // Find the user by the reset token
     const user = await userHandler.findUserByResetToken(token);
@@ -230,7 +231,7 @@ console.log("object",newPassword);
     await userHandler.clearResetToken(user._id);
 
     // Redirect to login page with success message
-    res.render('user/login', { successMessage: 'Password reset successful! You can now log in.' });
+    res.redirect('/login');
   } catch (err) {
     next(err);
   }
