@@ -65,11 +65,23 @@ const userSchema = new mongoose.Schema(
       trim: true,
       minLength: [3, "please enter a valid email"],
       maxLength: [64, "Please enter a valid email"],
+      validate: {
+        validator: function (v) {
+          return /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(v);
+        },
+        message: "Please enter a valid email",
+      },
     },
     password: {
       type: String,
       required: true,
       minLength: [4, "Password should be greater than 4 characters"],
+    },
+    resetPasswordToken:{
+      type:String,
+    },
+    resetPasswordExpires:{
+      type:Date
     },
     googleId: {
       type: String,
@@ -82,10 +94,7 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    isVerified: {
-      type: Boolean,
-      default: false,
-    },
+    
     status: {
       type: String,
       default: "active",
@@ -128,12 +137,7 @@ const userSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-    // verifyToken: {
-    //   type: String,
-    // },
-    // tokenExpiry: {
-    //   type: Date,
-    // },
+   
   
 
 //const Address = mongoose.model("Address", addressSchema);

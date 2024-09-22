@@ -307,18 +307,12 @@ height: 150px;
     </div>
   {{else}}
     {{#each orders}}
-     <div class="page-listBackground" key={index}>
+     <div class="page-listBackground">
                     <div class="ItemList-itemView">
                         <div class="ItemList-itemStatus">
                             <div class="ItemStatus-itemStatus">
                                 <div class="ItemStatus-itemDetailsContainer">
-                                    <div class="ItemStatus-circleBackgroundIconWithStatus">
-                                        <div class="CustomStatusIcon-circleBackgroundIconWithStatus">
-                                            
-                                            <span class="svgImages-svg svgImages-tick CustomStatusIcon-statusIcon">
-                                            </span>
-                                        </div>
-                                    </div>
+                                    
                                     <div class="ItemStatus-details">
                                         <div class="ItemStatus-title">
                                             <span class="Text-Text">{{this.status}}</span>
@@ -332,27 +326,16 @@ height: 150px;
                                             </span><span class="ItemStatus-detailsText returnStatusInfo-detailsText"> 
                                            
                                             </span>
-                                        </div></div>
+                                        </div>
+                                        </div>
                                 </div>
                             </div>
                         </div>
                         <div class="ProductList-itemInfoForItemList container">
-                            <div role="link" tabIndex="0">
+                            <div >
                                 <div class="ProductList-imageAndDetails">
-                                    <div class="ProductList-thumbnail" role="link" tabIndex="0">
-                                        <div>
-                                            <div class="LazyLoad is-visible">
-                                                <picture class="image-imgResponsiveNew"></picture>
-                                                <a href="/">
-                                                    <a>
-                                                        <img src="/" class="
-                                                     img-fluid" alt="" />
-                                                    </a>
-                                                </Link>
-                                              
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <div class="ProductList-thumbnail">
+                                       
                                     <div class="ProductList-details ProductList-content_justify">
                                         
                                         <div class="ProductList-size">
@@ -363,33 +346,48 @@ height: 150px;
                                             Ordered Date :  {{this.orderedDate}}
                                             <br/>
                                             Delivery by:  {{this.orderedDate}}
-                                            <br/>
-                                            
-                                              <div class="col-12">
+                                            <br/><br/>
+                                     <div class="row">
+               <div class="col-lg-3 col-md-3">
+                   <a href="/downloadInvoice/{{this._id}}" class="btn btn-secondary">Download Invoice</a>
+               </div>
+                   <div class="col-lg-3 col-md-3">
+                <a href="/orders/{{this._id}}" class="btn btn-primary">View Order</a>
+              </div>  
+                  </div>        
+                                   <br/>          
                 <h6>Products in this Order</h6>
                 <div class="row">
                   {{#each this.products}}
-                  <div class="col-12 col-md-6">
+                  <div class="col-lg-12">
                     <h6>Product ID: {{this.product_id}}</h6>
                     <img src="/img/productImages/{{this.image.[0]}}" alt="Product Image" class="img-fluid mb-2">
-                    <p><strong>Product Name:</strong> {{this.name}}</p>
+                    {{!-- <p><strong>Product Name:</strong> {{this.name}}</p> --}}
                   </div>
-                 
-                  {{/each}}
-                </div>
-              </div>
+                 <div class=" mt-3">
               
-              <div class="col-12 col-md-3">
-                <a href="/orders/{{this._id}}" class="btn btn-primary w-100">View Order</a>
-              </div>
-
-              {{#each this.products}}
-              <div class="col-12 mt-3">
-                <h6>Product Review</h6>
                 <form class="reviewForm" action="/submitReview" method="post" enctype="multipart/form-data">
                   <div class="row">
+                    <div class="col-lg-6">
+                  <label for="comment">Product Review:</label><div>
+                  <textarea name="comment" id="comment" rows="4" required></textarea></div>
+                  <div class="">
+                   <label for="reviewImage">Upload Image:</label>
+      <input 
+         class="form-control"
+      type="file"
+       name="reviewImage"
+        id="reviewImage"
+         {{!-- accept="image/*"  --}}
+         placeholder="Image"
+        multiple
+         data-sb-validations="required"
+         /></div>
+                  <button type="submit" class="btn btn-success mt-2">Submit Review</button>
+              </div> 
+                    <div class="col-lg-6">
                   <input type="hidden" name="productId" value="{{this.product_id}}" />
-                  <label for="rating">Rating (out of 5):</label>
+                  <label for="rating"> Product Rating (out of 5):</label>
                  
                   <div class="star-rating">
   <input type="radio" id="1-stars" name="rating" value="1" required />
@@ -407,63 +405,23 @@ height: 150px;
   <input type="radio" id="5-star" name="rating" value="5" required />
   <label for="5-star" class="star">&#9733;</label>
 </div>
-                  <label for="comment">Review:</label>
-                  <textarea name="comment" id="comment" rows="4" required></textarea>
-                  <div class="row col-lg-6">
-                   <label for="reviewImage">Upload Image:</label>
-      <input 
-         class="form-control"
-      type="file"
-       name="reviewImage"
-        id="reviewImage"
-         {{!-- accept="image/*"  --}}
-         placeholder="Image"
-        multiple
-         data-sb-validations="required"
-         /></div>
-                  <button type="submit" class="btn btn-success mt-2">Submit Review</button>
-                </form>
-              </div>
-              {{/each}}
-               <div class="col-12 col-md-3"></div>
-                   <a href="/downloadInvoice/{{this._id}}" class="btn btn-secondary">Download Invoice</a>
-               </div>
-                                        </div>
+</div>
 
-                                       
-                       
-           
-                                      
-                                
-                         
-                          <div class="d-flex justify-content-center">
-                            
-                           
-                          </div>
-                     
+               </form>
+              </div>
+                  {{/each}}
+                </div>
+               </div>
+
                                     </div>
-                                    <div class="ProductList-arrowIcon">
-                                        <span class="svgImages-svg svgImages-grayArrow">
-                                        </span></div>
+                                  
                                 </div>
                             </div>
                         </div>
-
-
-
-
-
-
-
-
-
-                       
                     </div>
-                  
-
-
+                
                 </div>
-    <div class="row">
+    {{!-- <div class="row">
       <div class="col-12">
         <div class="list-group mb-5">
           <div class="list-group-item p-3 bg-snow" style="position: relative;">
@@ -487,14 +445,7 @@ height: 150px;
                <div class="col-12 col-md-3"></div>
                    <a href="/downloadInvoice/{{this._id}}" class="btn btn-secondary">Download Invoice</a>
                </div>
-              {{!-- <div class="order-tracking col-12">
-                <ul class="tracking-steps">
-                  <li class="step {{#if (eq this.status 'Placed')}}active{{/if}}">Placed</li>
-                  <li class="step {{#if (eq this.status 'Packed')}}active{{/if}}">Packed</li>
-                  <li class="step {{#if (eq this.status 'Out for Delivery')}}active{{/if}}">Out for Delivery</li>
-                  <li class="step {{#if (eq this.status 'Delivered')}}active{{/if}}">Delivered</li>
-                </ul>
-              </div> --}}
+           
               
               <div class="col-12">
                 <h6>Products in this Order</h6>
@@ -546,7 +497,7 @@ height: 150px;
       type="file"
        name="reviewImage"
         id="reviewImage"
-         {{!-- accept="image/*"  --}}
+        
          placeholder="Image"
         multiple
          data-sb-validations="required"
@@ -559,10 +510,18 @@ height: 150px;
             </div>
           </div>
         </div>
-      </div>
+      </div> --}}
     </div>
     {{/each}}
   {{/if}}
 </div>
 
-<div class="p-3 hidden-md-up"></div>
+
+   {{!-- <div class="order-tracking col-12">
+                <ul class="tracking-steps">
+                  <li class="step {{#if (eq this.status 'Placed')}}active{{/if}}">Placed</li>
+                  <li class="step {{#if (eq this.status 'Packed')}}active{{/if}}">Packed</li>
+                  <li class="step {{#if (eq this.status 'Out for Delivery')}}active{{/if}}">Out for Delivery</li>
+                  <li class="step {{#if (eq this.status 'Delivered')}}active{{/if}}">Delivered</li>
+                </ul>
+              </div> --}}

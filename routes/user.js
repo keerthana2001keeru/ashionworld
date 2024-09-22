@@ -28,6 +28,8 @@ const {
   forgotPassword,
   forgotpassword,
   myCoupons,
+  resetPassword,
+  resetpassword,
 } = require("../controller/userController");
 const { couponGet, postCoupon, removeCoupon } = require("../controller/ordersController");
 const { userRegisterValidation, validate } = require("../middlewares/validation");
@@ -46,6 +48,8 @@ router.post('/verify-otp', verifyOTP);
 router.get("/resendOtp",resendOTP)
 router.get('/forgot-password',forgotpassword)
 router.post('/forgot-password',forgotPassword)
+router.post('/reset-password/:token',resetPassword);
+router.get('/reset-password/:token',resetpassword);
 router.get("/myaccount", userProfile);
 router.get('/mycoupons',myCoupons);
 //shop

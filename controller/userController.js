@@ -7,6 +7,7 @@ const productHandler = require("../helpers/product-helpers");
 const bcrypt = require("bcrypt");
 const { generateToken, verifyToken } = require("../middlewares/token");
 const {sendOTP} =require( "../services/otpSender");
+const sendEmail = require("../services/sendEmail");
 
 const homePage = async function (req,res){
   const products = await productHandler.getHomeProducts();
@@ -140,7 +141,7 @@ const verifyOTP = async (req, res, next) => {
       req.session.signupInfo = null;
       req.session.emailOTP = null;
       //successMessage: "Registration successful!"
-      return res.redirect('/');
+      return res.redirect('/login');
   } catch (error){
     return next(error);
   }
@@ -168,17 +169,19 @@ const forgotpassword=function (req,res){
     res.render("user/forgot-password");
   }
 }
+
 const forgotPassword = async (req, res, next) => {
   const { email } = req.body;
+  console.log("emao",email)
   const user = await userHandler.findUserByEmail(email);
 
   if (!user) {
-    return res.status(400).render('forgot-password', { errorMessage: 'Email not found' });
+    return res.status(400).render('admin/forgot-password', { errorMessage: 'Email not found' });
   }
 
-  const resetToken = generateResetToken();
+  const resetToken = userHandler.generateResetToken();
   const resetExpires = Date.now() + 3600000; // 1 hour from now
-
+console.log("yyy",user.id)
   await userHandler.saveResetToken(user.id, resetToken, resetExpires);
 
   const resetURL = `${req.protocol}://${req.get('host')}/reset-password/${resetToken}`;
@@ -188,8 +191,52 @@ const forgotPassword = async (req, res, next) => {
     text: `You can reset your password using this link: ${resetURL}`,
   });
 
-  res.render('forgot-password', { successMessage: 'Check your email for the password reset link' });
+  res.render('user/forgot-password', { successMessage: 'Check your email for the password reset link' });
 };
+const resetpassword = async (req, res, next) => {
+  const { token } = req.params;
+  try {
+    // Find the user by reset token
+    const user = await userHandler.findUserByResetToken(token);
+    if (!user) {
+      return res.render('user/reset-password', { errorMessage: 'Invalid or expired token' });
+    }
+
+    // Render the password reset form
+    res.render('user/reset-password', { token });
+  } catch (err) {
+    next(err);
+  }
+}
+
+
+const resetPassword = async (req, res, next) => {
+  const { token } = req.params;
+  const { newPassword } = req.body;
+console.log("object",newPassword);
+  try {
+    // Find the user by the reset token
+    const user = await userHandler.findUserByResetToken(token);
+    console.log("user",user)
+    if (!user) {
+      return res.render('user/reset-password', { errorMessage: 'Invalid or expired token' });
+    }
+
+    // Hash the new password
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    // Update the user's password and clear the reset token
+    await userHandler.updatePassword(user._id, hashedPassword);
+    await userHandler.clearResetToken(user._id);
+
+    // Redirect to login page with success message
+    res.render('user/login', { successMessage: 'Password reset successful! You can now log in.' });
+  } catch (err) {
+    next(err);
+  }
+}
+
+
 
 const myCoupons = async function (req, res) {
   const coupons = await adminHandler.getAllCoupons();
@@ -425,10 +472,17 @@ const limit=8;
     let cartCount = req.session.user.cart.length;
     let isUser = true;
   const totalPages = Math.ceil(totalItems/limit);
-    res.render("user/wishlist", { items: wishlistItems, isUser: isUser ,
+  console.log("wish",wishlistItems)
+  //res.json(wishlistItems)
+  const updatedWishlistItems = wishlistItems.map(item => {
+    item.product_id.image = item.product_id.image.map(img => img/productImages/ + img); // Add base URL to each image
+   
+  });
+  console.log("object",updatedWishlistItems)
+     res.render("user/wishlist", { items: wishlistItems,updatedWishlistItems, isUser: isUser ,
       wishlistCount ,cartCount,
-    currentPage:page,
-  totalPages:totalPages});
+     currentPage:page,
+   totalPages:totalPages});
   }
   
   const addWishlist = async function (req, res) {
@@ -605,5 +659,7 @@ const delete_address = async function (req, res) {
    editAddress,
    delete_address,
    forgotpassword,
-   myCoupons
+   myCoupons,
+   resetPassword,
+   resetpassword,
   }

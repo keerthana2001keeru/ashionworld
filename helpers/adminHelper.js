@@ -3,7 +3,7 @@ const Coupons = require("../models/couponSchema");
 const Admin = require("../models/adminSchema");
 const bcrypt = require("bcrypt");
 const products = require("../models/productSchema");
-async function findAdminByEmail(email) {
+async function findAdminByEmailId(email) {
   try {
     return await Admin.findOne({ email: email });
   } catch (error) {
@@ -49,7 +49,7 @@ async function  getAllCoupons(){
 }
 
 module.exports = {
-  findAdminByEmail,
+  findAdminByEmailId,
   addCouponto,
   getAllCoupons,
   editCoupon,
@@ -57,3 +57,4 @@ module.exports = {
   deleteCoupon,
   getAllProducts,
 };
+

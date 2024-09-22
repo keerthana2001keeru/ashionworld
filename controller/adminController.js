@@ -20,7 +20,7 @@ const adminLoginpage = function (req, res,next) {
 async function adminLogin(req, res, next) {
   try {
     const { email, password } = req.body;
-    const admin = await adminHandler.findAdminByEmail(email);
+    const admin = await adminHandler.findAdminByEmailId(email);
 
     if (admin) {
       // Compare the plain text password with the hashed password using bcrypt
