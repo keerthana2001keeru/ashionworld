@@ -211,10 +211,10 @@ const resetpassword = async (req, res, next) => {
 
 const resetPassword = async (req, res, next) => {
   const { token } = req.params;
-  console.log("reee",req.params.token)
+  
   const { newPassword } = req.body;
-console.log("object",newPassword)
-console.log("eer",token);
+
+
   try {
     // Find the user by the reset token
     const user = await userHandler.findUserByResetToken(token);
@@ -242,7 +242,7 @@ console.log("eer",token);
 const myCoupons = async function (req, res) {
   const coupons = await adminHandler.getAllCoupons();
   res.render("user/myCoupons", { coupons: coupons });
-  console.log("cou",coupons);
+ 
 };
 const showProduct = async function (req, res) {
   try {
@@ -475,12 +475,12 @@ const limit=8;
   const totalPages = Math.ceil(totalItems/limit);
   console.log("wish",wishlistItems)
   //res.json(wishlistItems)
-  const updatedWishlistItems = wishlistItems.map(item => {
-    item.product_id.image = item.product_id.image.map(img => img/productImages/ + img); // Add base URL to each image
+  // const updatedWishlistItems = wishlistItems.map(item => {
+  //   item.product_id.image = item.product_id.image.map(img => img/productImages/ + img); // Add base URL to each image
    
-  });
-  console.log("object",updatedWishlistItems)
-     res.render("user/wishlist", { items: wishlistItems,updatedWishlistItems, isUser: isUser ,
+  // });
+ // console.log("object",updatedWishlistItems)
+     res.render("user/wishlist", { items: wishlistItems, isUser: isUser ,
       wishlistCount ,cartCount,
      currentPage:page,
    totalPages:totalPages});
@@ -578,57 +578,7 @@ const delete_address = async function (req, res) {
     req.session.destroy();
     res.redirect("/");
   };
-// const verifyEmail = async function (req, res) {
-//   const token = req.query.token;
-//   const cartItems = req.session.cart;
-//   const decoded = verifyToken(token);
-//   const dbToken = await userHandler.findToken(token);
-//   if (!decoded) {
-//     return res.status(401).json({ error: "Invalid token" });
-//   }
-//   if (dbToken) {
-//     res.render("user/error");
-//   }
-//   const email = decoded.email;
-//   const verifyUser = await userHandler.updateUserStatus(email);
-//   if (verifyUser) {
-//     const addedToken = await userHandler.addToken(token); 
-//     req.session.user = true;
-//     req.session.userid = verifyUser._id;
-//     req.session.email = verifyUser.email;
-//     req.session.isVerified = verifyUser.isVerified;
-//     if (cartItems) {
-//       for (const item of cartItems) {
-//         const saveCart = await userHandler.addCartGuest(
-//           req.session.userid,
-//           item.productId,
-//           item.quantity
-//         );
-//       }
-//     }
-//     res.redirect("/");
-//   } else {
-//     logger.error({ message: "invalid token" });
-//   }
-// };
-// const showProduct = async function (req, res) {
-//   const products = await productHandler.getAllProducts();
-//  console.log("pp",products);
-// //  console.log("oo",products.image)
-//     let isUser = true;
-//     let wishlistCount = 0;
-//     let cartCount= 0;
-//     if (req.session.user) {
-//       wishlistCount = req.session.user.wishlist.length;
-//       cartCount = req.session.user.cart.length;
-   
-//     res.render("user/shop", { products: products, isUser ,wishlistCount,cartCount});
-//     }else{
-//       res.render("user/shop", { products: products, isUser });
-//     }
-//     // res.render("user/products", { products: products });
-  
-// };
+
 
   module.exports={
     updateCart,
@@ -641,15 +591,14 @@ const delete_address = async function (req, res) {
     deleteWishlist,
     logout,
     loginPage,
-    userLogin,user_registration,
+    userLogin,
+    user_registration,
     verifyOTP,
     userRegister,
     resendOTP,
     //user_registration,
     verify,
     forgotPassword,
-    //verifyEmail,
-    //verifyEmail,
     userProfile,
     homePage,
    showProduct,

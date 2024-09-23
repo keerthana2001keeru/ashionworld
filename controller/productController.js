@@ -5,6 +5,8 @@ const {upload} = require("../middlewares/multer");
 const {uploadreview} = require("../middlewares/reviewMulter");
 const orderHandler = require("../helpers/orderHelper");
 const userHandler = require("../helpers/userHelper");
+
+
 const getAddProduct = function (req, res) {
   res.render("admin/add-product");
 };
@@ -27,8 +29,6 @@ console.log(req.files);
     }
   });
 };
-
-
 
 const searchProduct = async function (req, res) {
   try {
@@ -58,8 +58,6 @@ const adminProduct = async function (req, res) {
    
   };
   
- 
-
   const singleProduct = async function (req, res) {
     const productId = req.params.id;
     const product = await productHandler.getProduct(productId);
@@ -71,7 +69,6 @@ const adminProduct = async function (req, res) {
       
     }
    
- 
     const editproduct = async function (req, res) {
       const proId = req.params.id;
       const product = await productHandler.getProduct(proId);
@@ -103,12 +100,60 @@ const adminProduct = async function (req, res) {
         res.json("error deleting product");
       }
     };
+
+    const submitReview = async (req, res) => {
+  
+      const uploadMiddleware = uploadreview();
+      uploadMiddleware(req, res, async (err) => {
+        if (err) {
+          console.error(err);
+          return res.status(500).send("Error uploading file.");
+        }
+        const { productId, rating, comment } = req.body;
+      
+  
+    try{
+    
+        
+        const product = await products.findById(productId);
+       
+        if (!product) {
+          return res.status(404).json({ message: "Product not found" });
+        }
+        const fileNames =req.files ? req.files.map(file=>file.filename): [];
+      const review = {
+        user: req.session.user._id,
+        name: req.session.user.fullName,
+        rating: Number(rating),
+        comment: comment,
+        image: fileNames.length>0 ? fileNames : [],
+      };
+
+      product.reviews.push(review);
+      product.numReviews = product.reviews.length;
+      // Calculate average rating
+      product.avgRating =
+        product.reviews.reduce((acc, item) => item.rating + acc, 0) /
+        product.reviews.length;
+      await product.save();
+ 
+      res.redirect('/')
+    } 
+    catch (error) {
+      console.error("Error submitting review:", error);
+      res.status(500).json({ message: "Error submitting review." });
+    }
+   
+    })
+  }
     const getCheckout = async function (req, res) {
       const userId = req.session.userid;
       let isUser = true;
       let user = await userHandler.getCart(userId);
-     // console.log("user",user)
+     console.log("user",user)
+     
       let coupon = await orderHandler.getCoupon(user.totalPrice);
+      console.log("coupon",user.cart.coupon)
       if (user.cart.coupon) {
         const eligibleCoupon = await orderHandler.showCoupon(user.cart.coupon.code);
         if(user.totalPrice < eligibleCoupon.totalPrice){
@@ -127,12 +172,12 @@ const adminProduct = async function (req, res) {
        
           const subTotal = totalPrice;
           const discount = 0;
-          if (totalPrice < 500) {
+          if (totalPrice < 100) {
             res.render("user/checkout", {
               isUser,
               user: user,
               totalPrice,
-              message: "cannot order below ₹500",
+              message: "cannot order below ₹100",
             });
           } else {
             res.render("user/checkout", {
@@ -181,54 +226,7 @@ const adminProduct = async function (req, res) {
         res.redirect("/cart");
       }
     };
-    const submitReview = async (req, res) => {
-  
-        const uploadMiddleware = uploadreview();
-        uploadMiddleware(req, res, async (err) => {
-          if (err) {
-            console.error(err);
-            return res.status(500).send("Error uploading file.");
-          }
-          const { productId, rating, comment } = req.body;
-        
-    
-      try{
-      
-          
-          const product = await products.findById(productId);
-         
-          if (!product) {
-            return res.status(404).json({ message: "Product not found" });
-          }
-          const fileNames =req.files ? req.files.map(file=>file.filename): [];
-        const review = {
-          user: req.session.user._id,
-          name: req.session.user.fullName,
-          rating: Number(rating),
-          comment: comment,
-          image: fileNames.length>0 ? fileNames : [],
-        };
- 
-        product.reviews.push(review);
-        product.numReviews = product.reviews.length;
-        // Calculate average rating
-        product.avgRating =
-          product.reviews.reduce((acc, item) => item.rating + acc, 0) /
-          product.reviews.length;
-        await product.save();
    
-        res.redirect('/')
-      } 
-      catch (error) {
-        console.error("Error submitting review:", error);
-        res.status(500).json({ message: "Error submitting review." });
-      }
-     
-      })
-    }
-  
-    
-    
     const deleteProductCheckout = async function (req, res) {
       cart.deleteCartProduct(req.session.userid, req.params.id).then(() => {
         res.redirect("/checkout");

@@ -243,11 +243,7 @@
                         {{#each products}}
                         <div class="col-lg-4 col-md-6">
                             <div class="product__item">
-                                  <a
-                      href="/product/{{this._id}}"
-                        class="aspect aspect--bg-grey aspect--square u-d-block"
-                        style=""
-                      >
+                                 
  {{!-- {{#each this.image}} --}}
                                 <div class="product__item__pic set-bg" data-setbg="img/productImages/{{this.image.[0]}}" >
                                     <div class="label new">New</div>
@@ -257,9 +253,13 @@
             
                {{!-- <img src="img/productImages/{{this}}"> --}}
                
-            
+            <li> <a
+                      href="/product/{{this._id}}"
+                        class="aspect aspect--bg-grey aspect--square u-d-block"
+                        style=""
+                      ><span class="arrow_expand"></span></li>
       
-                                        <li><a href="/img/productImages/{{this.image.[0]}}"class="image-popup"><span class="arrow_expand"></span></a></li>
+                                        
                                         <li><a href="/addWishlist/{{this._id}}"><span class="icon_heart_alt"></span></a></li>
                                         <li><a href="/addToCart/{{this._id}}"><span class="icon_bag_alt"></span></a></li>
                                     </ul>

@@ -53,48 +53,39 @@
                 <div class="col-lg-6">
                     <div class="product__details__text">
                         <h3>{{product.name}} <span>Brand: {{product.brand}}</span></h3>
-                        <div class="rating">
-                            <i class="fa fa-star"></i>
+                         <div class="rating">
+                        <span class="badge bg-success rounded-pill"> {{product.avgRating}}  <i class="fa fa-star"></i></span>
+                          </div>
+                          {{!-- <div>
                             <i class="fa fa-star"></i>
                             <i class="fa fa-star"></i>
                             <i class="fa fa-star"></i>
                             <i class="fa fa-star"></i>
                             <span>( 138 reviews )</span>
-                        </div>
-                        <div class="product__rating">
-  <p>Average Rating: {{product.avgRating}} / 5</p>
-  <p>{{product.numReviews}} Reviews</p>
+                        </div>  --}}
+                        
 
-  {{#each product.reviews}}
-  <div class="review">
-    <strong>{{this.name}}</strong>
-    <span>{{this.rating}} / 5</span>
-    <p>{{this.comment}}</p>
-    <small>{{this.date}}</small>
-  </div>
-  {{/each}}
-</div>
-
-                        <div class="product__details__price">RS {{product.price}} <span>$ 83.0</span></div>
+                        <div class="product__details__price">RS {{product.price}} </div>
                         <p></p>
                         <div class="product__details__button">
-                            <div class="quantity">
+                            {{!-- <div class="quantity">
                                 <span>Quantity:</span>
                                 <div class="pro-qty">
                                     <input type="text" value="1">
                                 </div>
-                            </div>
-                            <a href="" class="cart-btn"><span class="icon_bag_alt"></span> Add to cart</a>
-                            <ul>
+                            </div> --}}
+                            <a href="/addToCart/{{product._id}}" class="cart-btn"><span class="icon_bag_alt"></span> Add to cart</a>
+                             <a href="/addWishlist/{{product._id}}" class="cart-btn"><span class="icon_heart_alt"></span> Add to wishlist</a>
+                            {{!-- <ul>
                               <li><a href="/"><span style="color: red; font-size: 24px;">&#9829;</span></a></li>  
 
                                 <li><a href="#"><span class="icon_heart_alt"></span></a></li>
                                 <li><a href="#"><span class="icon_adjust-horiz"></span></a></li>
-                            </ul>
+                            </ul> --}}
                         </div>
                         <div class="product__details__widget">
                             <ul>
-                                <li><span style="color: red; font-size: 24px;">&#9829;</span>
+                                <li>
 
                                     <span>Availability:</span>
                                     <div class="stock__checkbox">
@@ -143,10 +134,10 @@
                                         </label>
                                     </div>
                                 </li>
-                                <li>
+                                {{!-- <li>
                                     <span>Promotions:</span>
                                     <p>Free shipping</p>
-                                </li>
+                                </li> --}}
                             </ul>
                         </div>
                     </div>
@@ -161,7 +152,7 @@
                                 <a class="nav-link" data-toggle="tab" href="#tabs-2" role="tab">Specification</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" data-toggle="tab" href="#tabs-3" role="tab">Reviews ( 2 )</a>
+                                <a class="nav-link" data-toggle="tab" href="#tabs-3" role="tab">Reviews</a>
                             </li>
                         </ul>
                         <div class="tab-content">
@@ -174,17 +165,23 @@
                                 <p>{{product.specification}}</p>
                             </div>
                             <div class="tab-pane" id="tabs-3" role="tabpanel">
-                                <h6>Reviews ( 2 )</h6>
-                                <p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut loret fugit, sed
-                                    quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt loret.
-                                    Neque porro lorem quisquam est, qui dolorem ipsum quia dolor si. Nemo enim ipsam
-                                    voluptatem quia voluptas sit aspernatur aut odit aut loret fugit, sed quia ipsu
-                                    consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Nulla
-                                consequat massa quis enim.</p>
-                                <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget
-                                    dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes,
-                                    nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium
-                                quis, sem.</p>
+                                <h6>Reviews ( {{product.numReviews}})</h6>
+                                <div class="product__rating">
+  <p>Average Rating: {{product.avgRating}} / 5</p>
+ 
+
+  {{#each product.reviews}}
+  <div class="review">
+    <span class="badge bg-success rounded-pill">{{this.rating}} <i class="fa fa-star"></i></span> 
+    <strong>{{this.comment}}</strong>
+    
+    <p>{{this.name}}<br/>
+    <small>{{this.date}}</small>
+    </p>
+  </div>
+  <br/>
+  {{/each}}
+</div>
                             </div>
                         </div>
                     </div>
