@@ -1,5 +1,5 @@
 const express = require("express");
-const { couponGet, postCoupon, removeCoupon, postCheckout, success, orders, singleOrder, adminOrders, downloadInvoice } = require("../controller/ordersController");
+const { couponGet, postCoupon, removeCoupon, postCheckout, success, orders, singleOrder, adminOrders, downloadInvoice, verifyPayment } = require("../controller/ordersController");
 const { checkAuth } = require("../middlewares/auth");
 const router = express.Router();
 
@@ -12,5 +12,5 @@ router.get("/user/success",checkAuth, success);
 router.get("/orders",checkAuth, orders);
 router.get("/orders/:id", checkAuth, singleOrder);
 router.get('/downloadInvoice/:orderId',downloadInvoice);
-
+router.post("/verifyPayment", checkAuth, verifyPayment);
 module.exports = router;

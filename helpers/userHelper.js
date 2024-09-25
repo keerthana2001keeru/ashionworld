@@ -287,13 +287,14 @@ const totalItems = wishlist.wishlist.length;
     return delWishlist;
   },
 
-  updateCoupon: async function (userid, code, discount) {
+   updateCoupon: async function (userid, code, discount) {
     try {
       const coupon = await User.updateOne(
         { _id: userid },
         { "coupon.code": code, "coupon.discount": discount },
         { new: true }
       );
+      return coupon;
     } catch (error) {
       console.log(error);
     }

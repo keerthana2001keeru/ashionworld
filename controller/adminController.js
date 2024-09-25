@@ -5,31 +5,33 @@ const { User } = require("../models/userSchema");
 const fs = require('fs');
 const path = require('path');
 const Logo = require('../models/navbarSchema');
+const Admin = require("../models/adminSchema");
 const adminLoginpage = function (req, res,next) {
   try{
   if (req.session.admin) {
     return res.redirect("/admin/adminDashboard");
   } else { 
-    console.log("admin")
+    
     return res.render("admin/adminLogin", {formData:{}});
   }
 } catch (err) {
   next(err);
 }
 };
-async function adminLogin(req, res, next) {
+const adminLogin = async (req, res, next)=> {
   try {
     const { email, password } = req.body;
     const admin = await adminHandler.findAdminByEmailId(email);
-
-    if (admin) {
+console.log("object",admin);
+const currentUser= admin;
+    if (currentUser) {
       // Compare the plain text password with the hashed password using bcrypt
-      const passwordMatch = await bcrypt.compare(password, admin.password);
+      const passwordMatch = await bcrypt.compare(password, currentUser.password);
 
       if (passwordMatch) {
         req.session.admin = admin;
         req.session.loggedIn = true;
-        req.session.username = admin.fullName;
+        req.session.username = currentUser.fullName;
         return res.redirect("/admin/adminDashboard");
       } else {
         return res.render("admin/adminLogin", { errorMessage: "Invalid password",formData:req.body });
@@ -41,7 +43,7 @@ async function adminLogin(req, res, next) {
     next(err);
   }
 }
-async function adminDashboard(req, res, next) {
+const adminDashboard= async (req, res, next) =>{
   res.setHeader("Cache-Control", "no-cache, no-store , must-revalidate");
   try {
       if (req.session.admin) {
@@ -264,11 +266,11 @@ const addCoupons = async function (req, res) {
 };
 
 const viewCouponList = async function (req, res) {
-  const coupons = await adminHandler.getAllCoupons();
-  res.render("admin/coupons", { coupons: coupons });
+  const couponList = await adminHandler.getAllCoupons();
+  res.render("admin/coupons", { coupons: couponList });
 
 };
-const editcoupon = async function (req, res) {
+const editcoupon = async function (req, res) { 
   const couId = req.params.id;
   const coupon = await adminHandler.getCoupon(couId);
   res.render("admin/edit-coupon", { coupon: coupon });

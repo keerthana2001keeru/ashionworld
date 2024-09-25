@@ -20,53 +20,19 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
-                   {{#if coupon}}
-                  <div class="msg">
+                   {{!-- <div class="col-lg-6">
+                                        <div class="discount__content">
+                        <h6>Discount codes</h6>
+                        <form action="/user/applyCoupon">
+                            <input type="text" placeholder="Enter your coupon code">
+                            <button onclick="applyCoupon()" class="site-btn">Apply</button>
+                        </form>
 
-                    <span class="msg__text">You are elegible to use a coupon
-                      <a class="gl-link" href="#have-coupon" data-toggle="collapse">Click Here to Apply</a>
-                    </span>
-                    <div class="collapse" id="have-coupon" data-parent="#checkout-msg-group">
-                      <div class="c-f u-s-m-b-16">
-                        {{#each coupon}}
-                        <div class="d-flex justify-content-between align-items-center">
-
-                          <span class="msg__text u-s-m-b-16">Get <span style="color: red;">₹{{this.discount}}</span> off
-                            now with <span style="color: red;" id="coupon-code">{{this.code}}</span>
-                            <span class="ml-3" style="color: green;" id="couponSpan{{this.code}}"></span></span>
-                          <div>
-
-                            <button type="button" class="btn btn-outline-primary btn-floating applyCouponBtn"
-                              style="height: 10px; padding-bottom: 33px; padding-top: 10px" id="appliedClass{{this.code}}" data-mdb-ripple-init>
-                              <span>Apply</span>
-                            </button>
-                          </div>
-                        </div>
-                        {{/each}}
-
-                        <div class="c-f__form">
-                          <div class="u-s-m-b-16">
-                            <div class="u-s-m-b-15">
-                              <label for="coupon"></label>
-                              <input class="input-text input-text--primary-style" type="text" id="couponInput" value="{{couponCode}}"
-                                placeholder="Enter Coupon Code">
-                            </div>
-                            <div class="u-s-m-b-15">
-                              <p id="wrongCode"></p>
-                              <a href="javascript:void(0);" id="removeCouponLink"
-                                class="btn btn--e-transparent-brand-b-2" type="button">Remove Coupon</a>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
                     </div>
-                  </div>
-                  {{else}}
-                  <span class="msg__text">You are not elegible to use any coupon
-                  </span>
-                  {{/if}}
-                    <h6 class="coupon__link"><span class="icon_tag_alt"></span> <a href="#">Have a coupon?</a> Click
-                    here to enter your code.</h6>
+                </div> --}}
+                   
+                    {{!-- <h6 class="coupon__link"><span class="icon_tag_alt"></span> <a href="#">Have a coupon?</a> Click
+                    here to enter your code.</h6> --}}
                 </div>
             </div>
              <form action=" " id="checkoutForm"class="checkout__form" method="post">
@@ -151,16 +117,61 @@
                                             <span class="top__text__right">Total</span>
                                         </li>
                                         {{#each user.cart.cart}}
-                                        <li>{{this.product_id.name}} <span>{{this.product_id.price}}</span>
+                                        <li><a href="/product/{{this.product_id._id}}">{{this.product_id.name}} </a><span>{{this.product_id.price}}</span>
                                          <a href="/deleteProductCheckout/{{this.product._id}}" class="delProduct"
                           class="o-card__del far fa-trash-alt"></a></li>
                                        {{/each}}
+                                        {{#if coupon}}
+                  <div class="msg">
+
+                    <span class="msg__text">You are elegible to use a coupon
+                      <a class="gl-link" href="#have-coupon" data-toggle="collapse">Click Here to Apply</a>
+                    </span>
+                    <div class="collapse" id="have-coupon" data-parent="#checkout-msg-group">
+                      <div class="c-f u-s-m-b-16">
+                        {{#each coupon}}
+                        <div class="d-flex justify-content-between align-items-center">
+
+                          <span class="msg__text u-s-m-b-16">Get <span style="color: red;">₹{{this.discount_value}}</span> off
+                            now with <span style="color: red;" id="coupon-code">{{this.coupon_code}}</span>
+                            <span class="ml-3" style="color: green;" id="couponSpan{{this.code}}"></span></span>
+                          <div>
+
+                            <button type="button" class="btn btn-outline-primary btn-floating applyCouponBtn"
+                              style="height: 10px; padding-bottom: 33px; padding-top: 10px" id="appliedClass{{this.coupon_code}}" data-mdb-ripple-init>
+                              <span>Apply</span>
+                            </button>
+                          </div>
+                        </div>
+                        {{/each}}
+
+                        <div class="c-f__form">
+                          <div class="u-s-m-b-16">
+                            <div class="u-s-m-b-15">
+                              <label for="coupon"></label>
+                              <input class="input-text input-text--primary-style" type="text" id="couponInput" value="{{couponCode}}"
+                                placeholder="Enter Coupon Code">
+                            </div>
+                            <div class="u-s-m-b-15">
+                              <p id="wrongCode"></p>
+                              <a href="javascript:void(0);" id="removeCouponLink"
+                                class="btn btn--e-transparent-brand-b-2" type="button">Remove Coupon</a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  {{else}}
+                  <span class="msg__text">You are not elegible to use any coupon
+                  </span>
+                  {{/if}}
                                     </ul>
                                 </div>
                                 <div class="checkout__order__total">
                                     <ul>
                                         <li>Subtotal <span>{{subTotal}}</span></li>
-                                        <li>Discount <span>{{discount}}</span></li>
+                                        <li>Discount <span>-₹ {{discount}}</span></li>
                                         <li>Total <span>{{totalPrice}}</span></li>
                                     </ul>
                                 </div>
@@ -301,10 +312,7 @@
                       {{#each user.cart.cart}}
                       <div class="o-card">
                         <div class="o-card__flex">
-                          <div class="o-card__img-wrap">
-
-                            <img class="u-img-fluid" src="img/productImages/{{this.product_id.image.[2]}}" alt="" />
-                          </div>
+                          
                           <div class="o-card__info-wrap">
 
                             <span class="o-card__name">
@@ -377,18 +385,9 @@
                             <td>TAX</td>
                             <td>₹1000</td>
                           </tr> --}}
-                          <tr>
-                            <td>SUBTOTAL</td>
-                            <td>₹{{subTotal}}</td>
-                          </tr>
-                          <tr>
-                            <td>DISCOUNT</td>
-                            <td id="grandDiscount">-₹{{discount}}</td>
-                          </tr>
-                          <tr>
-                            <td>GRAND TOTAL</td>
-                            <td id="grandTotal">₹{{totalPrice}}</td>
-                          </tr>
+                         
+                         
+                         
                         </tbody>
                       </table>
                     </div>
@@ -567,6 +566,38 @@
   </section>
 </div>
 </form>
+
+{{!-- <script>
+  document.getElementById('checkoutForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const couponCode = document.getElementById('couponSelect').value;
+
+    if (couponCode) {
+      try {
+        const response = await fetch('/apply-coupon', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            couponCode,
+            totalAmount: 200  // Replace this with the actual total amount
+          })
+        });
+        const data = await response.json();
+        if (data.discount) {
+          alert(`Coupon applied! Discount: ₹${data.discount}`);
+          // Update the total price in the frontend
+        } else {
+          alert(data.message);
+        }
+      } catch (err) {
+        console.error('Error applying coupon', err);
+      }
+    } else {
+      alert('Please select a coupon');
+    }
+  });
+</script> --}}
+
 
 <script>
   $(document).ready(function () {
@@ -824,14 +855,7 @@
         <!-- Footer Section End -->
 
         <!-- Search Begin -->
-        <div class="search-model">
-            <div class="h-100 d-flex align-items-center justify-content-center">
-                <div class="search-close-switch">+</div>
-                <form class="search-model-form">
-                    <input type="text" id="search-input" placeholder="Search here.....">
-                </form>
-            </div>
-        </div>
+       
         <!-- Search End -->
 
         <!-- Js Plugins -->

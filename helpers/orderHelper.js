@@ -168,22 +168,18 @@ module.exports = {
 
   
   getCoupon: async function (price) {
-   try{
+   
     const coupons = await Coupons.find().lean();
     const matchCoupon = coupons.filter((coupon) => {
       return (price >= coupon.discount_value) ;
     });
     return matchCoupon;
-  }catch(err){
-    console.error(err);
-    return [];
-  }
   },
 
   showCoupon: async function (couponId) {
     try{
 
-      const coupon = await Coupons.findOne({ code: couponId });
+      const coupon = await Coupons.findOne({ coupon_code: couponId });
       return coupon;
     }catch(error){
       console.log(error)

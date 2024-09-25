@@ -7,47 +7,44 @@ const couponSchema = mongoose.Schema({
   },
   coupon_code: { 
     type: String, 
-    required: true, 
+    required: true,
+    unique:true, 
     uppercase: true 
+  },
+  totalPrice: {
+    type: Number,
   },
   description: {
      type: String,
       required: true
      },
-  // discount_type: {
-  //   type: String,
-  //   enum: ["free_shipping", "percentage", "fixed_amount"],
-  // },
+     lastUpdatedUser: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Users",
+    },
+    lastUpdated: {
+      type: Date,
+      default: Date.now(),
+    },
+    usedUsers: {
+      type: [mongoose.Schema.Types.ObjectId],
+      ref: "Users",
+    },
+ 
   discount_value: { 
     type: Number 
   },
-  // minimum_purchase_value: {
-  //    type: Number,
-  //     required: true,
-  //      default: 0 
-  //     },
-  // maximum_purchase_value: {
-  //    type: Number, 
-  //    required: true, 
-  //    default: 0 
-  //   },
-  valid_till: Date,
+ 
+  valid_till: {
+    type: Date,
+    required:true
+  },
   isActive: { 
-    type: Boolean, default: false 
+    type: Boolean, 
+    default: true 
   },
 
-  // lastUpdated: {
-  //   type: Date,
-  //   default: Date.now(),
-  // },
-  // usedUsers: {
-  //   type: [mongoose.Schema.Types.ObjectId],
-  //   ref: "Users",
-  // },
-  // expire: {
-  //   type: Date,
-  //   required: true,
-  // },
+ 
 }
 ,{timestamps: true});
 

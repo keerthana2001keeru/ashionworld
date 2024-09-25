@@ -150,17 +150,17 @@ const adminProduct = async function (req, res) {
       const userId = req.session.userid;
       let isUser = true;
       let user = await userHandler.getCart(userId);
-     console.log("user",user)
+     //console.log("user",user)
      
       let coupon = await orderHandler.getCoupon(user.totalPrice);
-      console.log("coupon",user.cart.coupon)
-      if (user.cart.coupon) {
-        const eligibleCoupon = await orderHandler.showCoupon(user.cart.coupon.code);
+     console.log("coupon",coupon)
+       if (user.cart.coupon) {
+         const eligibleCoupon = await orderHandler.showCoupon(user.cart.coupon.code);
         if(user.totalPrice < eligibleCoupon.totalPrice){
-          user = await userHandler.couponRemove(userId)
-          coupon = []
+           user = await userHandler.couponRemove(userId)
+           coupon = []
         }
-      }
+       }
 
       if (user.cart.cart) {
         let totalPrice;
@@ -172,12 +172,13 @@ const adminProduct = async function (req, res) {
        
           const subTotal = totalPrice;
           const discount = 0;
-          if (totalPrice < 100) {
+          if (totalPrice < 500) {
             res.render("user/checkout", {
               isUser,
               user: user,
               totalPrice,
-              message: "cannot order below ₹100",
+              
+              message: "cannot order below ₹500",
             });
           } else {
             res.render("user/checkout", {
@@ -227,76 +228,14 @@ const adminProduct = async function (req, res) {
       }
     };
    
-    const deleteProductCheckout = async function (req, res) {
-      cart.deleteCartProduct(req.session.userid, req.params.id).then(() => {
-        res.redirect("/checkout");
-      });
-    };
-    
-    const postCheckout = async function (req, res) {
-      try {
-        const userId = req.session.userid;
-        const user = await userHelper.getCart(userId);
-        const cart = user.cart.cart;
-        if (user) {
-          // await userHelper.addAddress(req.body, userId);
-          if (req.body.payment == "COD") {
-            const statuses = {
-              orderStatus: "placed",
-              payStatus: "pending",
-            };
-            const newOrder = await orderHelper.createOrder(
-              userId,
-              req.body.couponId,
-              cart,
-              req.body,
-              statuses
-            );
-            const updateCoupon = await orderHelper.updateCoupon(
-              req.body.couponId,
-              userId
-            );
-            await userHelper.couponRemove(userId)
-            res.json(newOrder);
-          } else if (req.body.payment == "razorPay") {
-            const statuses = {
-              orderStatus: "pending",
-              payStatus: "pending",
-            };
-    
-            const order = await orderHelper.createOrder(
-              userId,
-              req.body.couponId,
-              cart,
-              req.body,
-              statuses
-            );
-            if (order) {
-              try {
-                const orderInstance = await orderHelper.generateRazorPay(
-                  order._id,
-                  order.totalPrice
-                );
-                res.json(orderInstance);
-              } catch (error) {
-                console.log(error);
-              }
-            }
-          }
-        }
-      } catch (error) {
-        console.log(error);
-        // logger.error({ message: "error post checkout", error });
-      }
-    };
+   
     
   module.exports ={
     addProduct,
     getAddProduct,
     adminProduct,
     getCheckout,
-    deleteProductCheckout,
-    postCheckout,
+   
     singleProduct,
     searchProduct,
     editProduct,

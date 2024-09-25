@@ -9,6 +9,7 @@ const PDFDocument = require('pdfkit');
 const fs = require('fs');
 const path = require('path');
 const Order = require('../models/orderSchema');
+const coupons = require("../models/couponSchema");
 
 // Generate invoice route
 const downloadInvoice = async (req, res) => {
@@ -195,15 +196,21 @@ const couponGet = async function (req, res) {
 };
 
 const postCoupon = async function (req, res) {
+ 
   const userId = req.session.userid;
+ 
   const couponCode = req.body.couponId;
+  
   const coupon = await orderHandler.showCoupon(couponCode);
+  console.log("object",coupon);
   if (coupon) {
+    console.log("object",userId,couponCode,coupon.discount_value)
     const updatedCoupon = await userHandler.updateCoupon(
       userId,
       couponCode,
-      coupon.discount
+      coupon.discount_value
     );
+    console.log("up",updatedCoupon);
     const discount = coupon.discount;
     const code = coupon.code;
     const price = await userHandler.getCart(userId);
