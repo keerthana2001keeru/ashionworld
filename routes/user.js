@@ -60,6 +60,7 @@ router.get("/addProductToCart/:id", addProductToCart);
 //cart
 router.get("/cart",checkAuth,cart);
 router.post("/updateCart", updateCart);
+
 router.get("/deleteCartProduct/:id", deleteCart);
 //wishlist
 router.get("/wishlist",checkAuth, wishlist);

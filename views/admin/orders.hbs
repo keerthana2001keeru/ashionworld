@@ -369,10 +369,11 @@
       <i class="fa fa-ellipsis-v"></i> <!-- Three-dot icon -->
     </button>
     <div class="dropdown-content">
-            <a href="#" class="view-address" data-address="{{this.shippingAddress.houseName}}, {{this.shippingAddress.street}}, {{this.shippingAddress.city}}, {{this.shippingAddress.pincode}}">View<br/> Address</a>
+            <a href="#" class="view-address" data-address="{{this.orderid}},{{this.shippingAddress.houseName}}, {{this.shippingAddress.street}}, {{this.shippingAddress.city}}, {{this.shippingAddress.pincode}}">View<br/> Address</a>
             <a href="#" class="change-status" data-orderid="{{this.orderid}}" data-currentstatus="{{this.status}}">Change<br/>Status</a>
           </div>
   </div>
+  
 </div>
 
 <!-- Modal for Shipping Address -->

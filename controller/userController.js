@@ -418,20 +418,20 @@ const cart = async function (req, res) {
   };
   
   const updateCart = async function (req, res) {
+    console.log("object",req.body);
     try {
       let { proId, count } = req.body;
     //  console.log("pro",proId,count)
       count = parseInt(count);
       const userId = req.session.userid;
       if (userId) {
-        const updatedCart = await userHandler.updateCart(proId, count, userId);
-        console.log("upcart",updateCart)
-        if (updatedCart) {
+        const updatedCart = await userHandler.updatingCart(proId, count, userId);
+        if (updatedCart && updatedCart.length > 0) {
           const totalPrice = await userHandler.getCart(userId);
           res.json({ totalPrice: totalPrice.totalPrice, updatedCart });
-        }
       } else {
-      }
+          res.status(400).json({ message: 'Unable to update cart' });
+      }}
     } catch (error) {
       console.log(error);
       //logger.error({ message: "update cart failed", error });
@@ -558,7 +558,7 @@ const editAddress = async function (req, res) {
     const userId = req.session.userid;
     const addressId = req.params.id;
     const address = req.body;
-    const updatedAddress = userHelper.editAddress(userId, addressId, address);
+    const updatedAddress = userHandler.editAddress(userId, addressId, address);
   } catch (error) {
     logger.error({ message: `couldn't get the address ${err}` });
   }

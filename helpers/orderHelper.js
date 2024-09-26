@@ -178,7 +178,7 @@ module.exports = {
 
   showCoupon: async function (couponId) {
     try{
-
+console.log("object",couponId)
       const coupon = await Coupons.findOne({ coupon_code: couponId });
       return coupon;
     }catch(error){

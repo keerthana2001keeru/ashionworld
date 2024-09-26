@@ -184,37 +184,52 @@ getCart: async function (userId) {
     const newCart = await User.updateOne({ _id: userId }, { cart: user.cart });
   },
 
-  updateCart: async function (proId, count, userId) {
+  updatingCart: async function (proId, count, userId) {
     try {
       const user = await User.findOne({ _id: userId });
+      console.log("object",user)
       if (!user) {
         logger.error({ message: "cart not found" });
+        return null;
       }
-
-      const cartItem = await User.cart.find((item) => item.product_id == proId);
+// Initialize cart if undefined
+if (!user.cart) {
+  user.cart = [];
+}
+      const cartItem =  user.cart.find((item) => item.product_id.toString() == proId);
+      console.log(cartItem)
       const currentQuantity = cartItem ? cartItem.quantity : 0;
-      const updatedCount = Math.max(currentQuantity + count, 1);
-      const updatedCart = await User.updateOne(
-        { _id: userId, "cart.product_id": proId },
-        { $set: { "cart.$.quantity": updatedCount } }
-      );
-
-      if (updatedCount == 0) {
-        const newCart = await User.updateOne(
-          { _id: userId },
-          { $pull: { cart: { product_id: proId } } },
-          { new: true }
+      const updatedCount = Math.max(currentQuantity + count, 0);
+      if (updatedCount === 0) {
+        // Remove item if quantity becomes 0
+        await User.updateOne(
+            { _id: userId },
+            { $pull: { cart: { product_id: proId } } }
         );
-      } else {
-        //logger.error("error deleting cart");
-      }
+    } else {
+        // Update quantity if item exists, otherwise add a new item
+        if (cartItem) {
+            await User.updateOne(
+                { _id: userId, "cart.product_id": proId },
+                { $set: { "cart.$.quantity": updatedCount } }
+            );
+        } else {  await User.updateOne(
+          { _id: userId },
+          { $push: { cart: { product_id: proId, quantity: updatedCount } } }
+      );
+  }
+}
 
-      const updatedUserCart = await User.findOne({ _id: userId });
-      return updatedUserCart;
-    } catch (error) {
-      //logger.error("cart updation failed");
-    }
-  },
+// Fetch the updated cart after modification
+const updatedUserCart = await User.findOne({ _id: userId }).populate('cart.product_id');
+return updatedUserCart.cart; // return the updated cart
+} catch (error) {
+console.log("Error updating cart", error);
+//logger.error("cart updation failed");
+return null;
+}},
+     
+    
   cartDelete: async function (userId, proId) {
     try {
       const cart = await User.findOne({ _id: userId });
