@@ -298,6 +298,42 @@ const userProfile = async function (req, res) {
     logger.error({ message: err.message });
   }
 };
+const profile = async function (req, res) {
+  try {
+    const userId = req.session.email;
+    const user = await userHandler.findUser(userId);
+//console.log("ccccccccc",user);
+    if (req.session.user) {
+      let isUser = true;
+      res.render("user/profile", { user, isUser });
+    } else {
+      res.render("user/login");
+    }
+  } catch (err) { 
+    logger.error({ message: err.message });
+  }
+};
+const user_profile_edit = async function (req, res) {
+  try {
+    const userId = req.session.email;
+    const user = await userHandler.findUser(userId);
+    let isUser = true;
+    res.render("user/edit-profile", { user, isUser });
+  } catch (err) {
+    logger.error({ message: err });
+  }
+};
+
+const editUser = async function (req, res) {
+  try {
+    const userData = req.body;
+    const id = req.session.userid;
+    const user = await userHelper.editUser(userData, id);
+    if (user) {
+      res.redirect("/user/edit_profile");
+    }
+  } catch (error) {}
+};
 
 const cart = async function (req, res) {
   const userId = req.session.userid;
@@ -612,4 +648,7 @@ const delete_address = async function (req, res) {
    myCoupons,
    resetPassword,
    resetpassword,
+   profile,
+   user_profile_edit,
+   editUser,
   }

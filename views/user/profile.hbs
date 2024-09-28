@@ -1,0 +1,108 @@
+{{> userHeader}}
+
+<div class="app-content">
+
+            <!--====== Section 1 ======-->
+            {{!-- <div class="u-s-p-y-6">
+
+                <!--====== Section Content ======-->
+                <div class="section__content">
+                    <div class="container">
+                        <div class="breadcrumb">
+                            <div class="breadcrumb__wrap">
+                                <ul class="breadcrumb__list">
+                                    <li class="has-separator">
+
+                                        <a href="/">Home</a></li>
+                                    <li class="is-marked">
+
+                                        <a href="#">My Account</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> --}}
+            <!--====== End - Section 1 ======-->
+
+
+            <!--====== Section 2 ======-->
+            <div class="u-s-p-b-60 pt-5">
+
+                <!--====== Section Content ======-->
+                <div class="section__content">
+                    <div class="dash">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-lg-3 col-md-12">
+
+                                    <!--====== Dashboard Features ======-->
+                                    <div class="dash__box dash__box--bg-white dash__box--shadow u-s-m-b-30">
+                                        <div class="dash__pad-1">
+
+                                            <h6 >Hello, {{user.fullName}}</h6>
+                                            <ul class="dash__f-list">
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    
+                                    <!--====== End - Dashboard Features ======-->
+                                </div>
+                                <div class="col-lg-9 col-md-12">
+                                    <div class="dash__box dash__box--shadow dash__box--radius dash__box--bg-white u-s-m-b-30">
+                                        <div class="dash__pad-2">
+                                            <h5 class="dash__h1 u-s-m-b-14 font-weight-bold">My Profile</h5>
+
+                                            <span class="dash__text u-s-m-b-30">Look all your info, you could customize your profile.</span>
+                                            <div class="row">
+                                                <div class="col-lg-4 u-s-m-b-30">
+                                                    <h5 class="dash__h2 u-s-m-b-8 font-weight-bold">Full Name :</h5>
+
+                                                    <h5 class="">{{user.fullName}}</h5>
+                                                </div>
+                                                <div class="col-lg-4 u-s-m-b-30">
+                                                     <h5 class="dash__h2 u-s-m-b-8 font-weight-bold">Email :</h5>
+
+                                                    <h5 class="">{{user.email}}</h5>
+                                                    <div class="dash__link dash__link--secondary">
+
+                                                        <a href="/edit_profile" class=" font-weight-bold">Change</a></div>
+                                                </div>
+                                                <div class="col-lg-4 u-s-m-b-30">
+                                                     <h6 class="dash__h2 u-s-m-b-8 font-weight-bold">Phone :</h1>
+
+                                                    <h5 class="">{{user.phone}}</h5>
+                                                    <div class="dash__link dash__link--secondary">
+
+                                                        <a href="/edit_profile" class=" font-weight-bold">Change</a></div>
+                                                </div>
+                                                <div class="col-lg-4 u-s-m-b-30">
+
+                                                    {{!-- <h5 class="">Password</h5>
+                                                    <div class="dash__link dash__link--secondary">
+
+                                                        <a href="/user/resetPassword" class=" font-weight-bold">Change</a></div>
+                                                </div>
+                                            </div> --}}
+                                            <div class="row">
+                                                <div class="col-lg-12"> 
+
+                                                    <div class="u-s-m-b-16">
+<button>
+                                                        <a class="dash__custom-link btn--e-transparent-brand-b-2" href="/edit_profile">Edit Profile</a></div>
+                                                   </button> <div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--====== End - Section Content ======-->
+            </div>
+            <!--====== End - Section 2 ======-->
+        </div>
+
+{{> userFooter}}

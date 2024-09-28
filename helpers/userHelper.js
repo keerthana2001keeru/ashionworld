@@ -32,6 +32,13 @@ module.exports = {
 };
 
 module.exports={
+
+  findUser: async function (userData) {
+    const user = await User.findOne({ email: userData })
+      .populate("address")
+      .lean();
+    if (user) return user;
+  },
    findUserById :async function (id) {
     try {
       return await User.findById(id).lean();

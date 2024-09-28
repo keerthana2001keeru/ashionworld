@@ -30,9 +30,13 @@ const {
   myCoupons,
   resetPassword,
   resetpassword,
+  profile,
+  user_profile_edit,
+  editUser,
 } = require("../controller/userController");
 const { couponGet, postCoupon, removeCoupon } = require("../controller/ordersController");
 const { userRegisterValidation, validate } = require("../middlewares/validation");
+
 
 
 //home page
@@ -69,6 +73,11 @@ router.get("/deleteWishlistProduct/:id", deleteWishlist);
 //address
 router.get("/add_address", add_address);
 router.put("/user/getAddress", getAddress)
+//profile
+router.get ("/profile", profile);
+router.get("/edit_profile", checkAuth, user_profile_edit);
+router.post("/user/editUser", checkAuth, editUser);
+
 //logout
 router.get("/logout", logout);
 module.exports = router;
