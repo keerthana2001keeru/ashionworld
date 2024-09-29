@@ -76,7 +76,7 @@ router.put("/user/getAddress", getAddress)
 //profile
 router.get ("/profile", profile);
 router.get("/edit_profile", checkAuth, user_profile_edit);
-router.post("/user/editUser", checkAuth, editUser);
+router.post("/editUser", checkAuth, editUser);
 
 //logout
 router.get("/logout", logout);
