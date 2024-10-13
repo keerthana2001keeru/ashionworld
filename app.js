@@ -1,7 +1,7 @@
 
 const express = require('express');
 var createError = require('http-errors');
-
+const app = express();
 //const upload = require('./middlewares/multer');
 const path = require('path');
 const fileUpload = require('express-fileupload');
@@ -20,14 +20,15 @@ const productRouter = require('./routes/product');
 const orderRouter = require('./routes/orders');
 //var fileUpload=require('express-fileupload')
 const port = process.env.PORT ||3000;
-const app = express();
-const connectDb= require('./config/connection')
 
+const connectDb= require('./config/connection')
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 //const hbs=require('express-handlebars')
 // view engine setup
 // app.set('views', path.join(__dirname, 'views'));
 // app.set('view engine', 'hbs');
-app.use(fileUpload());
+//app.use(fileUpload());
 app.use(clearCache)
 app.use(session({
   secret:process.env.SESSION_SECRET,
@@ -57,8 +58,8 @@ app.engine(
   }));
    // app.use(fileUpload())
 app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+
+
 app.use(cookieParser());
 // app.use(express.static(__dirname, 'public'));
 //app.use('/',express.static(path.join(__dirname, 'public')))
