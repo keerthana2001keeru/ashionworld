@@ -47,7 +47,7 @@ const productSchema = mongoose.Schema({
         name: String, // Reviewer name
         rating: { type: Number, required: true },
         comment: {type:[String]},
-        reviewImage:{type:String} ,
+        // reviewImage:{type:String} ,
         date: { type: Date, default: Date.now },
       },
     ],

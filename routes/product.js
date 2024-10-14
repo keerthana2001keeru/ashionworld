@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const {upload} = require("../middlewares/reviewMulter");
+
 
 const productHandler = require("../helpers/product-helpers");
 const {addProduct,getAddProduct, singleProduct,searchProduct, adminProduct, editproduct, editProduct, deleteProduct, getCheckout, submitReview}= require("../controller/productController");

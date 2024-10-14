@@ -1,8 +1,8 @@
 
-const products = require("../models/productSchema");
+//const products = require("../models/productSchema");
 const productHandler = require("../helpers/product-helpers");
 const {upload} = require("../middlewares/multer");
-const {uploadreview} = require("../middlewares/reviewMulter");
+//const {uploadreview} = require("../middlewares/reviewMulter");
 const orderHandler = require("../helpers/orderHelper");
 const userHandler = require("../helpers/userHelper");
 
@@ -14,9 +14,11 @@ const getAddProduct = function (req, res) {
 const addProduct = async function (req, res) {
   
   const uploadMiddleware = upload();
-
+console.log(uploadMiddleware)
   uploadMiddleware(req, res, async (err) => {
+    console.log(req.body)
     if (err) {
+      console.log("ddddddddddd")
       console.error(err);
       return res.status(500).send("Error uploading file.");
     }
@@ -24,6 +26,7 @@ const addProduct = async function (req, res) {
 console.log(req.files);
     const fileNames = req.files.map(file=>file.filename);
     const addedProduct = await productHandler.addProduct(req.body, fileNames);
+    console.log("object")
     if (addedProduct) {
       res.redirect("/add-product");
     }

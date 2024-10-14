@@ -3,21 +3,21 @@ const mongoose = require("mongoose");
 const products = require("../models/productSchema");
 
 module.exports={
-    addProduct: async function (body,fileNames) {
-        const { name, brand, category, price,description, countInStock,color,specification } = body;
-        const productAdd = await products.create({
-          name: name,
-          brand: brand,
-          category: category,
-          description: description,
-          price: price,
-          color:color,
-          specification:specification,
-          countInStock: countInStock,
-          image: fileNames.map(fileName => fileName),
-        });
-        return productAdd
-      },
+    // addProduct: async function (body,fileNames) {
+    //     const { name, brand, category, price,description, countInStock,color,specification } = body;
+    //     const productAdd = await products.create({
+    //       name: name,
+    //       brand: brand,
+    //       category: category,
+    //       description: description,
+    //       price: price,
+    //       color:color,
+    //       specification:specification,
+    //       countInStock: countInStock,
+    //       image: fileNames.map(fileName => fileName),
+    //     });
+    //     return productAdd
+    //   },
     getProduct: async function(proId){
       if (mongoose.Types.ObjectId.isValid(proId)) {
         const product=await products.findOne({_id: new mongoose.Types.ObjectId(proId) }).lean();
